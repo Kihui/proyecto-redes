@@ -1,0 +1,12 @@
+Useful commands
+
+dns-s1
+ec2-18-221-49-20.us-east-2.compute.amazonaws.com
+
+dns-S2
+
+
+dns-S3
+
+
+$ ssh -i redes20181.pem ubuntu@dns-SX
