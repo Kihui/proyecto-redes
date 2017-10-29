@@ -25,7 +25,7 @@ SECRET_KEY = '+fj%wxd=*3pnl-0($9h9_^f*s+^p5x!6kdn+$=rd9&^-p%o862'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'tabon.ga']
 
 
 # Application definition
@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_crud',
         'USER': 'ubuntu',
-        'PASSWORD': 'nalale',
+        'PASSWORD': '#Chet@.rul3S**',
         'HOST': 'localhost',
         'PORT': '',
     }
@@ -123,3 +123,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static/")
