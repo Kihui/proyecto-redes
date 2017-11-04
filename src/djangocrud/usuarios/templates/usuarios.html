@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Django - CRUD{% endblock %}
+
+{% block contenido %}
+  <h1>
+    Usuarios   <a href="{% url 'usuarios:crear' %}"  class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"><i class='material-icons'>add</i></a>
+  </h1>
+  <br/>
+  <ul class="mdl-list">
+    {% for usuario in usuario_list.all %}
+
+    <li class="mdl-list__item mdl-list__item--three-line">
+      <span class="mdl-list__item-primary-content">
+        <span class="titulo">Usuario: {{ usuario.usuario }}</span>
+        <span class="mdl-list__item-text-body">                        
+          <h4 class="nombre">Nombre: {{ usuario.nombre }} {{ usuario.app }} {{ usuario.apm }}</h4>
+          
+          Correo electrónico: {{ usuario.correo }}
+          <br/>
+          Sexo: {{ usuario.sexo|yesno:"Mujer, Hombre" }}
+          <br/>
+          Edad: {{ usuario.edad }}
+        </span>
+      </span>
+      <span class="mdl-list__item-secondary-content">
+        <a href="{% url 'usuarios:usuario' usuario.pk %}"  class="mdl-list__item-secondary-action"><i class='material-icons'>visibility</i></a>
+        <a href="{% url 'usuarios:editar' usuario.pk %}"  class="mdl-list__item-secondary-action"><i class='material-icons'>edit</i></a>
+        <a href="{% url 'usuarios:eliminar' usuario.pk %}"  class="mdl-list__item-secondary-action"><i class='material-icons'>delete_forever</i></a>
+      </span>
+    </li>
+  {% endfor %}
+
+    </ul>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Eliminar Usuario{% endblock %}
+
+{% block contenido %}
+
+      <h2 class="page-header">
+        ¿Estás seguro de querer eliminar a este usuario?
+      </h2>
+  
+  {% load filtros %}
+  <form role="form" action="" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" value="Eliminar" />
+  </form>
+{% endblock %}

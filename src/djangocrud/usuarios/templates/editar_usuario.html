@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Usuario{% endblock %}
+
+{% block contenido %}
+
+  <h1 class="page-header">
+    Editar Usuario
+  </h1>
+  
+  {% load filtros %}
+  <form role="form" action="" method="post">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    {% include 'form.html' with form=form %}
+    <input type="submit" class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored" value="Aceptar" />
+  </form>
+{% endblock %}

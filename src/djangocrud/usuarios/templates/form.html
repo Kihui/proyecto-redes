@@ -1,0 +1,42 @@
+{% load filtros %}
+{{ form.non_field_errors }}
+{% for field in form %}
+  
+  {% if field|fieldtype != 'CharField' and field|fieldtype != 'IntegerField' and field|fieldtype != 'DateField' and field|fieldtype != 'EmailField' %}
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="id_sexo_1">
+      <input class="mdl-radio__button" id="id_sexo_1" name="sexo" value="True" type="radio" checked>
+      <span class="mdl-radio__label">Mujer</span>
+    </label>
+    
+    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="id_sexo_2">
+      <input class="mdl-radio__button" id="id_sexo_2" name="sexo" value="False" type="radio">
+      <span class="mdl-radio__label">Hombre</span>
+    </label>
+
+    {% elif field|fieldtype == 'DateField' %}
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        {{ field|df:'mdl-textfield__input' }}
+        <label class="mdl-textfield__label" for="{{ field.name }}">{{ field.label }}</label>
+        <span class="mdl-textfield__error">Patrón de fecha: yyyy-mm-dd</span>
+    </div>
+    {% if field.errors %}
+    {% for error in field.errors %}
+    <span class="error-campo">{{ error|escape }}</span>
+    {% endfor %}
+    {% endif %}
+  
+    {% else %}
+    
+    <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+      {{ field|addclass:'mdl-textfield__input' }}
+      <label class="mdl-textfield__label" for="{{ field.name }}">{{ field.label }}</label>
+    </div>
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <span class="error-campo">{{ error|escape }}</span>
+      {% endfor %}
+    {% endif %}
+    
+  {% endif %}
+  <br/>
+{% endfor %}

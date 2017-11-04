@@ -1,0 +1,96 @@
+span {
+    font-size: 2em;
+}
+
+#header {
+    background: #0C4B33;
+    margin: 0;
+    margin-bottom: 20px;
+    color: white;
+    padding: 10px;
+}
+
+.container {
+    padding: 0 20px 20px;;
+}
+
+h2 {
+    margin: 0;
+    width: 49%;    
+}
+
+.beego {
+    margin-bottom: 0;
+    margin-top: 17px;
+    float: right;
+}
+
+.principal {
+    margin: 0 10px;
+}
+
+.principal2 {
+    margin: 0 50px;
+}
+
+.mdl-list {
+    padding: 0 50px 30px 0;
+}
+
+.mensaje {
+    color: #13d413;
+    font-size: 1.5em;
+}
+
+.titulo {
+    font-size: 18px;
+}
+
+.nombre, .admin {
+    padding: 0;
+    margin: 0;
+}
+
+.admin {
+    font-size: 15px;
+    float: right;
+    color: green;
+}
+
+.mdl-list h4 {
+    font-size: 16px;
+}
+
+.mdl-list__item--three-line {
+    height: 150px !important;
+    margin: 0;
+    width: 500px;
+    align-items: stretch !important;
+    -webkit-align-items: stretch !important;
+    overflow: visible !important;
+}
+
+.mdl-grid .contenido {
+    padding: 0;
+}
+
+.mdl-cell .contenido {
+    margin: 0;
+}
+
+.mdl-radio__label {
+    font-size: 1em;
+}
+
+.help-inline {
+    color: red;
+}
+
+#error_explanation {
+    color: red;
+}
+
+.error-campo {
+    color: red;
+    font-size: 12px;
+}
