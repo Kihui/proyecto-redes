@@ -27,8 +27,15 @@
     <div id="header">
       <div class="mdl-grid">
         <div class="mdl-cell mdl-cell--12-col">
-	  <h2>CRUD de Django</h2>
+	  <a href='{% url 'index' %}'><h2>CRUD de Django</h2> </a>
 	</div>
+	{% if user.is_authenticated %}
+	<div class="mdl-cell mdl-cell--12-col">
+	  <a href='{% url 'home' %}'> Mi perfil </a>
+	  <a href='{% url 'logout' %}'> Cerrar sesión </a>
+	  
+	</div>
+	{% endif %}
       </div>
     </div>
     <div class="container">

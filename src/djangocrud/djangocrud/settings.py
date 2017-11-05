@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from django.core.urlresolvers import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -23,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '&4p=!5(l7l*8u%ux(yihd5t*fak8^8k6gwdipbdvfuewykp-q4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['13.59.60.249', '18.216.66.221']
+ALLOWED_HOSTS = ['127.0.0.1','13.59.60.249', '18.216.66.221']
 
 
 # Application definition
@@ -53,10 +54,14 @@ MIDDLEWARE_CLASSES = [
 
 ROOT_URLCONF = 'djangocrud.urls'
 
+LOGIN_URL = reverse_lazy('login')
+# URL al que se redirige tras el Login 
+LOGIN_REDIRECT_URL = reverse_lazy('home')
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -79,8 +84,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'django_crud',
-        'USER': 'ubuntu',
-        'PASSWORD': '#Chet@.rul3S**',
+        'USER': 'root',
+        'PASSWORD': 'arr33kin',
         'HOST': 'localhost',
         'PORT': '5432',
     }

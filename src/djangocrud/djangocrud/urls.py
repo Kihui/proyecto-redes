@@ -15,13 +15,20 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+import django.contrib.auth.views as djsystem
 
 #Develop
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from . import views
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^', include('usuarios.urls', namespace='usuarios')),
+    url(r'^$', views.index, name='index'),
+    url(r'^profile/$', views.home, name='home'),
+    url(r'^admin/', admin.site.urls, name='admin'),
+    url(r'^home/', include('usuarios.urls', namespace='usuarios'), name='users'),
+    # /login/
+    url(r'^login/$', djsystem.login, name='login'), 
+    url(r'^logout/$', djsystem.logout, {'next_page': '/'}, name='logout'),    
 ]
 
 #Develop

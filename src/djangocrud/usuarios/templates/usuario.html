@@ -10,17 +10,9 @@
             <span class="mdl-list__item-primary-content">
                 <span class="titulo">Usuario: {{ usuario.usuario }}</span>
                 <span class="mdl-list__item-text-body">                        
-                    <h4 class="nombre">Nombre: {{ usuario.nombre }} {{ usuario.app }} {{ usuario.apm }}</h4>
+                    <h4 class="nombre">Nombre: {{ usuario.usuario.first_name }} {{ usuario.usuario.last_name }} </h4>
                     
-                    Correo electrónico: {{ usuario.correo }}
-                    <br/>
-                    Sexo: {{ usuario.sexo|yesno:"Mujer, Hombre" }}
-                    <br/>
-                    Edad: {{ usuario.edad }}
-                    <br/>
-                    Fecha de nacimiento: {{ usuario.fecha_nac }}
-                    <br/>
-                    Contraseña: {{ usuario.passw }}
+                    Correo electrónico: {{ usuario.usuario.email }}
                     <br/>
                 </span>
             </span>
