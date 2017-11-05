@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block contenido %}
+
+<a href='{% url 'usuarios:crear' %}'>Registrarse </a>
+<br>
+<a href='{% url 'login' %}'>Iniciar sesión </a>
+{% endblock %}

@@ -1,0 +1,34 @@
+18.216.66.221 - - [31/Oct/2017:04:02:07 +0000] "GET / HTTP/1.1" 200 1965 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+18.216.66.221 - - [31/Oct/2017:04:02:08 +0000] "GET /static/css/main.css HTTP/1.1" 304 - "http://18.216.66.221/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+18.216.66.221 - - [31/Oct/2017:04:02:08 +0000] "GET /static/css/material.css HTTP/1.1" 304 - "http://18.216.66.221/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+18.216.66.221 - - [31/Oct/2017:04:02:08 +0000] "GET /static/js/material.min.js HTTP/1.1" 304 - "http://18.216.66.221/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+18.216.66.221 - - [31/Oct/2017:04:02:08 +0000] "GET /static/js/material.min.js.map HTTP/1.1" 404 103 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+18.216.66.221 - - [31/Oct/2017:04:02:10 +0000] "GET / HTTP/1.1" 400 26 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36"
+[2017-10-31 04:03:29 +0000] [9106] [INFO] Starting gunicorn 19.7.1
+[2017-10-31 04:03:29 +0000] [9106] [INFO] Listening at: http://172.31.19.61:8000 (9106)
+[2017-10-31 04:03:29 +0000] [9106] [INFO] Using worker: sync
+[2017-10-31 04:03:29 +0000] [9109] [INFO] Booting worker with pid: 9109
+[2017-10-31 04:03:41 +0000] [9106] [INFO] Handling signal: int
+[2017-10-31 04:03:41 +0000] [9109] [INFO] Worker exiting (pid: 9109)
+[2017-10-31 04:03:42 +0000] [9106] [INFO] Shutting down: Master
+[2017-10-31 04:32:55 +0000] [9365] [INFO] Starting gunicorn 19.7.1
+[2017-10-31 04:32:55 +0000] [9365] [INFO] Listening at: http://172.31.19.61:8000 (9365)
+[2017-10-31 04:32:55 +0000] [9365] [INFO] Using worker: sync
+[2017-10-31 04:32:55 +0000] [9368] [INFO] Booting worker with pid: 9368
+[2017-10-31 04:33:41 +0000] [9365] [INFO] Handling signal: int
+[2017-10-31 04:33:41 +0000] [9368] [INFO] Worker exiting (pid: 9368)
+[2017-10-31 04:33:41 +0000] [9365] [INFO] Shutting down: Master
+[2017-10-31 04:43:33 +0000] [9383] [INFO] Starting gunicorn 19.7.1
+[2017-10-31 04:43:33 +0000] [9383] [INFO] Listening at: http://172.31.19.61:8000 (9383)
+[2017-10-31 04:43:33 +0000] [9383] [INFO] Using worker: sync
+[2017-10-31 04:43:33 +0000] [9386] [INFO] Booting worker with pid: 9386
+[2017-10-31 04:43:39 +0000] [9383] [INFO] Handling signal: int
+[2017-10-31 04:43:39 +0000] [9386] [INFO] Worker exiting (pid: 9386)
+[2017-10-31 04:43:39 +0000] [9383] [INFO] Shutting down: Master
+[2017-10-31 04:48:29 +0000] [9439] [INFO] Starting gunicorn 19.7.1
+[2017-10-31 04:48:29 +0000] [9439] [INFO] Listening at: http://172.31.19.61:8000 (9439)
+[2017-10-31 04:48:29 +0000] [9439] [INFO] Using worker: sync
+[2017-10-31 04:48:29 +0000] [9442] [INFO] Booting worker with pid: 9442
+[2017-10-31 04:48:32 +0000] [9439] [INFO] Handling signal: int
+[2017-10-31 04:48:32 +0000] [9442] [INFO] Worker exiting (pid: 9442)
+[2017-10-31 04:48:32 +0000] [9439] [INFO] Shutting down: Master
