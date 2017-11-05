@@ -37,8 +37,19 @@ class CrearUsuario(CreateView):
 class EditarUsuario(UpdateView):
     model = Usuario
     template_name = 'editar_usuario.html'
-    success_url = reverse_lazy('usuarios:usuarios')
+    #success_url = reverse_lazy('usuarios:usuarios')
     form_class = UsuarioForm
+    def form_valid(self, form):
+        #usuario = form.save(commit = False)
+        raw_password = form.cleaned_data.get('password1')
+        self.request.user.set_password(raw_password)
+        usuario = form.save()
+        #usuario.refresh_from_db()        
+        usuario.save()        
+        return super(CrearUsuario, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy('home')   
 
 class EliminarUsuario(DeleteView):
     model = Usuario
