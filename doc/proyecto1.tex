@@ -3,6 +3,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \graphicspath{{media/}}
+\usepackage{float}
 \usepackage{caption}
 \captionsetup{labelformat=empty}
 %\renewcommand{\familydefault}{\sfdefault}
@@ -22,19 +23,53 @@
   \caption{Diagrama de red de los servidores web, de aplicación y de correo electrónico}
 \end{figure}
 \subsection*{DNS}
-Se muestran capturas de pantalla de las configuraciones de \textit{nameservers} y los registros \textsf{DNS} usados.\\
-\includegraphics[width=\textwidth]{nameservers}
-\includegraphics[width=\textwidth]{DNS_management}
-\includegraphics[width=\textwidth]{CNAME}
-\includegraphics[width=\textwidth]{A}
-\includegraphics[width=\textwidth]{PTR}
-\includegraphics[width=\textwidth]{record_set}
+El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues está integrado en la misma plataforma que los servidores y al ser diseñado para trabajar en conjunto, la integración fue mucho más fácil que con Cloudflare.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{nameservers}
+  \caption{Nameservers de Amazon agregados en la configuración de freenom}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{DNS_management}
+  \caption{Panel de control de Route 53 sin zonas creadas}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{HostedZones}
+  \caption{zonas creadas}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{A}
+  \caption{Detalles del registro A para IPv4}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{CNAME}
+  \caption{Detalles del registro CNAME para nombre canónico}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{PTR}
+  \caption{Detalles del registro PTR}
+  \includegraphics[width=\textwidth]{record_set}
+  \caption{Vista de todos los registros}
+\end{figure}
 
 \subsection*{Resumen de las configuraciones del servidor web y el servidor de aplicación y base de datos}
-Se muestran capturas de pantalla de las configuraciones realizadas desde Amazon y vía \textsf{ssh} para las VPC, así como los certificados para \textsf{HTTPS/SSL} en ambos servidores.\\
-\includegraphics[width=\textwidth]{HostedZones}
-\includegraphics[width=\textwidth]{instances_dashboard}
-\includegraphics[width=\textwidth]{web_server}
+Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon  para los servidores de la aplicación, cada una con la distribución \textsf{Ubuntu 16.04} y con manejo a través de \textsf{ssh}. También se obtuvieron certificados para el cifrado en el protocolo \textsf{TLS} para el acceso mediante \textsf{HTTPS} al sitio. 
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{instances_dashboard}
+  \caption{panel de control de las VPC}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{web_server}
+  \caption{Servidor web en ejecución}
+\end{figure}
+
 \includegraphics[width=\textwidth]{egress_only_gateway}
 \includegraphics[width=\textwidth]{vpc}
 \includegraphics[width=\textwidth]{vpc_egress_only}
@@ -57,9 +92,50 @@ Se muestran capturas de pantalla de las configuraciones realizadas desde Amazon 
 \includegraphics[width=\textwidth]{mysql_conf-ssl}
 \includegraphics[width=\textwidth]{mysql_ssl-enabled}
 
+\subsubsection*{Fail2ban}
+Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
+\begin{verbatim}
+# apt-get update
+# apt-get install fail2ban
+\end{verbatim}
+Después de haber instalado \textsf{fail2ban} en el servidor, por recomendación de los desarrolladores, creamos un archivo \texttt{jail.local} como copia del archivo \texttt{jail.conf} que está en el directorio \texttt{/etc/fail2ban/} creado durante la instalación. En este archivo, habilitamos las \textit{jails} para restringir conexiones no autorizadas por fuerza bruta en los servicios de \textsf{ssh} y \textsf{apache} como se muestra a continuación:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.7]{fail2ban/ssh_jail}
+  \caption{Configuración de jail para el servicio de ssh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/apache_jails}
+  \caption{configuración de jail para Apache}
+\end{figure}
+
+Para probar el funcionamiento de \textsf{fail2ban} se hicieron pruebas con distintas herramientas, como los \textit{benchmarks} de Apache, y verificamos el estado de las \textsf{iptables} antes y después de tales pruebas.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/iptables}
+  \caption{estado de iptables después de configurar fail2ban}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fail2ban/ssh_banned_experiment}
+  \caption{resultado de las pruebas para ssh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fail2ban/fakeddos_test}
+  \caption{resultado de una prueba de ataque DDoS}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/new_iptables_with_ban}
+  \caption{estado de iptables después de las pruebas}
+\end{figure}
+\vspace{2cm} %it just works
 \subsection*{Diagrama de la base de datos}
 Dada la simpleza de la aplicación, la base de datos solo cuenta con una tabla para los usuarios con sus respectivos atributos.\\
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
   \includegraphics[scale=0.5]{db}
   \caption{Tabla de usuario}
