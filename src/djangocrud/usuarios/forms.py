@@ -31,6 +31,11 @@ class EditForm(ModelForm):
             'email': _('Correo electrónico'),
         }
 
+    def __init__(self, *args, **kwargs):
+            u = kwargs['instance']
+            kwargs['initial'] = {'username':u.usuario.username, 'first_name': u.usuario.first_name, 'last_name': u.usuario.last_name, 'email': u.usuario.email}
+            super(EditForm, self).__init__(*args, **kwargs)
+
     def clean(self):
         cleaned = super(EditForm, self).clean()
         if User.objects.get(username=cleaned['username']):
