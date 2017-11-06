@@ -26,7 +26,7 @@ SECRET_KEY = '&4p=!5(l7l*8u%ux(yihd5t*fak8^8k6gwdipbdvfuewykp-q4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','13.59.60.249', '18.216.66.221']
+ALLOWED_HOSTS = ['127.0.0.1','13.59.60.249', '18.216.66.221', 'tabon.ga', 'www.tabon.ga']
 
 
 # Application definition
