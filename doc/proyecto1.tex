@@ -19,50 +19,50 @@
 \subsection*{Diagrama de Red}
 \begin{figure}[ht!]
   \centering
-  \includegraphics[width=\textwidth]{net_diagram}
+  \includegraphics[width=0.8\linewidth]{net_diagram}
   \caption{Diagrama de red de los servidores web, de aplicación y de correo electrónico}
 \end{figure}
 \subsection*{DNS}
-El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues está integrado en la misma plataforma que los servidores y al ser diseñado para trabajar en conjunto, la integración fue mucho más fácil que con Cloudflare.
+El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues está integrado en la misma plataforma que los servidores y al ser diseñados para trabajar en conjunto, la integración fue mucho más fácil que con Cloudflare.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{nameservers}
+  \includegraphics[width=0.8\linewidth]{nameservers}
   \caption{Nameservers de Amazon agregados en la configuración de freenom}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{DNS_management}
+  \includegraphics[width=0.8\linewidth]{DNS_management}
   \caption{Panel de control de Route 53 sin zonas creadas}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{HostedZones}
+  \includegraphics[width=0.8\linewidth]{HostedZones}
   \caption{zonas creadas}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{A}
+  \includegraphics[width=0.8\linewidth]{A}
   \caption{Detalles del registro A para IPv4}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{CNAME}
+  \includegraphics[width=0.8\linewidth]{CNAME}
   \caption{Detalles del registro CNAME para nombre canónico}
 \end{figure}
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{PTR}
+  \includegraphics[width=0.8\linewidth]{PTR}
   \caption{Detalles del registro PTR}
-  \includegraphics[width=\textwidth]{record_set}
+  \includegraphics[scale=0.5]{record_set}
   \caption{Vista de todos los registros}
 \end{figure}
 
 \subsection*{Resumen de las configuraciones del servidor web y el servidor de aplicación y base de datos}
-Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon  para los servidores de la aplicación, cada una con la distribución \textsf{Ubuntu 16.04} y con manejo a través de \textsf{ssh}. También se obtuvieron certificados para el cifrado en el protocolo \textsf{TLS} para el acceso mediante \textsf{HTTPS} al sitio. 
+Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon para los servidores de la aplicación, cada una con la distribución \textsf{Ubuntu 16.04} y con manejo a través de \textsf{ssh}. 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{instances_dashboard}
-  \caption{panel de control de las VPC}
+  \caption{panel de control de las VPS}
 \end{figure}
 \begin{figure}[H]
   \centering
@@ -70,21 +70,85 @@ Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon  para los servido
   \caption{Servidor web en ejecución}
 \end{figure}
 
-\includegraphics[width=\textwidth]{egress_only_gateway}
-\includegraphics[width=\textwidth]{vpc}
-\includegraphics[width=\textwidth]{vpc_egress_only}
-\includegraphics[width=\textwidth]{edit_security_group}
-\includegraphics[width=\textwidth]{ipv6_assignment}
-\includegraphics[width=\textwidth]{public_subnet}
-\includegraphics[width=\textwidth]{ipv6_cidr}
-\includegraphics[width=\textwidth]{subnets}
+\subsubsection*{Configuración de IPv4 públicas}
+Por defecto, \textsf{AWS} asigna direcciones IP públicas para las máquinas de manera dinámica. Es decir, cada vez que la instancia se inicializa después de haber sido detenida obtiene una IP pública diferente, lo que genera problemas al agregar servicios como DNS. Sin embargo, el mismo \textsf{Amazon EC2} proporciona una herramienta que nos permite obtener IPv4 estáticas para nuestras instancias y las llaman \textit{direcciones IP elásticas}.\\
+
+Para asignar una dirección IP elástica debemos ingresar en la consola y \textsc{AWS} para \textsf{EC2} y en el panel de navegación de la izquierda seleccionar la opción \textbf{Elastic IPs}.\\
 \includegraphics[width=\textwidth]{elastic_ip}
-\includegraphics[width=\textwidth]{elastic_ip_allocate}
-\includegraphics[width=\textwidth]{elastic_ip_success}
-\includegraphics[width=\textwidth]{cert1}
-\includegraphics[width=\textwidth]{cert2}
-\includegraphics[width=\textwidth]{apache-ssl}
-\includegraphics[width=\textwidth]{mods}
+\\
+Elegimos \textbf{Allocate new address} para obtener una nueva dirección elástica y luego confirmamos con \textbf{Allocate}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{elastic_ip_allocate}
+  \caption{Asignación de IP elástica}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{elastic_ip_success}
+  \caption{Mensaje de éxito en la asignación de la dirección}
+\end{figure}
+
+Para asociar una dirección elástica a una instancia en ejecución nuevamente ingresamos en la opción \textbf{Elastic IPs} del panel de navegación de la consola de \textsf{EC2}. \\
+%no ss
+Elegimos la dirección que recien se nos asignó y en su menu \textbf{Action} elegimos la opción \textbf{Associate address}. \\
+Luego seleccionamos la instancia a la que queramos asociar la IPv4 pública y damos click en \textbf{Associate}.
+
+\subsubsection*{Configuración de IPv6}
+Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salida a traves de una \textsf{VPC} (Virtual Private Cloud). Esta gateway les permite a las máquinas que estén en la VPC establecer conexiones por IPv6 a Internet, pero impide que se hagan conexiones por IPv6 con las instancias desde algún lugar en internet.
+\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{vpc}
+  \caption{Creación de una VPC para las instancias de EC2}
+\end{figure}
+\begin{figure}
+  \centering
+  \includegraphics[width=0.8\linewidth]{vpc_egress_onlyv2}
+  \caption{En el panel de VPC aparece la opción de crear una gateway de solo salida para la VPC que elijamos}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.8\linewidth]{egress_only_gateway}
+  \caption{Creación de la gateway de solo salida para la VPC que contiene nuestras instancias de EC2}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{edit_security_group}
+  \caption{Editamos el grupo de seguridad (firewall) para que permita el tráfico  de salida de la VPC}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ipv6_cidr}
+  \caption{Creación del bloque CIDR para la generación de direcciones IPv6 públicas}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{subnets}
+  \caption{Subredes para las instancias}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{public_subnet}
+  \caption{Subred pública en la VPC para asignarles direcciones generadas por el bloque CIDR}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.7\textwidth]{ipv6_assignment}
+  \caption{Asignación de direcciones IPv6 a los servidores}
+\end{figure}
+
+%\includegraphics[width=\textwidth]{cert1}
+%\includegraphics[width=\textwidth]{cert2}
+%\includegraphics[width=\textwidth]{apache-ssl}
+%\includegraphics[width=\textwidth]{mods}
+
+\subsubsection*{Seguridad de la base de datos}
+%Por escribir
 \includegraphics[width=\textwidth]{mysql_cert}
 \includegraphics[width=\textwidth]{mysql_server-key}
 \includegraphics[width=\textwidth]{mysql_server-cert}
