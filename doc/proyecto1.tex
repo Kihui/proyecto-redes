@@ -14,9 +14,11 @@
 \begin{document}
 \maketitle
 
-\section*{Reporte}
+\tableofcontents
 
-\subsection*{Diagrama de Red}
+\newpage
+
+\section{Diagrama de Red}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=0.8\linewidth]{net_diagram}
@@ -57,7 +59,9 @@ El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues 
   \caption{Vista de todos los registros}
 \end{figure}
 
-\subsection*{Resumen de las configuraciones del servidor web y el servidor de aplicación y base de datos}
+\newpage
+
+\section{Resumen de las configuraciones del servidor web y el servidor de aplicación y base de datos}
 Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon para los servidores de la aplicación, cada una con la distribución \textsf{Ubuntu 16.04} y con manejo a través de \textsf{ssh}. 
 \begin{figure}[H]
   \centering
@@ -70,7 +74,7 @@ Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon para los servidor
   \caption{Servidor web en ejecución}
 \end{figure}
 
-\subsubsection*{Configuración de IPv4 públicas}
+\subsection{Configuración de IPv4 públicas}
 Por defecto, \textsf{AWS} asigna direcciones IP públicas para las máquinas de manera dinámica. Es decir, cada vez que la instancia se inicializa después de haber sido detenida obtiene una IP pública diferente, lo que genera problemas al agregar servicios como DNS. Sin embargo, el mismo \textsf{Amazon EC2} proporciona una herramienta que nos permite obtener IPv4 estáticas para nuestras instancias y las llaman \textit{direcciones IP elásticas}.\\
 
 Para asignar una dirección IP elástica debemos ingresar en la consola y \textsc{AWS} para \textsf{EC2} y en el panel de navegación de la izquierda seleccionar la opción \textbf{Elastic IPs}.\\
@@ -94,7 +98,7 @@ Para asociar una dirección elástica a una instancia en ejecución nuevamente i
 Elegimos la dirección que recien se nos asignó y en su menu \textbf{Action} elegimos la opción \textbf{Associate address}. \\
 Luego seleccionamos la instancia a la que queramos asociar la IPv4 pública y damos click en \textbf{Associate}.
 
-\subsubsection*{Configuración de IPv6}
+\subsection{Configuración de IPv6}
 Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salida a traves de una \textsf{VPC} (Virtual Private Cloud). Esta gateway les permite a las máquinas que estén en la VPC establecer conexiones por IPv6 a Internet, pero impide que se hagan conexiones por IPv6 con las instancias desde algún lugar en internet.
 \\
 \begin{figure}[H]
@@ -147,7 +151,19 @@ Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salid
 %\includegraphics[width=\textwidth]{apache-ssl}
 %\includegraphics[width=\textwidth]{mods}
 
-\subsubsection*{Seguridad de la base de datos}
+\newpage
+
+\section{Servidor de Aplicación}
+
+\subsection{Diagrama de la base de datos}
+Dada la simpleza de la aplicación, la base de datos solo cuenta con una tabla para los usuarios con sus respectivos atributos.\\
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{db}
+  \caption{Tabla de usuario}
+\end{figure}
+
+\subsection{Seguridad de la base de datos}
 %Por escribir
 \includegraphics[width=\textwidth]{mysql_cert}
 \includegraphics[width=\textwidth]{mysql_server-key}
@@ -156,60 +172,13 @@ Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salid
 \includegraphics[width=\textwidth]{mysql_conf-ssl}
 \includegraphics[width=\textwidth]{mysql_ssl-enabled}
 
-\subsubsection*{Fail2ban}
-Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
-\begin{verbatim}
-# apt-get update
-# apt-get install fail2ban
-\end{verbatim}
-Después de haber instalado \textsf{fail2ban} en el servidor, por recomendación de los desarrolladores, creamos un archivo \texttt{jail.local} como copia del archivo \texttt{jail.conf} que está en el directorio \texttt{/etc/fail2ban/} creado durante la instalación. En este archivo, habilitamos las \textit{jails} para restringir conexiones no autorizadas por fuerza bruta en los servicios de \textsf{ssh} y \textsf{apache} como se muestra a continuación:
-
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.7]{fail2ban/ssh_jail}
-  \caption{Configuración de jail para el servicio de ssh}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.3]{fail2ban/apache_jails}
-  \caption{configuración de jail para Apache}
-\end{figure}
-
-Para probar el funcionamiento de \textsf{fail2ban} se hicieron pruebas con distintas herramientas, como los \textit{benchmarks} de Apache, y verificamos el estado de las \textsf{iptables} antes y después de tales pruebas.
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.3]{fail2ban/iptables}
-  \caption{estado de iptables después de configurar fail2ban}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{fail2ban/ssh_banned_experiment}
-  \caption{resultado de las pruebas para ssh}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{fail2ban/fakeddos_test}
-  \caption{resultado de una prueba de ataque DDoS}
-\end{figure}
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.3]{fail2ban/new_iptables_with_ban}
-  \caption{estado de iptables después de las pruebas}
-\end{figure}
 \vspace{2cm} %it just works
-\subsection*{Diagrama de la base de datos}
-Dada la simpleza de la aplicación, la base de datos solo cuenta con una tabla para los usuarios con sus respectivos atributos.\\
-\begin{figure}[H]
-  \centering
-  \includegraphics[scale=0.5]{db}
-  \caption{Tabla de usuario}
-\end{figure}
 
-\subsection*{Objetivo de la aplicación}
+\subsection{Objetivo de la aplicación}
 La aplicación fue desarrollada con el fin de ilustrar las funciones básicas de una aplicación web con base de datos, es decir, \textit{crear, editar, ver y liminar} y que pueden asociarse a distintos métodos \textsf{HTTP} de la capa de aplicación como \textsf{PUT, POST, GET, PATCH o DELETE}. \\
 A partir de esta pequeña aplicación \textit{CRUD} puede escalarse a proyectos más grandes y de mayor complejidad gracias a la escalabilidad de \textbf{Django}, el framework usado.
 
-\subsection*{Uso de la aplicación}
+\subsection{Uso de la aplicación}
 Al ingresar al sitio, el usuario se encontrará con dos enlaces: uno para registrarse en la plataforma y otro para iniciar sesión en ésta.
 \begin{figure}[h!]
   \centering
@@ -263,27 +232,208 @@ Si quiere eliminar su cuenta se le enviará un mensaje para que confirme su acci
   \caption{Mensaje de confirmación de eliminación de un usuario}
 \end{figure}
 
-\subsection*{Servidor de correos}
+\subsection{Gunicorn}
 
-Utilizamos una máquina virtual con Ubuntu 16.04. Registramos el nombre de dominio \texttt{mail.tabon.ga} para su dirección IP correspondiente, que en este caso es la \texttt{13.58.30.114}. \\
-Para el funcionamiento del servidor de correos utilizamos los paquetes de \texttt{postfix}, \texttt{dovecot}, \texttt{squirrelmail} y \texttt{apache2}. Tales paquetes se instalaron de la siguiente manera: \\
+Para poder comunicar la aplicación con el servidor web instalamos \textsf{gunicorn}, que es un servidor web ligero que utiliza la interfaz WSGI para poder comunicarse con \textsf{python}.
 \begin{verbatim}
-    $ sudo apt install postfix
-    $ sudo apt install dovecot-core dovecot-imapd
-    $ sudo apt install apache2
+    $ sudo apt-get install python3-pip
+    $ sudo pip3 install gunicorn
 \end{verbatim}
 
-\subsubsection*{letsencrypt}
+Creamos el archivo \texttt{/etc/systemd/system/gunicorn.service} para que \textsf{gunicorn} se ejecute con \textsf{systemd}.
 
-Se instaló el bot de \textsf{letsencrypt}.
+\begin{verbatim}
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/djangocrud
+ExecStart=/home/ubuntu/.local/bin/gunicorn --timeout 60 \
+    --bind ec2-13-59-60-249.us-east-2.compute.amazonaws.com:8000 \
+    djangocrud.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
+\end{verbatim}
+
+Así, para ejecutar el demonio de \textsf{gunicorn} basta utilizar el comando
+\begin{verbatim}
+    $ systemctl start gunicorn
+\end{verbatim}
+
+\newpage
+
+\section{Servidor Web}
+
+En el servidor web instalamos \textsf{apache2}, de modo que funcione como servidor de proxy inverso y mande las peticiones que reciba al servidor de aplicación y a su vez reciba respuestas de éste para mandárselas al cliente. \\
+
+Para la configuración de \textsf{apache2} modificamos los siguientes archivos como se muestra: \\
+
+\texttt{/etc/apache2/sites-available/000-default.conf}
+
+\begin{verbatim}
+<VirtualHost *:80>
+    ProxyPreserveHost On
+
+    # Redirección a HTTPS
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteRule ^/?(.*) https://%{SERVER_NAME}/$1 [R,L]
+    ServerName tabon.ga
+</VirtualHost>
+\end{verbatim}
+
+\texttt{/etc/apache2/sites-available/default-ssl.conf}
+
+\begin{verbatim}
+<IfModule mod_ssl.c>
+    <VirtualHost _default_:443>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/html
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        SSLEngine on
+        ServerName tabon.ga
+
+        # Certificados de letsencrypt
+        Include /etc/letsencrypt/options-ssl-apache.conf
+        Include /etc/letsencrypt/options-ssl-apache.conf
+        ServerAlias www.tabon.ga
+        Include /etc/letsencrypt/options-ssl-apache.conf
+        SSLCertificateFile    /etc/letsencrypt/live/tabon.ga/cert.pem
+        SSLCertificateKeyFile    /etc/letsencrypt/live/tabon.ga/privkey.pem
+        SSLCertificateChainFile    /etc/letsencrypt/live/tabon.ga/chain.pem
+        <FilesMatch "\.(cgi|shtml|phtml|php)$">
+            SSLOptions +StdEnvVars
+        </FilesMatch>
+        <Directory /usr/lib/cgi-bin>
+            SSLOptions +StdEnvVars
+        </Directory>
+
+        # HSTS
+        Header always set Strict-Transport-Security: \
+            "max-age=31536000; includeSubDomains"
+        RequestHeader set X-Forwarded-Proto 'https' env=HTTPS        
+        Timeout 10000
+
+        # Configuraciones del proxy inverso
+        ProxyTimeout 10000
+        ProxyBadHeader Ignore
+        ProxyPass / http://13.59.60.249:8000/
+        ProxyPassReverse / http://13.59.60.249:8000/
+    </VirtualHost>
+</IfModule>
+\end{verbatim}
+
+\texttt{/etc/apache2/conf-available/security.conf}
+
+\begin{verbatim}
+# Se deshabilita la firma de Apache para que no se muestre
+# el nombre y version del sistema operativo
+ServerTokens Prod
+ServerSignature Off
+TraceEnable Off
+Header set X-Content-Type-Options: "nosniff"
+\end{verbatim}
+
+Habilitamos los siguientes módulos para hacer funcionar el proxy inverso y \textsf{SSL}.
+
+\begin{verbatim}
+    $ sudo a2enmod proxy_http
+    $ sudo a2enmod proxy_ajp
+    $ sudo a2enmod rewrite
+    $ sudo a2enmod deflate
+    $ sudo a2enmod headers
+    $ sudo a2enmod proxy_balancer
+    $ sudo a2enmod proxy_connect
+    $ sudo a2enmod proxy_html
+    $ sudo a2enmod lbmethod_byrequests
+    $ sudo a2enmod ssl
+\end{verbatim}
+
+Finalmente, para habilitar \textsf{apache2} utilizamos
+\begin{verbatim}
+    $ sudo systemctl start apache2
+\end{verbatim}
+
+\newpage
+
+\section{Fail2ban}
+Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
+\begin{verbatim}
+# apt-get update
+# apt-get install fail2ban
+\end{verbatim}
+Después de haber instalado \textsf{fail2ban} en el servidor, por recomendación de los desarrolladores, creamos un archivo \texttt{jail.local} como copia del archivo \texttt{jail.conf} que está en el directorio \texttt{/etc/fail2ban/} creado durante la instalación. En este archivo, habilitamos las \textit{jails} para restringir conexiones no autorizadas por fuerza bruta en los servicios de \textsf{ssh} y \textsf{apache} como se muestra a continuación:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.7]{fail2ban/ssh_jail}
+  \caption{Configuración de jail para el servicio de ssh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/apache_jails}
+  \caption{configuración de jail para Apache}
+\end{figure}
+
+Para probar el funcionamiento de \textsf{fail2ban} se hicieron pruebas con distintas herramientas, como los \textit{benchmarks} de Apache, y verificamos el estado de las \textsf{iptables} antes y después de tales pruebas.
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/iptables}
+  \caption{estado de iptables después de configurar fail2ban}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fail2ban/ssh_banned_experiment}
+  \caption{resultado de las pruebas para ssh}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.5]{fail2ban/fakeddos_test}
+  \caption{resultado de una prueba de ataque DDoS}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.3]{fail2ban/new_iptables_with_ban}
+  \caption{estado de iptables después de las pruebas}
+\end{figure}
+
+\newpage
+
+\section{letsencrypt}
+
+Se instaló el bot de \textsf{letsencrypt} en el servidor de correos y en el servidor web.
+
 \begin{verbatim}
     $ sudo apt-get install software-properties-common
     $ sudo add-apt-repository ppa:certbot/certbot
     $ sudo apt-get update
     $ sudo apt-get install python-certbot-apache 
 \end{verbatim}
-Y se corrió con \texttt{sudo certbot --apache certonly}, al terminar creó la llave y certificados. \\
+
+Para cada servidor se corrió con \texttt{sudo certbot --apache certonly}, al terminar creó la llave y certificados. \\
+
+Ejemplo en el servidor de correos:
+
+\begin{center}
 \includegraphics[scale=0.3]{mail/2}
+\end{center}
+
+\newpage
+
+\section{Servidor de correos}
+
+Utilizamos una máquina virtual con Ubuntu 16.04. Registramos el nombre de dominio \texttt{mail.tabon.ga} para su dirección IP correspondiente, que en este caso es la \texttt{13.58.30.114}. \\
+Para el funcionamiento del servidor de correos utilizamos los paquetes de \textsf{postfix}, \textsf{dovecot}, \textsf{squirrelmail} y \textsf{apache2}. Tales paquetes se instalaron de la siguiente manera: \\
+\begin{verbatim}
+    $ sudo apt install postfix
+    $ sudo apt install dovecot-core dovecot-imapd
+    $ sudo apt install apache2
+\end{verbatim}
 
 \subsubsection*{Configuración de Postfix}
 En el archivo \texttt{/etc/postfix/main.cf} se configuró lo siguiente:
@@ -313,7 +463,7 @@ inet_protocols = all
 home_mailbox = mail/
 smtpd_sasl_type = dovecot
 \end{verbatim}
-Se especificó donde se encuentra el certificado y llaves generados por \textsf{letsencrypt}, se modificó el banner de \texttt{smtp} y se pusieron restricciones de relay. \\
+Se especificó donde se encuentra el certificado y llaves generados por \textsf{letsencrypt}, se modificó el banner de \textsf{smtp} y se pusieron restricciones de relay. \\
 En el archivo \texttt{/etc/postfix/master.cf} se agregó lo siguiente:
 \begin{verbatim}
 smtp      inet  n       -       y       -       -       smtpd
@@ -322,7 +472,7 @@ submission inet n       -       y       -       -       smtpd
 smtps     inet  n       -       y       -       -       smtpd
   -o smtpd_tls_wrappermode=yes
 \end{verbatim}
-de manera que se habilitara \texttt{smtps} y se abriera el puerto correspondiente (el 465). Finalmente se reinició el servicio con
+de manera que se habilitara \textsf{smtps} y se abriera el puerto correspondiente (el 465). Finalmente se reinició el servicio con
 \begin{verbatim}
     $ sudo systemctl restart postfix
 \end{verbatim}
@@ -420,19 +570,20 @@ SMTP Settings
 
 \subsubsection*{Configuración de Apache}
 
-Se habilitaron los modulos necesarios para que \texttt{https} funcione \\
+Se habilitaron los modulos necesarios para que \textsf{https} funcione \\
 \begin{verbatim}
     $ sudo a2enmod ssl
     $ sudo a2enmod headers
     $ sudo a2enmod rewrite
 \end{verbatim}
 
-Se copió el archivo de squirrelmail de apache a los sitios disponibles de apache, se habilitó junto con \texttt{default-ssl} y se deshabilitó el sitio por defecto de Apache. \\
+Se copió el archivo de squirrelmail de apache a los sitios disponibles de apache, se habilitó junto con \textsf{default-ssl} y se deshabilitó el sitio por defecto de Apache. \\
 \begin{verbatim}
-sudo cp /etc/squirrelmail/apache.conf /etc/apache2/sites-available/squirrelmail.conf
-sudo a2ensite squirrelmail.conf
-sudo a2ensite default-ssl
-sudo a2dissite 000-default.conf
+    $ sudo cp /etc/squirrelmail/apache.conf \
+        /etc/apache2/sites-available/squirrelmail.conf
+    $ sudo a2ensite squirrelmail.conf
+    $ sudo a2ensite default-ssl
+    $ sudo a2dissite 000-default.conf
 \end{verbatim}
 
 En el archivo \texttt{/etc/apache2/conf-enabled/security.conf} se modificó la firma de Apache para que no muestre su versión y el sistema operativo en uso. \\
@@ -493,18 +644,25 @@ El archivo \texttt{/etc/apache2/sites-available/default-ssl.conf} quedó de la s
 </IfModule>
 \end{verbatim}
 
-Al finalizar estas configuraciones se reiniciaron los servicios con \texttt{systemctl}. \\
+Al finalizar estas configuraciones se reiniciaron los servicios con \textsf{systemctl}. \\
 
 Pudimos ver entonces la página de inicio de Squirrelmail al ingresar a \texttt{mail.tabon.ga}: \\
+\begin{center}
 \includegraphics[scale=0.4]{mail/04} \\
+\end{center}
 
 Se agregaron los registros DNS de tipo MX y SPF para el dominio \texttt{tabon.ga} que son necesarios para el correcto funcionamiento del sistema, de manera que se acepte el correo que se manda al servidor asociado a tal dominio y se mande al servidor de correos, y que se evite que los correos mandados desde éste se vayan a spam. \\
 
+\begin{center}
 \includegraphics[scale=0.5]{mail/01} \\
+\end{center}
 
 Se cambió el puerto por defecto de ssh del 22 al 2200 y se definieron reglas de firewall desde la consola de AWS para sólo permitir los puertos necesarios: \\
-
+\begin{center}
 \includegraphics[scale=0.3]{mail/03} \\
+\end{center}
+
+\newpage
 
 \subsection*{Comentarios sobre el desarrollo del proyecto}
 % We didn't deserve this
