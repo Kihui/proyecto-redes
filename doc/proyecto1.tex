@@ -104,7 +104,7 @@ Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salid
 \end{figure}
 \begin{figure}
   \centering
-  \includegraphics[width=0.8\linewidth]{vpc_egress_onlyv2}
+  \includegraphics[width=0.8\linewidth]{vpc_egress_only}
   \caption{En el panel de VPC aparece la opción de crear una gateway de solo salida para la VPC que elijamos}
 \end{figure}
 \begin{figure}[H]
@@ -148,13 +148,38 @@ Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salid
 %\includegraphics[width=\textwidth]{mods}
 
 \subsubsection*{Seguridad de la base de datos}
-%Por escribir
-\includegraphics[width=\textwidth]{mysql_cert}
-\includegraphics[width=\textwidth]{mysql_server-key}
-\includegraphics[width=\textwidth]{mysql_server-cert}
-\includegraphics[width=\textwidth]{mysql_ssl-disabled}
-\includegraphics[width=\textwidth]{mysql_conf-ssl}
-\includegraphics[width=\textwidth]{mysql_ssl-enabled}
+Para garantizar que las conexiones entre cliente y servidor de la aplicación necesitamos que las conexiones con la base de datos también sean seguras. En \textsf{MySQL} están disponibles las conexiones cifradas usando el protocolo \textsf{TLS} (Transport Layer Security), el cual se asegura de que los datos que se reciban en una red pública sean confiables, además de contar con mecanismos para detectar cambios en los datos, así como pérdida o repetición de la información y validación de identidades. \\
+
+Como primer paso, debemos asegurarnos de instalar \textsf{MySQL} de manera segura, tal como lo hicimos en la práctica 3 del curso. \\
+\includegraphics[width=0.7\textwidth]{mysql_secure_installation} \\
+\includegraphics[width=0.7\textwidth]{mysql_install}\\
+
+
+Para utilizar el cifrado de \textsf{TLS} en las conexiones de nuestra base da datos, primero hay que crear un directorio donde alojaremos las llaves y certificados requeridos para el cifrado. En este caso, elegimos tenerlas dentro del directorio de configuraciones \texttt{/etc/mysql}, pero podrían estar en cualquier otro.
+
+\begin{verbatim}
+$ cd /etc/mysql
+$ sudo mkdir ssl
+$ cd ssl
+\end{verbatim}
+
+Ahora creamos una llave para la \textsf{CA} (Autoridad Certificadora), de manera similar a la práctica 2 del curso,  usamos \texttt{openssl} pues ya está integrado en \textsf{Ubuntu} por defecto. \\
+\includegraphics[width=0.8\textwidth]{mysql_cert}\\
+
+Ahora creamos una llave para el certificado del servidor y proporcionamos la información que se nos solicite. \\
+\includegraphics[width=\textwidth]{mysql_server-key}\\
+
+Ya que tenemos tanto la llave de la \textsf{CA} como la del certificado del servidor, podemos firmar el certificado de acuerdo al formato establecido en el estándar \textbf{X.509}. \\
+\includegraphics[width=\textwidth]{mysql_server-cert}\\
+
+Ya que contamos con los certificados, debemos configurar \textsf{MySQL} para que cifre sus conexiones con ellos, pues si ingresamos ahora a la shell de \textsf{MySQL} y escribimos el comando \texttt{SHOW VARIABLES LIKE '\%ssl\%';} nos indicará que \textsf{SSL} no está habilitado. \\
+\includegraphics[width=\textwidth]{mysql_ssl-disabled} \\
+
+Para habilitar \textsf{SSL} debemos agregar las rutas de las llaves y certificados que acabamos de crear en las variables correspondientes en el archivo de configuración de \textsf{MySQL}, que generalmente está en \texttt{/etc/mysql/my.cnf} o un archivo de nombre similar. \\
+\includegraphics[width=\textwidth]{mysql_conf-ssl}\\
+
+Si ahora ingresamos a la shell de \textsf{MySQL} y volvemos a escribir el comando \texttt{SHOW VARIABLES LIKE '\%ssl\%';} nos debe afirmar que \textsf{SSL} está habilitado, entonces las conexiones con la base de datos ya serán cifradas y tendremos mayor seguridad en la comunicación con ésta.
+\includegraphics[width=\textwidth]{mysql_ssl-enabled}\\
 
 \subsubsection*{Fail2ban}
 Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
