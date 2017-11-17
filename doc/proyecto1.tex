@@ -180,55 +180,52 @@ A partir de esta pequeña aplicación \textit{CRUD} puede escalarse a proyectos 
 
 \subsection{Uso de la aplicación}
 Al ingresar al sitio, el usuario se encontrará con dos enlaces: uno para registrarse en la plataforma y otro para iniciar sesión en ésta.
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/home_notlogged}
+  \includegraphics[width=\textwidth]{crud/app1}
   \caption{Página de inicio para usuarios sin sesión activa}
 \end{figure}
-\\
+
 Si no está registrado e ingresa en el enlace para registrarse, será redireccionado a un formulario para que llene sus datos y se de de alta en la aplicación. 
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/registration}
+  \includegraphics[width=\textwidth]{crud/app2}
   \caption{Formulario de registro para usuarios}
 \end{figure}
-\\
+
 Si ya está registrado, podrá ingresar a la aplicación siguiendo el enlace de \textit{Iniciar sesión} en la página de inicio y en el formulario escribir el nombre de usuario y la contraseña con los que se registró.
-\begin{figure}[h!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/login}
+  \includegraphics[width=\textwidth]{crud/app3}
   \caption{Formulario de inicio de sesión}
 \end{figure}
-\\
+
 
 Una vez dentro de la aplicación, el usuario verá una lista de los usuarios registrados y tendrá las opciones de ver información más detallada sobre algún usuario o sí mismo, actualizar sus datos o eliminar su cuenta si así lo desea.\\
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/home_logged}
+  \includegraphics[width=\textwidth]{crud/app5}
   \caption{Página de inicio para usuarios con sesión activa}
 \end{figure}
-\\
 
 Si elige ver información más detallada sobre un usuario, el enlace lo llevará al perfil del usuario. \\
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/profile}
+  \includegraphics[width=\textwidth]{crud/app4}
   \caption{Perfil de usuario}
 \end{figure}
-\\
 
 Para actualizar sus datos, será redirigido a un formulario similar al de registro.\\
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/update}
+  \includegraphics[width=\textwidth]{crud/app6}
   \caption{Formulario de actualización de datos}
 \end{figure}
-\\
 
 Si quiere eliminar su cuenta se le enviará un mensaje para que confirme su acción. \\
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{django_crud/delete}
+  \includegraphics[width=\textwidth]{crud/app7}
   \caption{Mensaje de confirmación de eliminación de un usuario}
 \end{figure}
 
@@ -264,12 +261,21 @@ Así, para ejecutar el demonio de \textsf{gunicorn} basta utilizar el comando
     $ systemctl start gunicorn
 \end{verbatim}
 
-\newpage
+\subsection{Reglas de firewall}
+
+Definimos las siguientes reglas para el \textsf{firewall} que provee \textsf{Amazon}, de manera que se restringe la comunicación únicamente con el servidor web y a través de \textsf{SSH} por el puerto 2200.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{appsec}
+  \caption{Reglas de \textsf{firewall} para el servidor de aplicación}
+\end{figure}
 
 \section{Servidor Web}
 
-En el servidor web instalamos \textsf{apache2}, de modo que funcione como servidor de proxy inverso y mande las peticiones que reciba al servidor de aplicación y a su vez reciba respuestas de éste para mandárselas al cliente. \\
+En el servidor web instalamos \textsf{apache2} con \texttt{sudo apt-get install apache2}, de modo que funcione como servidor de proxy inverso y mande las peticiones que reciba al servidor de aplicación y a su vez reciba respuestas de éste para mandárselas al cliente. \\
 
+\subsection{Configuración de Apache}
 Para la configuración de \textsf{apache2} modificamos los siguientes archivos como se muestra: \\
 
 \texttt{/etc/apache2/sites-available/000-default.conf}
@@ -322,6 +328,7 @@ Para la configuración de \textsf{apache2} modificamos los siguientes archivos c
         # Configuraciones del proxy inverso
         ProxyTimeout 10000
         ProxyBadHeader Ignore
+        # Mandamos las peticiones del cliente al servidor de aplicación
         ProxyPass / http://13.59.60.249:8000/
         ProxyPassReverse / http://13.59.60.249:8000/
     </VirtualHost>
@@ -359,7 +366,12 @@ Finalmente, para habilitar \textsf{apache2} utilizamos
     $ sudo systemctl start apache2
 \end{verbatim}
 
-\newpage
+\subsection{Reglas de firewall}
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{lamesec}
+  \caption{Reglas de \textsf{firewall} para el servidor web}
+\end{figure}
 
 \section{Fail2ban}
 Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
@@ -402,9 +414,7 @@ Para probar el funcionamiento de \textsf{fail2ban} se hicieron pruebas con disti
   \caption{estado de iptables después de las pruebas}
 \end{figure}
 
-\newpage
-
-\section{letsencrypt}
+\section{Letsencrypt}
 
 Se instaló el bot de \textsf{letsencrypt} en el servidor de correos y en el servidor web.
 
@@ -423,8 +433,16 @@ Ejemplo en el servidor de correos:
 \includegraphics[scale=0.3]{mail/2}
 \end{center}
 
-\newpage
-
+\section{Reasignación de puerto de SSH}
+A cada servidor le cambiamos el puerto del servicio \textsf{SSH} que viene por defecto (el 22) por el puerto 2200. Para realizar esto sólo bastó modificar la línea
+\begin{verbatim}
+Port 22
+\end{verbatim}
+por
+\begin{verbatim}
+Port 2200
+\end{verbatim}
+en el archivo de configuración \texttt{/etc/ssh/sshd\_config}.
 \section{Servidor de correos}
 
 Utilizamos una máquina virtual con Ubuntu 16.04. Registramos el nombre de dominio \texttt{mail.tabon.ga} para su dirección IP correspondiente, que en este caso es la \texttt{13.58.30.114}. \\
@@ -435,7 +453,7 @@ Para el funcionamiento del servidor de correos utilizamos los paquetes de \texts
     $ sudo apt install apache2
 \end{verbatim}
 
-\subsubsection*{Configuración de Postfix}
+\subsection{Configuración de Postfix}
 En el archivo \texttt{/etc/postfix/main.cf} se configuró lo siguiente:
 \begin{verbatim}
 smtpd_banner = $myhostname ESMTP $mail_name         
@@ -477,7 +495,7 @@ de manera que se habilitara \textsf{smtps} y se abriera el puerto correspondient
     $ sudo systemctl restart postfix
 \end{verbatim}
 
-\subsubsection*{Configuración de Dovecot}
+\subsection{Configuración de Dovecot}
 
 Se modificó el archivo \texttt{/etc/dovecot/dovecot.conf} con la siguiente línea:
 \begin{verbatim}
@@ -502,7 +520,7 @@ ssl_cert = </etc/letsencrypt/live/mail.tabon.ga/fullchain.pem
 ssl_key = </etc/letsencrypt/live/mail.tabon.ga/privkey.pem
 \end{verbatim}
 
-\subsubsection*{Configuración de Squirrelmail}
+\subsection{Configuración de Squirrelmail}
 Se corrió el bot de configuración de Squirrelmail:
 \begin{verbatim}
     $ sudo squirrelmail-configure
@@ -568,7 +586,7 @@ SMTP Settings
 
 % | egrep -v "(.*#.*|^$)"
 
-\subsubsection*{Configuración de Apache}
+\subsection{Configuración de Apache}
 
 Se habilitaron los modulos necesarios para que \textsf{https} funcione \\
 \begin{verbatim}
@@ -609,6 +627,7 @@ Alias /mail /usr/share/squirrelmail
     allow from 127.0.0.1
   </Files>
 </Directory>
+
 RedirectMatch ^/$ /mail/
 <IfModule mod_rewrite.c>
   <IfModule mod_ssl.c>
@@ -624,23 +643,26 @@ RedirectMatch ^/$ /mail/
 El archivo \texttt{/etc/apache2/sites-available/default-ssl.conf} quedó de la siguiente manera:
 \begin{verbatim}
 <IfModule mod_ssl.c>
-	<VirtualHost _default_:443>
-		ErrorLog ${APACHE_LOG_DIR}/error.log
-		CustomLog ${APACHE_LOG_DIR}/access.log combined
-		SSLEngine on
-		SSLCertificateFile	/etc/letsencrypt/live/mail.tabon.ga/fullchain.pem
-		SSLCertificateKeyFile /etc/letsencrypt/live/mail.tabon.ga/privkey.pem
-		<FilesMatch "\.(cgi|shtml|phtml|php)$">
-				SSLOptions +StdEnvVars
-		</FilesMatch>
-		<Directory /usr/lib/cgi-bin>
-				SSLOptions +StdEnvVars
-		</Directory>
-		ServerName mail.tabon.ga
-		ServerAlias www.mail.tabon.ga
-		Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+    <VirtualHost _default_:443>
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+        SSLEngine on
+        SSLCertificateFile    \
+            /etc/letsencrypt/live/mail.tabon.ga/fullchain.pem
+        SSLCertificateKeyFile \
+            /etc/letsencrypt/live/mail.tabon.ga/privkey.pem
+        <FilesMatch "\.(cgi|shtml|phtml|php)$">
+            SSLOptions +StdEnvVars
+        </FilesMatch>
+        <Directory /usr/lib/cgi-bin>
+            SSLOptions +StdEnvVars
+        </Directory>
+        ServerName mail.tabon.ga
+        ServerAlias www.mail.tabon.ga
+        Header always set Strict-Transport-Security \
+            "max-age=31536000; includeSubDomains; preload"
  
-	</VirtualHost>
+    </VirtualHost>
 </IfModule>
 \end{verbatim}
 
@@ -657,7 +679,7 @@ Se agregaron los registros DNS de tipo MX y SPF para el dominio \texttt{tabon.ga
 \includegraphics[scale=0.5]{mail/01} \\
 \end{center}
 
-Se cambió el puerto por defecto de ssh del 22 al 2200 y se definieron reglas de firewall desde la consola de AWS para sólo permitir los puertos necesarios: \\
+\subsection{Reglas de firewall}
 \begin{center}
 \includegraphics[scale=0.3]{mail/03} \\
 \end{center}

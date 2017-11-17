@@ -1,0 +1,35 @@
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app1} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app2} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app3} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app4} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app5} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app6} 
+ \caption{} 
+ \end{figure}
+\begin{figure}[H] 
+ \centering 
+ \includegraphics[scale=0.7]{crud/app7} 
+ \caption{} 
+ \end{figure}
