@@ -1,12 +1,17 @@
-\documentclass[9pt]{article}
-\usepackage[spanish]{babel}
+\documentclass[12pt]{article}
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{hyperref}
 \usepackage{graphicx}
 \graphicspath{{media/}}
 \usepackage{float}
 \usepackage{caption}
-\captionsetup{labelformat=empty}
-%\renewcommand{\familydefault}{\sfdefault}
+\usepackage[toc]{multitoc}
+\setcounter{tocdepth}{2}
+
 \title{Proyecto 1}
 \author{Carlos Gerardo Acosta Hernández \\ Andrea Itzel González Vargas \\ Luis Pablo Mayo Vega}
 \date{Redes de Computadoras\\Facultad de Ciencias, UNAM}
@@ -17,15 +22,20 @@
 \tableofcontents
 
 \newpage
+\section{Preliminares}
+\subsection{Tecnologías, servicios y herramientas utilizadas}
+\subsection{Consideraciones sobre el proyecto}
 
-\section{Diagrama de Red}
+\section{Configuración de la red}
+
+\subsection{Diagrama de Red}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=0.8\linewidth]{net_diagram}
   \caption{Diagrama de red de los servidores web, de aplicación y de correo electrónico}
 \end{figure}
 
-\section{DNS}
+\subsection{DNS}
 El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues está integrado en la misma plataforma que los servidores y al ser diseñados para trabajar en conjunto, la integración fue mucho más fácil que con Cloudflare.
 \begin{figure}[H]
   \centering
@@ -62,7 +72,7 @@ El servicio de \textsf{DNS} que utilizamos es \textsf{Route 53} de Amazon, pues 
 
 \newpage
 
-\section{Configuración de direcciones IPv4 e IPv6} 
+\subsection{Configuración de direcciones IPv4 e IPv6} 
 Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon para los servidores de la aplicación, cada una con la distribución \textsf{Ubuntu 16.04} y con manejo a través de \textsf{ssh}. 
 \begin{figure}[H]
   \centering
@@ -75,7 +85,7 @@ Se usaron 3 instancias de la plataforma \textsf{EC2} de Amazon para los servidor
   \caption{Servidor web en ejecución}
 \end{figure}
 
-\subsection{Configuración de IPv4 públicas}
+\subsubsection{Configuración de IPv4 públicas}
 Por defecto, \textsf{AWS} asigna direcciones IP públicas para las máquinas de manera dinámica. Es decir, cada vez que la instancia se inicializa después de haber sido detenida obtiene una IP pública diferente, lo que genera problemas al agregar servicios como DNS. Sin embargo, el mismo \textsf{Amazon EC2} proporciona una herramienta que nos permite obtener IPv4 estáticas para nuestras instancias y las llaman \textit{direcciones IP elásticas}.\\
 
 Para asignar una dirección IP elástica debemos ingresar en la consola y \textsc{AWS} para \textsf{EC2} y en el panel de navegación de la izquierda seleccionar la opción \textbf{Elastic IPs}.\\
@@ -99,7 +109,7 @@ Para asociar una dirección elástica a una instancia en ejecución nuevamente i
 Elegimos la dirección que recien se nos asignó y en su menu \textbf{Action} elegimos la opción \textbf{Associate address}. \\
 Luego seleccionamos la instancia a la que queramos asociar la IPv4 pública y damos click en \textbf{Associate}.
 
-\subsection{Configuración de IPv6}
+\subsubsection{Configuración de IPv6}
 Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salida a traves de una \textsf{VPC} (Virtual Private Cloud). Esta gateway les permite a las máquinas que estén en la VPC establecer conexiones por IPv6 a Internet, pero impide que se hagan conexiones por IPv6 con las instancias desde algún lugar en internet.
 \\
 \begin{figure}[H]
@@ -359,7 +369,9 @@ Finalmente, para habilitar \textsf{apache2} utilizamos
   \caption{Reglas de \textsf{firewall} para el servidor web}
 \end{figure}
 
-\section{Fail2ban}
+
+\section{\textit{Hardening}}
+\subsection{Fail2ban}
 Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
 \begin{verbatim}
 # apt-get update
@@ -400,7 +412,7 @@ Para probar el funcionamiento de \textsf{fail2ban} se hicieron pruebas con disti
   \caption{estado de iptables después de las pruebas}
 \end{figure}
 
-\section{Letsencrypt}
+\subsection{Letsencrypt}
 
 Se instaló el bot de \textsf{letsencrypt} en el servidor de correos y en el servidor web.
 
@@ -419,7 +431,7 @@ Ejemplo en el servidor de correos:
 \includegraphics[scale=0.3]{mail/2}
 \end{center}
 
-\section{Reasignación de puerto de SSH}
+\subsection{Reasignación de puerto de SSH}
 A cada servidor le cambiamos el puerto del servicio \textsf{SSH} que viene por defecto (el 22) por el puerto 2200. Para realizar esto sólo bastó modificar la línea
 \begin{verbatim}
 Port 22
@@ -430,7 +442,7 @@ Port 2200
 \end{verbatim}
 en el archivo de configuración \texttt{/etc/ssh/sshd\_config}.
 
-\section{Seguridad de la base de datos}
+\subsection{Seguridad de la base de datos}
 Para garantizar que las conexiones entre cliente y servidor de la aplicación necesitamos que las conexiones con la base de datos también sean seguras. En \textsf{MySQL} están disponibles las conexiones cifradas usando el protocolo \textsf{TLS} (Transport Layer Security), el cual se asegura de que los datos que se reciban en una red pública sean confiables, además de contar con mecanismos para detectar cambios en los datos, así como pérdida o repetición de la información y validación de identidades. \\
 
 Como primer paso, debemos asegurarnos de instalar \textsf{MySQL} de manera segura, tal como lo hicimos en la práctica 3 del curso. \\
