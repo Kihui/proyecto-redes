@@ -15,20 +15,43 @@
 \title{Proyecto 1}
 \author{Carlos Gerardo Acosta Hernández \\ Andrea Itzel González Vargas \\ Luis Pablo Mayo Vega}
 \date{Redes de Computadoras\\Facultad de Ciencias, UNAM}
-\setlength{\parindent}{0em}
+%\setlength{\parindent}{0em}
 \begin{document}
 \maketitle
-
 \tableofcontents
 
 \newpage
 \section{Preliminares}
-\subsection{Tecnologías, servicios y herramientas utilizadas}
 \subsection{Consideraciones sobre el proyecto}
+A manera de introducción, es relevante que consignemos en esta primera parte información general
+sobre nuestro proyecto que sirva de panorama general y permita explorar con mayor facilidad la organización de los apartados contenidos en el documento.\\
+
+Comencemos por decir que para la materia de \textit{Redes de computadoras} impartida en la \textit{Facultad de ciencias}, UNAM durante el ciclo 2018-1, realizamos como primer proyecto del curso la implementación de un servicio \textit{web} (una aplicación web y un servicio de correo electrónico), montado sobre una infraestructura de tres servidores que nuestro equipo de trabajo configuró. Para tal labor, pusimos en práctica diversos conceptos presentados en clase y
+conjuntamos múltiples servicios de red afines --puestos a disposición del público por terceros-- que listamos en la sección siguiente (\ref{sec:tools}); herramientas necesarias para la elaboración del proyecto.\\
+
+La infrastructura del proyecto consta de dos servidores dedicados a los componentes de la aplicación web, más un tercero dedicado al servicio de correo electrónico. El entramado de red involucrado puede ser visualizado en el diagrama de red mostrado en la sección \ref{sec:diag}. Decidimos implementar como aplicación web (\ref{sec:app} y \ref{sec:proxy}) un \textit{CRUD}\footnote{\textbf{C}reate \textbf{R}ead \textbf{U}pdate \textbf{D}elete} con un registro e inicio de sesión para usuarios; la primera instancia refleja el buen funcionamiento de la conexión entre los servidores de la aplicación, mientras que los dos casos de uso mencionados ulteriormente significarían una restricción de acceso a las demás funciones de la aplicación establecido como un nivel de seguridad. El sitio web puede ser accesado mediante la siguiente dirección de Internet:
+\begin{quote}
+  \href{http://tabon.ga}{http://tabon.ga}
+\end{quote}
+\\
+
+Añadido a las funcionalidades del servicio web, configuramos un servidor de correo electrónico (\ref{sec:mail}), con posibilidad de permitir al usuario enviar correos a cualquier dirección utilizando una dirección de correo electrónico que incluye nuestro dominio; igualmente recibirlos. Este servicio es accesible desde la siguiente dirección:
+\begin{quote}
+  \href{http://mail.tabon.ga}{http://mail.tabon.ga}
+\end{quote}
+La idea de configurar nuestros registros \textit{DNS} de esa manera, a pesar de estar alojado el servicio en un tercer servidor independiente a los de la aplicación, era dar una sensación de cohesión entre los servicios finales que ofrece nuestro servicio web.\\
+
+Las diferentes configuraciones de seguridad aplicados a nuestro proyecto, bajo la línea de solicitudes del documento de especificaciones provisto en el curso, se puede encontrar en la sección \ref{sec:sec}.\\
+
+Ahora que hemos presentado a grandes rasgos la composición de nuestro proyecto, nos es importante
+mencionar las diferentes tecnologías, servicios y herramientas que utilizamos para cubrir los diferentes rubros que nos fueron demandados.
+
+\subsection{Tecnologías, servicios y herramientas utilizadas}\label{sec:tools}
+lalalala
 
 \section{Configuración de la red}
 
-\subsection{Diagrama de Red}
+\subsection{Diagrama de Red}\label{sec:diag}
 \begin{figure}[ht!]
   \centering
   \includegraphics[width=0.8\linewidth]{net_diagram}
@@ -157,7 +180,7 @@ Para la asignación de IPv6 necesitamos crear una \textit{gateway} de solo salid
   \caption{Asignación de direcciones IPv6 a los servidores}
 \end{figure}
 
-\section{Servidor de Aplicación}
+\section{Servidor de Aplicación}\label{sec:app}
 
 \subsection{Diagrama de la base de datos}
 Dada la simpleza de la aplicación, la base de datos solo cuenta con una tabla para los usuarios con sus respectivos atributos.\\
@@ -267,7 +290,7 @@ Definimos las siguientes reglas para el \textsf{firewall} que provee \textsf{Ama
   \caption{Reglas de \textsf{firewall} para el servidor de aplicación}
 \end{figure}
 
-\section{Servidor Web}
+\section{Servidor Web}\label{sec:proxy}
 
 En el servidor web instalamos \textsf{apache2} con \texttt{sudo apt-get install apache2}, de modo que funcione como servidor de proxy inverso y mande las peticiones que reciba al servidor de aplicación y a su vez reciba respuestas de éste para mandárselas al cliente. \\
 
@@ -370,7 +393,7 @@ Finalmente, para habilitar \textsf{apache2} utilizamos
 \end{figure}
 
 
-\section{\textit{Hardening}}
+\section{Aspectos de seguridad adicional}\label{sec:sec}
 \subsection{Fail2ban}
 Como los servidores tienen \textsf{Ubuntu} como sistema operativo, los archivos para la instalación de \textsf{fail2ban} están en los repositorios oficiales de la distribución, por lo que solo hizo falta ejecutar las instrucciones
 \begin{verbatim}
@@ -476,7 +499,7 @@ Para habilitar \textsf{SSL} debemos agregar las rutas de las llaves y certificad
 Si ahora ingresamos a la shell de \textsf{MySQL} y volvemos a escribir el comando \texttt{SHOW VARIABLES LIKE '\%ssl\%';} nos debe afirmar que \textsf{SSL} está habilitado, entonces las conexiones con la base de datos ya serán cifradas y tendremos mayor seguridad en la comunicación con ésta.
 \includegraphics[width=\textwidth]{mysql_ssl-enabled}\\
 
-\section{Servidor de correos}
+\section{Servidor de correos}\label{sec:mail}
 
 Utilizamos una máquina virtual con Ubuntu 16.04. Registramos el nombre de dominio \texttt{mail.tabon.ga} para su dirección IP correspondiente, que en este caso es la \texttt{13.58.30.114}. \\
 Para el funcionamiento del servidor de correos utilizamos los paquetes de \textsf{postfix}, \textsf{dovecot}, \textsf{squirrelmail} y \textsf{apache2}. Tales paquetes se instalaron de la siguiente manera: \\
