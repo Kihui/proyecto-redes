@@ -17,3 +17,30 @@ class UsuarioForm(UserCreationForm):
             'password': _('Contraseña'),
             'email': _('Correo electrónico'),
         }
+
+class EditForm(ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'first_name', 'last_name','email', 'password']
+        
+        labels = {
+            'username': _('Nombre de usuario'),
+            'first_name': _('Nombre'),            
+            'last_name': _('Apellido'),
+            'password': _('Contraseña'),
+            'email': _('Correo electrónico'),
+        }
+
+    def __init__(self, *args, **kwargs):
+            u = kwargs['instance']
+            kwargs['initial'] = {'username':u.usuario.username, 'first_name': u.usuario.first_name, 'last_name': u.usuario.last_name, 'email': u.usuario.email}
+            super(EditForm, self).__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned = super(EditForm, self).clean()
+        if User.objects.get(username=cleaned['username']):
+            print("lol")
+            raise forms.ValidationError("Este nombre ya está siendo utilizado, bestia.")
+        print("meh")
+        
+        return cleaned
