@@ -2,3 +2,8 @@ py_env/
 *~
 #*#
 __*
+*.pyc
+*.toc
+*.log
+*.aux
+*.out
