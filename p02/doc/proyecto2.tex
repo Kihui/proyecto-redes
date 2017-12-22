@@ -85,18 +85,49 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
   \hline
   Estado & Descripción \\
   \hline
-  $q_0$ & Estado inicial para la conexión de la aplicación \\ \hline
-  $q_1$ & Estado de \textit{Acknowledgment} del servidor con el cliente \\ \hline
-  $q_2$ & Estado donde la conexión se ha realizado con éxito \\ \hline
-  $q_3$ & Estado de inicio de sesión para un cliente \\ \hline
+  $q_0$ & Estado inicial para la conexión de la aplicación. \\ \hline
+  $q_1$ & Estado de \textit{Acknowledgment} del servidor con el cliente. \\ \hline
+  $q_2$ & Estado donde la conexión se ha realizado con éxito. \\ \hline
+  $q_3$ & Estado de inicio de sesión para un cliente. \\ \hline
   $q_4$ & Estado de inicio de sesión exitoso, el servidor está en espera de la siguiente acción de parte del cliente. También se muestra la imagen del pokémon recien capturado después de una captura exitosa. \\ \hline
-  $q_5$ & Estado donde el usuario con la sesión activa decide revisar. su \textit{Pokédex} \\ \hline
+  $q_5$ & Estado donde el usuario con la sesión activa decide revisar su \textit{Pokédex}. \\ \hline
   $q_6$ & Estado donde el usuario con la sesión activa decide capturar un pokémon.\\ \hline
   $q_7$ & Estado donde el servidor recibe la solicitud del cliente y le ofrece un pokémon aleatoriamente.\\ \hline
   $q_8$ & Estado donde el usuario acepta o no capturar el pokemon ofrecido por el servidor.\\ \hline
-  $q_9$ & Cierre de Conexión \\
+  $q_9$ & Cierre de Conexión. \\
   \hline
 \end{tabular}
-
 \end{center}
+\newpage
+
+Descripción de los mensajes que se enviarán entre el cliente y el servidor
+
+\begin{center}
+  \begin{tabular}{|l|c|p{5.9cm}|}
+    \hline
+    Código & Segmento & Descripción \\ \hline
+    \hline
+    00 & \texttt{|code|num\_con|} & Termina la conexión identificada con num\_con. \\ \hline
+    01 & \texttt{|code|} & SYN del cliente (parte del two-way handshake del protocolo para iniciar la comunicación entre el cliente y el servidor). \\ \hline
+    02 & \texttt{|code|num\_con|} & SYN/ACK del servidor (parte del two-way handshake) \\ \hline
+    10 & \texttt{|code|num\_con|name|} & Solicitud de inicio de sesión del cliente. El parámetro \texttt{name} se refiere al nombre de usuario de la persona conectándose a través del cliente y su tamaño está en el rango de 1 a 32 bytes. \\ \hline
+    11 & \texttt{|code|num\_con|} & Solicitud de cierre de sesión del cliente. \\ \hline
+    12 & \texttt{|code|num\_con|name|} & Consulta del usuario a su \textit{Pokédex}. \\ \hline
+    13 & \texttt{|code|num\_con|} & Menú de captura. \\ \hline
+    14 & \texttt{|code|num\_con|} & El usuario rechaza el pokémon ofrecido aleatoriamente. \\ \hline
+    15 & \texttt{|code|num\_con|} & Intento de captura del pokémon ofrecido aleatoriamente. \\ \hline
+    20 & \texttt{|code|} & inicio de sesión exitoso. \\ \hline
+    21 & \texttt{|code|long|nombre|longitud|imagen} & Pokédex query. \\ \hline %wat
+    22 & \texttt{|code|name|num\_intentos\_restantes} & funcionamiento aleatorio. \\ \hline
+    23 & \texttt{|code|} & Pokémon no capturado. \\ \hline
+    24 & \texttt{|code| "2i"|} & Pokémon capturado. \\ \hline
+    40 & \texttt{|code|} & Invalid Name Error. \\ \hline
+    41 & \texttt{|code|} & Maximum Number of Attempts Reached. \\ \hline
+    44 & \texttt{|code|} & Not Found Error. \\ \hline
+    45 & \texttt{|code|} & Malformación. \\ \hline
+    41 & \texttt{|code|} & No existe conexión. \\ \hline
+    47 & \texttt{|code|} & Sin sesión. \\
+    \hline
+  \end{tabular}
+\end{center} 
 \end{document}
