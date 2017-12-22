@@ -1,0 +1,102 @@
+\documentclass[12pt]{article}
+\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\graphicspath{{media/}}
+\usepackage{float}
+\usepackage{caption}
+\usepackage[toc]{multitoc}
+\setcounter{tocdepth}{2}
+% automata
+\usepackage{tikz}
+\title{Proyecto 2}
+\author{Carlos Gerardo Acosta Hernández \\ Andrea Itzel González Vargas \\ Luis Pablo Mayo Vega}
+\date{Redes de Computadoras\\Facultad de Ciencias, UNAM}
+%\setlength{\parindent}{0em}
+\begin{document}
+\maketitle
+%\tableofcontents
+%\newpage
+Máquina de Estados Finita para el protocolo de la capa de aplicación.
+\begin{center}
+\begin{tikzpicture}[scale=0.2]
+  \tikzstyle{every node}+=[inner sep=0pt]
+  \draw [black] (16.9,-20.4) circle (3);
+  \draw (16.9,-20.4) node {$q_1$};
+  \draw [black] (25.6,-11.5) circle (3);
+  \draw (25.6,-11.5) node {$q_2$};
+  \draw [black] (40.8,-6.2) circle (3);
+  \draw (40.8,-6.2) node {$q_3$};
+  \draw [black] (45.4,-20.4) circle (3);
+  \draw (45.4,-20.4) node {$q_4$};
+  \draw [black] (58.2,-15.1) circle (3);
+  \draw (58.2,-15.1) node {$q_5$};
+  \draw [black] (47.3,-32.8) circle (3);
+  \draw (47.3,-32.8) node {$q_6$};
+  \draw [black] (60.8,-30.3) circle (3);
+  \draw (60.8,-30.3) node {$q_7$};
+  \draw [black] (60.8,-45.4) circle (3);
+  \draw (60.8,-45.4) node {$q_8$};
+  \draw [black] (29.8,-32.8) circle (3);
+  \draw (29.8,-32.8) node {$q_9$};
+  \draw [black] (6.8,-30.3) circle (3);
+  \draw (6.8,-30.3) node {$q_0$};
+  \draw [black] (19,-18.25) -- (23.5,-13.65);
+  \fill [black] (23.5,-13.65) -- (22.59,-13.87) -- (23.3,-14.57);
+  \draw (20.72,-14.48) node [left] {$c:02$};
+  \draw [black] (41.72,-9.05) -- (44.48,-17.55);
+  \fill [black] (44.48,-17.55) -- (44.7,-16.63) -- (43.75,-16.94);
+  \draw (43.87,-12.62) node [right] {$c:20$};
+  \draw [black] (48.17,-19.25) -- (55.43,-16.25);
+  \fill [black] (55.43,-16.25) -- (54.5,-16.09) -- (54.88,-17.02);
+  \draw (54.37,-18.29) node [below] {$c:12$};
+  \draw [black] (45.85,-23.37) -- (46.85,-29.83);
+  \fill [black] (46.85,-29.83) -- (47.22,-28.97) -- (46.23,-29.12);
+  \draw (45.65,-26.79) node [left] {$c:13$};
+  \draw [black] (50.25,-32.25) -- (57.85,-30.85);
+  \fill [black] (57.85,-30.85) -- (56.97,-30.5) -- (57.15,-31.48);
+  \draw (52.72,-30.81) node [above] {$s:22$};
+  \draw [black] (62.285,-32.899) arc (22.9704:-22.9704:12.687);
+  \fill [black] (62.28,-32.9) -- (62.14,-33.83) -- (63.06,-33.44);
+  \draw (63.79,-37.85) node [right] {$s:23$};
+  \draw [black] (58.977,-43.03) arc (-150.57259:-209.42741:10.544);
+  \fill [black] (58.98,-43.03) -- (59.02,-42.09) -- (58.15,-42.58);
+  \draw (57.12,-37.85) node [left] {$c:15$};
+  \draw [black] (39.002,-8.592) arc (-43.919:-97.63528:12.314);
+  \fill [black] (39,-8.59) -- (38.09,-8.82) -- (38.81,-9.51);
+  \draw (36.62,-12.26) node [below] {$c:10$};
+  \draw [black] (27.177,-8.959) arc (140.39464:78.05107:11.056);
+  \fill [black] (27.18,-8.96) -- (28.07,-8.66) -- (27.3,-8.02);
+  \draw (29.63,-4.98) node [above] {$c:11$};
+  \draw [black] (26.18,-14.44) -- (29.22,-29.86);
+  \fill [black] (29.22,-29.86) -- (29.56,-28.98) -- (28.57,-29.17);
+  \draw (28.44,-21.84) node [right] {$c:00$};
+  \draw [black] (8.94,-28.2) -- (14.76,-22.5);
+  \fill [black] (14.76,-22.5) -- (13.84,-22.7) -- (14.54,-23.42);
+  \draw (14.54,-25.83) node [below] {$c:01$};
+\end{tikzpicture}
+\\
+
+\begin{tabular}{|l|p{9cm}|}
+  \hline
+  Estado & Descripción \\
+  \hline
+  $q_0$ & Estado inicial para la conexión de la aplicación \\ \hline
+  $q_1$ & Estado de \textit{Acknowledgment} del servidor con el cliente \\ \hline
+  $q_2$ & Estado donde la conexión se ha realizado con éxito \\ \hline
+  $q_3$ & Estado de inicio de sesión para un cliente \\ \hline
+  $q_4$ & Estado de inicio de sesión exitoso, el servidor está en espera de la siguiente acción de parte del cliente. También se muestra la imagen del pokémon recien capturado después de una captura exitosa. \\ \hline
+  $q_5$ & Estado donde el usuario con la sesión activa decide revisar. su \textit{Pokédex} \\ \hline
+  $q_6$ & Estado donde el usuario con la sesión activa decide capturar un pokémon.\\ \hline
+  $q_7$ & Estado donde el servidor recibe la solicitud del cliente y le ofrece un pokémon aleatoriamente.\\ \hline
+  $q_8$ & Estado donde el usuario acepta o no capturar el pokemon ofrecido por el servidor.\\ \hline
+  $q_9$ & Cierre de Conexión \\
+  \hline
+\end{tabular}
+
+\end{center}
+\end{document}
