@@ -1,5 +1,5 @@
 \documentclass[12pt]{article}
-\usepackage[left=2cm,right=2cm,top=3cm,bottom=3cm,letterpaper]{geometry}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm,letterpaper]{geometry}
 \usepackage{lmodern}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -19,8 +19,11 @@
 %\setlength{\parindent}{0em}
 \begin{document}
 \maketitle
-%\tableofcontents
-%\newpage
+\tableofcontents
+\newpage
+
+\section{Diseño del protocolo}
+\subsection{Máquina de Estados Finita}
 Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \begin{center}
 \begin{tikzpicture}[scale=0.2]
@@ -81,6 +84,7 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \end{tikzpicture}
 \\
 
+\subsection{Descripción de los estados}
 \begin{tabular}{|l|p{9cm}|}
   \hline
   Estado & Descripción \\
@@ -100,8 +104,7 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \end{center}
 \newpage
 
-Descripción de los mensajes que se enviarán entre el cliente y el servidor
-
+\subsection{Descripción de los mensajes en la comunicación cliente-servidor}
 \begin{center}
   \begin{tabular}{|l|c|p{5.9cm}|}
     \hline
