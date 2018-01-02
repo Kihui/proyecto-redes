@@ -30,6 +30,6 @@ public class Proyecto2 {
             new Pokeservidor(puerto).empezar();
         } else {
             new Pokentrenador(servidor, puerto).empezar();
-        }        
+        }
     }
 }

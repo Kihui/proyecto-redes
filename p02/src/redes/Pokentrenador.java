@@ -10,6 +10,7 @@ public class Pokentrenador {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private BufferedReader inSys;
     private boolean continua;
     
     public Pokentrenador(String ip, int puerto) {
@@ -31,10 +32,23 @@ public class Pokentrenador {
     }
 
     public void empezar() {
+        inSys = new BufferedReader(new InputStreamReader(System.in));
         while(continua) {
-            System.out.println(mandaMensaje("Hola"));
-            System.out.println(mandaMensaje("END"));
-            terminar();
+            try {
+                System.out.println("Mensaje: ");
+                String mensaje = inSys.readLine();
+                String respuesta = mandaMensaje(mensaje);
+                if(mensaje.equals("END"))
+                    terminar();
+                else {
+                    if(respuesta != null) {
+                        System.out.println(respuesta);
+                    } else error("Error al recibir mensaje del servidor, puede que la conexión " +
+                                 "haya expirado. Cerrando conexión.", true);
+                }
+            } catch(Exception e) {
+                error("Error al leer entrada.", false);
+            }
         }
     }
     

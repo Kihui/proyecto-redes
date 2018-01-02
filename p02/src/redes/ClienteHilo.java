@@ -11,12 +11,13 @@ public class ClienteHilo extends Thread {
     private Socket socket;
     private PrintWriter out;
     private BufferedReader in;
+    private static final int TIMEOUT = 10000;
     
     public ClienteHilo(Socket s) {
         socket = s;
         continua = true;
         try {
-            socket.setSoTimeout(5000);
+            socket.setSoTimeout(TIMEOUT);
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -41,12 +42,14 @@ public class ClienteHilo extends Thread {
             while(continua) {
                 String mensaje = in.readLine();
                 System.out.println(mensaje);
-                out.println(mensaje);
+                out.println("thx");
                 if(mensaje.equals("END"))
                     terminar();
             }
         } catch(Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.err.println("Hubo un error o la conexión ha expirado, terminando conexión con cliente.");
+            terminar();
         }
     }
 }
