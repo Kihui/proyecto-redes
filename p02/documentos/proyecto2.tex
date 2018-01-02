@@ -30,77 +30,79 @@
 Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \begin{center}
 \begin{tikzpicture}[scale=0.2]
-  \tikzstyle{every node}+=[inner sep=0pt]
-  \draw [black] (16.9,-20.4) circle (3);
-  \draw (16.9,-20.4) node {$q_1$};
-  \draw [black] (25.6,-11.5) circle (3);
-  \draw (25.6,-11.5) node {$q_2$};
-  \draw [black] (40.8,-6.2) circle (3);
-  \draw (40.8,-6.2) node {$q_3$};
-  \draw [black] (45.4,-20.4) circle (3);
-  \draw (45.4,-20.4) node {$q_4$};
-  \draw [black] (58.2,-15.1) circle (3);
-  \draw (58.2,-15.1) node {$q_5$};
-  \draw [black] (47.3,-32.8) circle (3);
-  \draw (47.3,-32.8) node {$q_6$};
-  \draw [black] (60.8,-30.3) circle (3);
-  \draw (60.8,-30.3) node {$q_7$};
-  \draw [black] (60.8,-45.4) circle (3);
-  \draw (60.8,-45.4) node {$q_8$};
-  \draw [black] (29.8,-32.8) circle (3);
-  \draw (29.8,-32.8) node {$q_9$};
-  \draw [black] (6.8,-30.3) circle (3);
-  \draw (6.8,-30.3) node {$q_0$};
-  \draw [black] (19,-18.25) -- (23.5,-13.65);
-  \fill [black] (23.5,-13.65) -- (22.59,-13.87) -- (23.3,-14.57);
-  \draw (20.72,-14.48) node [left] {$c:02$};
-  \draw [black] (41.72,-9.05) -- (44.48,-17.55);
-  \fill [black] (44.48,-17.55) -- (44.7,-16.63) -- (43.75,-16.94);
-  \draw (43.87,-12.62) node [right] {$c:20$};
-  \draw [black] (48.17,-19.25) -- (55.43,-16.25);
-  \fill [black] (55.43,-16.25) -- (54.5,-16.09) -- (54.88,-17.02);
-  \draw (54.37,-18.29) node [below] {$c:12$};
-  \draw [black] (45.85,-23.37) -- (46.85,-29.83);
-  \fill [black] (46.85,-29.83) -- (47.22,-28.97) -- (46.23,-29.12);
-  \draw (45.65,-26.79) node [left] {$c:13$};
-  \draw [black] (50.25,-32.25) -- (57.85,-30.85);
-  \fill [black] (57.85,-30.85) -- (56.97,-30.5) -- (57.15,-31.48);
-  \draw (52.72,-30.81) node [above] {$s:22$};
-  \draw [black] (62.285,-32.899) arc (22.9704:-22.9704:12.687);
-  \fill [black] (62.28,-32.9) -- (62.14,-33.83) -- (63.06,-33.44);
-  \draw (63.79,-37.85) node [right] {$s:23$};
-  \draw [black] (58.977,-43.03) arc (-150.57259:-209.42741:10.544);
-  \fill [black] (58.98,-43.03) -- (59.02,-42.09) -- (58.15,-42.58);
-  \draw (57.12,-37.85) node [left] {$c:15$};
-  \draw [black] (39.002,-8.592) arc (-43.919:-97.63528:12.314);
-  \fill [black] (39,-8.59) -- (38.09,-8.82) -- (38.81,-9.51);
-  \draw (36.62,-12.26) node [below] {$c:10$};
-  \draw [black] (27.177,-8.959) arc (140.39464:78.05107:11.056);
-  \fill [black] (27.18,-8.96) -- (28.07,-8.66) -- (27.3,-8.02);
-  \draw (29.63,-4.98) node [above] {$c:11$};
-  \draw [black] (26.18,-14.44) -- (29.22,-29.86);
-  \fill [black] (29.22,-29.86) -- (29.56,-28.98) -- (28.57,-29.17);
-  \draw (28.44,-21.84) node [right] {$c:00$};
-  \draw [black] (8.94,-28.2) -- (14.76,-22.5);
-  \fill [black] (14.76,-22.5) -- (13.84,-22.7) -- (14.54,-23.42);
-  \draw (14.54,-25.83) node [below] {$c:01$};
+\tikzstyle{every node}+=[inner sep=0pt]
+\draw [black] (7.7,-22) circle (3);
+\draw (7.7,-22) node {$q_0$};
+\draw [black] (21.9,-21.4) circle (3);
+\draw (21.9,-21.4) node {$q_1$};
+\draw [black] (35.4,-21.4) circle (3);
+\draw (35.4,-21.4) node {$q_2$};
+\draw [black] (63.3,-21.4) circle (3);
+\draw (63.3,-21.4) node {$q_3$};
+\draw [black] (35.4,-7.3) circle (3);
+\draw (35.4,-7.3) node {$q_4$};
+\draw [black] (63.3,-46.6) circle (3);
+\draw (63.3,-46.6) node {$q_5$};
+\draw [black] (35.4,-46.6) circle (3);
+\draw (35.4,-46.6) node {$q_6$};
+\draw [black] (7.7,-49.9) circle (3);
+\draw (7.7,-49.9) node {$q_9$};
+\draw [black] (9.968,-20.054) arc (121.77715:63.06187:9.706);
+\fill [black] (19.48,-19.65) -- (18.99,-18.84) -- (18.54,-19.74);
+\draw (14.59,-18.02) node [above] {$c:10$};
+\draw [black] (24.9,-21.4) -- (32.4,-21.4);
+\fill [black] (32.4,-21.4) -- (31.6,-20.9) -- (31.6,-21.9);
+\draw (28.65,-21.9) node [below] {$s:20$};
+\draw [black] (19.52,-23.209) arc (-61.01633:-114.14465:10.403);
+\fill [black] (10.22,-23.6) -- (10.75,-24.39) -- (11.16,-23.47);
+\draw (15,-25.09) node [below] {$s:44$};
+\draw [black] (34.348,-24.204) arc (-26.53097:-150.98729:14.4);
+\fill [black] (8.87,-24.76) -- (8.82,-25.7) -- (9.7,-25.21);
+\draw (21.8,-32.71) node [below] {$c:11$};
+\draw [black] (37.033,-9.805) arc (25.08093:-25.08093:10.722);
+\fill [black] (37.03,-9.81) -- (36.92,-10.74) -- (37.82,-10.32);
+\draw (38.54,-14.35) node [right] {$c:12$};
+\draw [black] (34.029,-18.74) arc (-159.56755:-200.43245:12.574);
+\fill [black] (34.03,-18.74) -- (34.22,-17.82) -- (33.28,-18.16);
+\draw (32.74,-14.35) node [left] {$s:21/e:44$};
+\draw [black] (38.4,-21.4) -- (60.3,-21.4);
+\fill [black] (60.3,-21.4) -- (59.5,-20.9) -- (59.5,-21.9);
+\draw (49.35,-21.9) node [below] {$c:13$};
+\draw [black] (63.3,-24.4) -- (63.3,-43.6);
+\fill [black] (63.3,-43.6) -- (63.8,-42.8) -- (62.8,-42.8);
+\draw (62.8,-34) node [left] {$s:22$};
+\draw [black] (38.199,-45.523) arc (108.58634:71.41366:34.985);
+\fill [black] (38.2,-45.52) -- (39.12,-45.74) -- (38.8,-44.79);
+\draw (49.35,-43.2) node [above] {$c:15$};
+\draw [black] (60.488,-47.642) arc (-72.05358:-107.94642:36.146);
+\fill [black] (60.49,-47.64) -- (59.57,-47.41) -- (59.88,-48.36);
+\draw (49.35,-49.9) node [below] {$s:23$};
+\draw [black] (35.4,-43.6) -- (35.4,-24.4);
+\fill [black] (35.4,-24.4) -- (34.9,-25.2) -- (35.9,-25.2);
+\draw (35.9,-34) node [right] {$s:24/e:41$};
+\draw [black] (7.7,-25) -- (7.7,-46.9);
+\fill [black] (7.7,-46.9) -- (8.2,-46.1) -- (7.2,-46.1);
+\draw (7.2,-35.95) node [left] {$c:00$};
+\draw [black] (61.07,-44.59) -- (37.63,-23.41);
+\fill [black] (37.63,-23.41) -- (37.88,-24.32) -- (38.56,-23.58);
+\draw (51.59,-33.51) node [above] {$c:14$};
 \end{tikzpicture}
-\\
+\end{center}
+
 
 \subsection{Descripción de los estados}
+\begin{center}
 \begin{tabular}{|l|p{9cm}|}
   \hline
   Estado & Descripción \\
   \hline
-  $q_0$ & Estado inicial para la conexión de la aplicación. \\ \hline
-  $q_1$ & Estado de \textit{Acknowledgment} del servidor con el cliente. \\ \hline
-  $q_2$ & Estado donde la conexión se ha realizado con éxito. \\ \hline
-  $q_3$ & Estado de inicio de sesión para un cliente. \\ \hline
-  $q_4$ & Estado de inicio de sesión exitoso, el servidor está en espera de la siguiente acción de parte del cliente. También se muestra la imagen del pokémon recien capturado después de una captura exitosa. \\ \hline
-  $q_5$ & Estado donde el usuario con la sesión activa decide revisar su \textit{Pokédex}. \\ \hline
-  $q_6$ & Estado donde el usuario con la sesión activa decide capturar un pokémon.\\ \hline
-  $q_7$ & Estado donde el servidor recibe la solicitud del cliente y le ofrece un pokémon aleatoriamente.\\ \hline
-  $q_8$ & Estado donde el usuario acepta o no capturar el pokemon ofrecido por el servidor.\\ \hline
+  $q_0$ & Conexión establecida, inicio de aplicación. \\ \hline
+  $q_1$ & Inicio de sesión. \\ \hline
+  $q_2$ & Menú de juego. \\ \hline
+  $q_3$ & Solicitud de captura de \textit{pókemon}. \\ \hline
+  $q_4$ & Búsqueda de un pókemon en la \textit{pókedex}. \\ \hline
+  $q_5$ & Aparición de un \textit{Pókemon} salvaje. \\ \hline
+  $q_6$ & Intento de captura de \textit{pókemon}.\\ \hline
   $q_9$ & Cierre de conexión. \\
   \hline
 \end{tabular}
@@ -114,8 +116,6 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
     Código & Segmento & Descripción \\ \hline
     \hline
     00 & \texttt{|code|num\_con|} & Termina la conexión identificada con num\_con. \\ \hline
-    01 & \texttt{|code|} & SYN del cliente (parte del two-way handshake del protocolo para iniciar la comunicación entre el cliente y el servidor). \\ \hline
-    02 & \texttt{|code|num\_con|} & SYN/ACK del servidor (parte del two-way handshake) \\ \hline
     10 & \texttt{|code|num\_con|name|} & Solicitud de inicio de sesión del cliente. El parámetro \texttt{name} se refiere al nombre de usuario de la persona conectándose a través del cliente y su tamaño está en el rango de 1 a 32 bytes. \\ \hline
     11 & \texttt{|code|num\_con|} & Solicitud de cierre de sesión del cliente. \\ \hline
     12 & \texttt{|code|num\_con|name|} & Consulta del usuario a su \textit{Pokédex}. \\ \hline
@@ -127,11 +127,9 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
     22 & \texttt{|code|name|num\_intentos\_restantes} & funcionamiento aleatorio. \\ \hline
     23 & \texttt{|code|} & Pokémon no capturado. \\ \hline
     24 & \texttt{|code| "2i"|} & Pokémon capturado. \\ \hline
-    40 & \texttt{|code|} & Invalid Name Error. \\ \hline
     41 & \texttt{|code|} & Maximum Number of Attempts Reached. \\ \hline
     44 & \texttt{|code|} & Not Found Error. \\ \hline
-    45 & \texttt{|code|} & Malformación. \\ \hline
-    41 & \texttt{|code|} & No existe conexión. \\ \hline
+    46 & \texttt{|code|} & No existe conexión. \\ \hline
     47 & \texttt{|code|} & Sin sesión. \\
     \hline
   \end{tabular}
