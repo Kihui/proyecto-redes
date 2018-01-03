@@ -3,8 +3,19 @@ package redes;
 import java.nio.charset.StandardCharsets;
 import java.nio.ByteBuffer;
 
+/**
+ * <p>Clase que permite crear mensajes en forma de
+ * un arreglo de bytes.</p>
+ * <p>Permite también crear objetos de la clase padre
+ * MensajeGenerico a partir de un arreglo de bytes.</p>
+ */
 public class FabricaMensaje {
-
+    
+    /**
+     * Crea un objeto de la clase padre MensajeGenerico
+     * a partir de un arreglo de bytes.
+     * @param c el arreglo de bytes
+     */
     public MensajeGenerico getMensaje(byte[] c) {
         switch((int)c[0]) {
         case 10: return new Mensaje10(c);
@@ -16,11 +27,24 @@ public class FabricaMensaje {
         }
     }
 
-    public byte[] creaMensajeGenerico(int codigo) {
+    /**
+     * Regresa un mensaje de la forma [longitud|codigo]
+     * en forma de arreglo de bytes. La longitud es el tamaño en bytes
+     * del mensaje.
+     * @param codigo el codigo del mensaje
+     * @return el mensaje como arreglo de bytes
+     */
+    public byte[] creaMensaje(int codigo) {
         return new byte[]{0, 0, 0, 1, (byte)codigo};
     }
     
-    private byte[] creaMensajeNombre(int codigo, String nombre) {
+    /**
+     * Regresa un arreglo de bytes de la forma [longitud|10|nombre].
+     * La longitud es el tamaño del nombre + 1 (por el código) en bytes.
+     * @param nombre el nombre a ser concatenado en el arreglo
+     * @return un mensaje en forma de arreglo de bytes
+     */    
+    public byte[] creaMensaje(int codigo, String nombre) {
         byte[] n = nombre.getBytes(StandardCharsets.UTF_8);
         byte[] longitud = ByteBuffer.allocate(4).putInt(n.length + 1).array();
         byte[] b = new byte[n.length + 5];
@@ -32,25 +56,38 @@ public class FabricaMensaje {
         return b;
     }
 
-    public byte[] creaMensaje10(int codigo, String nombre) {
-        return creaMensajeNombre(codigo, nombre);
-    }
-    
-    public byte[] creaMensaje12(int codigo, String nombre) {
-        return creaMensajeNombre(codigo, nombre);
-    }
-
-    public byte[] creaMensaje21(int codigo, String nombre,
-                                byte[] imagen) {
+    // NO IMPLEMENTADO ******
+    /**
+     * Regresa un arreglo de bytes de la forma
+     * [longitud|codigo|longitud_nombre|nombre|longitud_imagen|imagen].
+     * @param nombre el nombre a ser concatenado en el arreglo
+     * @param imagen la imagen incluida en el mensaje
+     * @return un mensaje en forma de arreglo de bytes
+     */    
+    public byte[] creaMensaje(int codigo, String nombre, byte[] imagen) {
         return null;
     }
 
-    public byte[] creaMensaje22(int codigo, String nombre,
-                                int intentos) {
+    // NO IMPLEMENTADO ******
+    /**
+     * Regresa un arreglo de bytes de la forma
+     * [longitud|codigo|intentos|nombre].
+     * @param nombre el nombre a ser concatenado en el arreglo
+     * @param intentos el numero de intentos restantes para
+     *                 la captura de un pokemon
+     * @return un mensaje en forma de arreglo de bytes
+     */    
+    public byte[] creaMensaje(int codigo, int intentos, String nombre) {
         return null;
     }
 
-    public byte[] creaMensaje24(int codigo, byte[] imagen) {
+    // NO IMPLEMENTADO ******
+    /**
+     * Regresa un arreglo de bytes de la forma [longitud|codigo|imagen].
+     * @param imagen la imagen incluida en el mensaje
+     * @return un mensaje en forma de arreglo de bytes
+     */    
+    public byte[] creaMensaje(int codigo, byte[] imagen) {
         return null;
     }
 }
