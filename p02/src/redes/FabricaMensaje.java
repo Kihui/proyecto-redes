@@ -1,8 +1,11 @@
 package redes;
 
+import java.nio.charset.StandardCharsets;
+import java.nio.ByteBuffer;
+
 public class FabricaMensaje {
 
-    public MensajeGenerico getMensaje(char[] c) {
+    public MensajeGenerico getMensaje(byte[] c) {
         switch((int)c[0]) {
         case 10: return new Mensaje10(c);
         case 12: return new Mensaje12(c);
@@ -13,37 +16,41 @@ public class FabricaMensaje {
         }
     }
 
-    public char[] creaMensajeGenerico(int codigo) {
-        return new char[]{(char)codigo};
+    public byte[] creaMensajeGenerico(int codigo) {
+        return new byte[]{0, 0, 0, 1, (byte)codigo};
     }
     
-    private char[] creaMensajeNombre(int codigo, String nombre) {
-        char[] c = new char[nombre.length() + 1];
-        c[0] = (char)codigo;
-        for(int i = 1; i <= nombre.length(); i++)
-            c[i] = nombre.charAt(i - 1);
-        return c;
+    private byte[] creaMensajeNombre(int codigo, String nombre) {
+        byte[] n = nombre.getBytes(StandardCharsets.UTF_8);
+        byte[] longitud = ByteBuffer.allocate(4).putInt(n.length + 1).array();
+        byte[] b = new byte[n.length + 5];
+        for(int i = 0; i < 4; i++)
+            b[i] = longitud[i];
+        b[4] = (byte)codigo;
+        for(int i = 0; i < n.length; i++)
+            b[i + 5] = n[i];
+        return b;
     }
 
-    public char[] creaMensaje10(int codigo, String nombre) {
+    public byte[] creaMensaje10(int codigo, String nombre) {
         return creaMensajeNombre(codigo, nombre);
     }
     
-    public char[] creaMensaje12(int codigo, String nombre) {
+    public byte[] creaMensaje12(int codigo, String nombre) {
         return creaMensajeNombre(codigo, nombre);
     }
 
-    public char[] creaMensaje21(int codigo, String nombre,
+    public byte[] creaMensaje21(int codigo, String nombre,
                                 byte[] imagen) {
         return null;
     }
 
-    public char[] creaMensaje22(int codigo, String nombre,
+    public byte[] creaMensaje22(int codigo, String nombre,
                                 int intentos) {
         return null;
     }
 
-    public char[] creaMensaje24(int codigo, byte[] imagen) {
+    public byte[] creaMensaje24(int codigo, byte[] imagen) {
         return null;
     }
 }

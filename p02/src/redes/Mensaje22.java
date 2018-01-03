@@ -5,7 +5,7 @@ public class Mensaje22 extends MensajeGenerico {
     String nombre;
     int intentos;
     
-    public Mensaje22(char[] c) {
+    public Mensaje22(byte[] c) {
         super(c);
         nombre = null;
         intentos = 0;

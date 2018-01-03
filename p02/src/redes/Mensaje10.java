@@ -4,7 +4,7 @@ public class Mensaje10 extends MensajeGenerico {
 
     String nombre;
     
-    public Mensaje10(char[] c) {
+    public Mensaje10(byte[] c) {
         super(c);
         nombre = null;
     }
