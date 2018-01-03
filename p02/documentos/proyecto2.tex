@@ -6,7 +6,7 @@
 \usepackage[spanish,activeacute]{babel}
 \usepackage{hyperref}
 \usepackage{graphicx}
-\graphicspath{{media/}}
+\graphicspath{{graphic/}}
 \usepackage{float}
 \usepackage{caption}
 \usepackage[toc]{multitoc}
@@ -23,8 +23,44 @@
 \newpage
 \section{Especificación de requerimientos}
 \subsection{Enunciado del problema}
+De acuerdo con el modelo TCP/IP, \textit{la Capa de Aplicación} es la de mayor importancia y en la que se sustenta todo el desarrollo de redes de computadoras pues está compuesta por los protocolos y demás servicios encargados de manejar, intercambiar o decodificar los datos que los usuarios se envían a través de distintos hosts para comunicarse. En otras palabras, se busca que dos o más procesos en distintas computadoras puedan ser capaces de intercambiar información y de esta manera otorgar una mayor capacidad de procesamiento y mejor rendimiento del que se tendría con un único host.\\
+
+Sin embargo, la \textit{Capa de Aplicación} no puede trabajar sola, siendo mediante un proceso de encapsulación en cada una de las capas, que los datos(PDU) se envian a las capas inferiores, añadiendo cada una de las capas información que le concierne para que sus protocolos puedan manejarlos.\\
+
+Como sabemos, protocolos como \textsf{HTTP, DNS, FTP, SMTP o DHCP} tienen cada uno una estructura distinta ya bien definida y estandarizada en los articulos de \textit{Request for Comments} publicados, pero eso no significa que sean los únicos protocolos disponibles en la \textit{Capa de Aplicación}. La gran ventaja de esta capa es su adaptabilidad para que se desarrollen protocolos de acuerdo a las necesidades de la aplicación sobre la que se usarán. 
+
 \subsection{Objetivo de la aplicación}
-\subsubsection{Casos de uso}
+
+Esta aplicación fue creada con el objetivo de implementar un protocolo de la capa de aplicación en el que el usuario, conectado del lado del cliente, solicite un pokémon a capturar. El servidor elegirá aleatoriamente alguno de los pokémon que estén en su base de datos, se lo ofrecerá al usuario y, si éste acepta capturarlo, también aleatoriamente se indicará
+ si logró capturarlo o no. \\
+
+ El usuario también podrá ser capaz de consultar su Pokédex, con los nombres de los pokémon que ha capturado y la imagen de cada pokémon que seleccione. \\
+
+ El protocolo que hemos diseñado se enfocará en las acciones del usuario y el servidor que involucren una comunicación entre ambos, cada una con un tipo de mensaje específico. Es decir, si un usuario quisiera capturar un pokémon, solo tendría que  enviar un mensaje con el código que el servidor entienda como "quiero capturar un pokémon" sin considerar otros aspectos como el nombre del pokémon o el tamaño de la imagen que contiene a tal pokémon. \\
+
+ En ese sentido, diseñar nuestro propio protocolo nos permite tener mayor control sobre la tasa de transferencia de los datos dentro de la aplicación, disminuyendo los costos de la comunicación y mejorando el desempeño del programa.
+
+ \newpage
+ \subsubsection{Casos de uso}
+ \begin{center}
+   \begin{tabular}{|l|p{5cm}|p{9cm}|}
+     \hline
+     Actor & Caso de uso & Descripción \\
+     \hline
+     Pokentrenador & Iniciar sesión & El usuario se conecta con el servidor y se le muestra el menú principal de la aplicación \\ \hline
+     Pokentrenador & Solicitar captura de pokémon & El usuario solicita al servidor que le muestre un pokémon para capturar \\ \hline
+     Pokentrenador & Consultar pokedex & El usuario hace una consulta para buscar un pokémon en su pokédex \\ \hline
+     Pokentrenador & Lanzar pokebola & El usuario intenta capturar el pokémon que le mostró el servidor, con un número de intentos límitado \\ \hline
+     Pokentrenador & Cerrar sesión & Cierra la conexión con el servidor \\
+     \hline
+   \end{tabular}
+ \end{center}
+ \begin{figure}[H]
+   \centering
+   \includegraphics[width=0.4\textwidth]{casosdeuso}
+   \caption{Diagrama de casos de uso de la aplicación}
+ \end{figure}
+ 
 \section{Diseño del protocolo}
 \subsection{Máquina de Estados Finita}
 Máquina de Estados Finita para el protocolo de la capa de aplicación.
@@ -136,14 +172,13 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \end{center}
 
 \subsection{Diseño de la base de datos}
-
 \section{Implementación del protocolo}
 \subsection{Especificación del ambiente de desarrollo}
+
 \subsection{Diagrama de clases (Maybe no, pero al menos mención de la estructura programática del proyecto, lo que sea más fácil jijijijijijij)}
 
 \section{Uso y pruebas del protocolo}
 \subsection{Manual de uso}
 \subsection{Demostración del funcionamiento (por caso de uso ijijisjiajij)}
-
 
 \end{document}
