@@ -28,6 +28,14 @@ def get_name(url):
         return chop.group(1)
     return None
 
-
+def gen_inserts():
+    out = ""
+    a = os.popen('ls *.png').read()
+    l = a.split()
+    for x in l:
+        out += "INSERT INTO pokemon(name, url) VALUES(\""+x[:-4]+"\",\"static/"+x+"\");\n"
+    return out
+    
 c = get_pokes("http://nintendo.wikia.com/wiki/Category:First_generation_Pok%C3%A9mon_images")
 save(c)
+#print(gen_inserts())

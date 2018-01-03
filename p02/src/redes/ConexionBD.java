@@ -33,8 +33,8 @@ public class ConexionBD {
 	} catch(Exception e) {System.err.println("Error en la creación de la conexión");}
     }
 
-    /** Función para cerrar la conexión con la base de datos
-    * 
+    /** 
+    * Método para cerrar la conexión con la base de datos
     */
     public void cierra(){
 	try {
@@ -44,7 +44,7 @@ public class ConexionBD {
     }
 
     /**
-     * Función para establecer el resultSet dada una consulta en cadena
+     * Método para establecer el resultSet dada una consulta en cadena
      * @param q la cadena que contiene la consulta
      * 
      */

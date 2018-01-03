@@ -8,3 +8,5 @@ __*
 *.aux
 *.out
 *.png
+*.db
+*.class
