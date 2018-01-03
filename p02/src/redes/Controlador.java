@@ -94,4 +94,5 @@ public class Controlador{
     public ResultSet makeQuery(String q) {
 	return conn.results(q);
     }
+
 }

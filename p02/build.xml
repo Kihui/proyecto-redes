@@ -3,7 +3,7 @@
 
   <property name="build.dir" value="build" />
   <property name="src.dir"   value="src" />
-  <!--<property name="lib.dir"   value="lib" />-->
+  <property name="lib.dir"   value="lib" />
   <property name="doc.dir"   value="doc" />
 
   <target name="proyecto2.jar" depends="compile.proyecto2">
@@ -24,11 +24,11 @@
       includeantruntime="false"
       deprecation="true"
       nowarn="off">
-      <!--<classpath>
+      <classpath>
 	<fileset dir="${lib.dir}">
 	  <include name="*.jar"/>
 	</fileset>
-      </classpath>-->
+      </classpath>
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
   </target>
@@ -45,10 +45,11 @@
              windowtitle="Proyecto 2">
       <doctitle><![CDATA[<h1>Redes de Computadoras - Proyecto 2</h1>]]></doctitle>
       <link href="http://docs.oracle.com/javase/8/docs/api/" />
-      <!-- <classpath> -->
-	<!-- <pathelement location="${lib.dir}/junit.jar" /> -->
-	<!-- <pathelement location="${lib.dir}/hamcrest-core.jar" /> -->
-      <!-- </classpath> -->
+      <classpath> >
+	<pathelement location="${lib.dir}/junit.jar" />
+	<pathelement location="${lib.dir}/hamcrest-core.jar" />
+	<pathelement location="${lib.dir}/sqlite-jdbc-3.16.1.jar" />
+      </classpath>
     </javadoc>
   </target>
 
@@ -63,8 +64,9 @@
       <formatter type="plain" usefile="false" />
       <classpath>
 	<pathelement path="${build.dir}" />
-	<!-- <pathelement location="${lib.dir}/junit.jar" /> -->
-	<!-- <pathelement location="${lib.dir}/hamcrest-core.jar" /> -->
+	<pathelement location="${lib.dir}/junit.jar" />
+	<pathelement location="${lib.dir}/hamcrest-core.jar" />
+	<pathelement location="${lib.dir}/sqlite-jdbc-3.16.1.jar" />
       </classpath>
       <batchtest fork="yes">
         <fileset dir="${src.dir}">

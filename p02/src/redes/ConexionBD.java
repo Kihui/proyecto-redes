@@ -32,7 +32,7 @@ public class ConexionBD {
 	try {
 	    Class.forName(driver);
 	    conn = DriverManager.getConnection(url);
-	} catch(Exception e) {System.err.println("Error en la creación de la conexión");}
+	} catch(Exception e) {System.err.println("Error en la creación de la conexión");e.printStackTrace();}
     }
 
     /** 
