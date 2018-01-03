@@ -21,7 +21,7 @@ public class Controlador{
 
     public boolean abrirConexion() {
 	conn.abre();
-	return conn != null;
+	return !conn.isClosed();
     }
 
     public void cerrarConexion() {
@@ -35,13 +35,18 @@ public class Controlador{
      * @return String el url del pokémon
      */
     public String getPokemon(String entrenador, String pokemon) {
+	if(!abrirConexion())
+	    return null;
+	String s = null;
 	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = \""+entrenador+"\" AND pokemon.name = \""+pokemon+"\"");
 	//rs.next();
 	try{
-	    return rs.getString("url");
+	    s = rs.getString("url");
+	    cerrarConexion();
 	}
 	catch(Exception e){System.err.println("Error en la consulta de la pokedex");}
-	return null;	
+	
+	return s;	
     }
 
     /**
@@ -50,16 +55,22 @@ public class Controlador{
      * @return String el nombre del pokémon disponible para captura.
      */
     public String getRandomPokemon() {
+	if(!abrirConexion())
+	    return null;
+	String s = null;
 	Random rand = new Random();
 	int random = rand.nextInt(150 - 1 + 1) + 1;
 	System.out.println(random);
 	ResultSet rs = makeQuery("SELECT name from pokemon WHERE id = "+random);
 	//rs.next();
 	try{
-	    return rs.getString("name");
+	    s = rs.getString("name");
+	    cerrarConexion();
+	    if(conn == null)
+		System.out.println("S[i se hace null");
 	}
 	catch (Exception e){System.err.println("Error en la obtención de un pokemon aleatorio");}
-	return null;
+	return s;
     }
 
     /** 
@@ -69,17 +80,19 @@ public class Controlador{
      * @return boolean si la inserción fue exitosa.
      */
     public boolean addPokemon(String entrenador, String pokemon){
-	//boolean exito = false;
 	String s = getPokemon(entrenador, pokemon);
+	//boolean exito = false;
+	if(!abrirConexion())
+	    return false;
 	//supuestamente a prueba de fallos porque los argumentos no están en manos del cliente .
 	try {
 	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = \""+entrenador+"\"").getInt("id");
 	    int id_p = makeQuery("SELECT id FROM pokemon WHERE name = \""+pokemon+"\"").getInt("id");
-	    if(s != null) {
+	    if(s != null)
 		makeQuery("UPDATE pokedex SET counter = counter+1 WHERE id_entrenador = "+id_e+" AND id_pokemon = "+id_p);
-		return true;
-	    }
-	    makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
+	    else
+		makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
+	    cerrarConexion();
 	    return true;
 	}
 	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
@@ -87,7 +100,7 @@ public class Controlador{
     }
 
     /**
-     * Método auxiliar para efectuar un query a la base de datos.
+     * Método auxiliar para efectuar una query a la base de datos.
      * @param q la cadena con la consulta a la base.
      * @return ResultSet resultado de la consulta.
      */

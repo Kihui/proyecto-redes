@@ -24,6 +24,13 @@ public class ConexionBD {
 	this.url = url;
     }
 
+    public boolean isClosed(){
+	try{
+	return conn.isClosed();
+	} catch(SQLException sqle){System.err.println("No existe conexión."); sqle.printStackTrace();}
+	return false;
+    }
+
     /**
      * Apertura de la conexión
      *
