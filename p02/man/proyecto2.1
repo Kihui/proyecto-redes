@@ -1,0 +1,35 @@
+.\" Manual del proyecto
+.TH man 7 "Dec 2017 - Ene 2018" "1.0" "Proyecto 2 de Redes de Computadoras"
+.\" La sección 7 del manual es la de miscelánea
+.SH NOMBRE
+proyecto2 \- protocolo de la capa de aplicación 
+
+.SH SINOPSIS
+java -jar proyecto2.jar [opción...] [parámetros]
+
+.SH DESCRIPCIÓN
+Esta aplicación fue creada con la finalidad de implementar un protocolo de la capa de aplicación en que el usuario, conectado del lado del cliente, solicite un pokémon a capturar. El servidor elegirá aleatoriamente alguno de los pokémon que estén en su base de datos, se lo ofrecerá al usuario y, si éste acepta capturarlo, también aleatoriamente se indicará si logró capturarlo o no.
+
+El usuario también podrá ser capaz de consultar su Pokédex, con los nombres de los pokémon que ha capturado y la imagen de cada pokémon que seleccione.
+
+.SH OPCIONES
+-c	ejecutar la aplicación como cliente
+.br
+-s	ejecutar la aplicación como servidor
+
+.SH PARÁMETROS
+Si el programa se ejecuta como cliente, se deben especificar tanto la dirección IP que tiene asignado el servidor como el puerto por el cual se conectará. En caso contrario, el servidor no requiere estos parametros pues el puerto en el que escucha por defecto es el 9999.
+
+.SH EJEMPLOS
+java -jar proyecto2 -s
+.br
+java -jar proyecto2 -c 127.0.0.1 6666
+
+.SH AUTORES
+Carlos Gerardo Acosta Hernández	
+.br
+Andrea Itzel González Vargas
+.br
+Luis Pablo Mayo Vega
+
+
