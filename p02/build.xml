@@ -78,31 +78,26 @@
   </target>
 
   <target name="man">
-      <echo>
-        Instalando páginas de manual para *NIX.
-        Se requieren permisos de superusuario
-      </echo>
-      <!--exec dir="." executable="bash">
-        <arg value="export"/>
-        <arg path="$MANPATH:${man.dir}"/>
-      </exec-->
-      <exec dir="${man.dir}" executable="sudo" failonerror="true">
-          <arg value="install"/>
-          <arg value="-D"/>
-          <arg file="${man.dir}/proyecto2.1"/>
-          <arg value="-m"/>
-          <arg value="644"/>
-          <arg file="/usr/local/man/man1/proyecto2.1"/>
-	  </exec>      
-	  <exec dir="." executable="sudo" failonerror="true">
-        <arg value="gzip"/>
-        <arg value="-f"/>
-        <arg file="/usr/local/man/man1/proyecto2.1"/>
-      </exec>  
-      <echo>
-	        Para ver el manual, ejecute:
-	        man proyecto2
-      </echo>
+    <echo>
+      Instalando páginas de manual para *NIX.
+      Se requieren permisos de superusuario
+    </echo>
+    <exec dir="${man.dir}" executable="sudo" failonerror="true">
+      <arg value="install"/>
+      <arg value="-D"/>
+      <arg file="${man.dir}/proyecto2.1"/>
+      <arg value="-m"/>
+      <arg value="644"/>
+      <arg file="/usr/local/man/man1/proyecto2.1"/>
+    </exec>      
+    <exec dir="." executable="sudo" failonerror="true">
+      <arg value="gzip"/>
+      <arg value="-f"/>
+      <arg file="/usr/local/man/man1/proyecto2.1"/>
+    </exec>  
+    <echo>
+      Para ver el manual, ejecute:
+      man proyecto2
+    </echo>
   </target>    
-
 </project>
