@@ -1,20 +1,22 @@
 package redes;
 
 import java.sql.ResultSet;
+import java.util.Random;
+import java.sql.SQLException;
 
 /**
  * Clase controlador 
  *
  */
 public class Controlador{
-    private ConexionBD con;
+    private ConexionBD conn;
 
     /**
      * Constructor de la clase
      * @param url la ruta del archivo de base de datos 
      */
     public Controlador(String url) {
-	con = ConexionBD("org.sqlite.JDBC", "jdbc:sqlite:"+url);		    
+	conn = new ConexionBD("org.sqlite.JDBC", "jdbc:sqlite:"+url);		    
     }
 
     public boolean abrirConexion() {
@@ -33,11 +35,12 @@ public class Controlador{
      * @return String el url del pokémon
      */
     public String getPokemon(String entrenador, String pokemon) {
-	rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = "+entrenador+" AND pokemon.name = "+pokemon);
+	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = "+entrenador+" AND pokemon.name = "+pokemon);
 	//rs.next();
-	if (rs != null)
+	try{
 	    return rs.getString("url");
-	System.err.println("Error en la consulta de la pokedex");
+	}
+	catch(Exception e){System.err.println("Error en la consulta de la pokedex");}
 	return null;	
     }
 
@@ -50,11 +53,12 @@ public class Controlador{
 	Random rand = new Random();
 	int random = rand.nextInt(150 - 1 + 1) + 1;
 	System.out.println(random);
-	rs = makeQuery("SELECT name from pokemon WHERE id = "+random);
+	ResultSet rs = makeQuery("SELECT name from pokemon WHERE id = "+random);
 	//rs.next();
-	if (rs != null)
-	    return rs.getString("name");    
-	System.err.println("Error en la obtención de un pokemon aleatorio");
+	try{
+	    return rs.getString("name");
+	}
+	catch (Exception e){System.err.println("Error en la obtención de un pokemon aleatorio");}
 	return null;
     }
 
@@ -78,7 +82,8 @@ public class Controlador{
 	    makeQuery("INSERT INTO pokedex VALUES("+id_p+","+id_e+")");
 	    return true;
 	}
-	catch(SQLExceptio sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
+	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
+	return false;
     }
 
     /**
