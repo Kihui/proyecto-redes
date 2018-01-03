@@ -4,19 +4,19 @@ DROP TABLE IF EXISTS entrenador;
 
 CREATE TABLE pokemon (
        id    INTEGER PRIMARY KEY AUTOINCREMENT,
-       name  VARCHAR(32),
-       url   VARCHAR(32)
+       name  VARCHAR(32) UNIQUE NOT NULL,
+       url   VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE entrenador (
        id    INTEGER PRIMARY KEY AUTOINCREMENT,
-       name  VARCHAR(32)
+       name  VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE pokedex (
        id_pokemon    INTEGER,
        id_entrenador INTEGER,
-       counter	     INTEGER,
+       counter	     INTEGER DEFAULT 0,
        PRIMARY KEY(id_pokemon, id_entrenador),
        FOREIGN KEY(id_pokemon) references pokemon(id),
        FOREIGN KEY(id_entrenador) references entrenador(id)
