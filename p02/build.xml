@@ -3,7 +3,7 @@
 
   <property name="build.dir" value="build" />
   <property name="src.dir"   value="src" />
-  <property name="lib.dir"   value="lib" />
+  <!--<property name="lib.dir"   value="lib" />-->
   <property name="doc.dir"   value="doc" />
 
   <target name="proyecto2.jar" depends="compile.proyecto2">
@@ -24,11 +24,11 @@
       includeantruntime="false"
       deprecation="true"
       nowarn="off">
-      <classpath>
+      <!--<classpath>
 	<fileset dir="${lib.dir}">
 	  <include name="*.jar"/>
 	</fileset>
-      </classpath>
+      </classpath>-->
       <compilerarg value="-Xlint:unchecked"/>
     </javac>
   </target>
