@@ -1,14 +1,16 @@
 package redes;
 
-import java.io.InputStreamReader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Pokentrenador {
 
+    private Estado actual;
     private Socket socket;
-    private PrintWriter out;
+    private OutputStream out;
     private BufferedReader in;
     private BufferedReader inSys;
     private boolean continua;
@@ -16,13 +18,15 @@ public class Pokentrenador {
     public Pokentrenador(String ip, int puerto) {
         try {
             socket = new Socket(ip, puerto);
-            out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            out = socket.getOutputStream();
+            in = socket.getInputStream();
+            inSys = new BufferedReader(new InputStreamReader(System.in));
         } catch(Exception e){
             // e.printStackTrace();
             error("Error al intentar conectarse al servidor.", true);
         }
         continua = true;
+        actual = Estado.Q0;
     }
 
     private void error(String mensaje, boolean salir) {
@@ -32,31 +36,53 @@ public class Pokentrenador {
     }
 
     public void empezar() {
-        inSys = new BufferedReader(new InputStreamReader(System.in));
+        byte[] respuesta = null;
         while(continua) {
             try {
-                System.out.println("Mensaje: ");
-                String mensaje = inSys.readLine();
-                String respuesta = mandaMensaje(mensaje);
-                if(mensaje.equals("END"))
-                    terminar();
-                else {
-                    if(respuesta != null) {
-                        System.out.println(respuesta);
-                    } else error("Error al recibir mensaje del servidor, puede que la conexión " +
-                                 "haya expirado. Cerrando conexión.", true);
-                }
+                byte[] mensaje = siguienteEstado(respuesta);
+                respuesta = mandaMensaje(mensaje);       
+                if(respuesta == null) 
+                    error("Error al recibir mensaje del servidor, puede que la conexión " +
+                          "haya expirado. Cerrando conexión.", true);
             } catch(Exception e) {
                 error("Error al leer entrada.", false);
             }
         }
     }
     
-    public String mandaMensaje(String mensaje) {
-            out.println(mensaje);
-            String resp = "";
+    private byte[] siguienteEstado(byte[] mensaje) {
+        switch(actual) {
+        case Q0:
+            break;
+        case Q1:
+            break;
+        case Q2:
+            break;
+        case Q3:
+            break;
+        case Q4:
+            break;
+        case Q5:
+            break;
+        case Q6:
+            break;
+        case Q7:
+            break;
+        case Q8:
+            break;
+        case Q9:
+            break;
+        return null;
+    }
+    
+    private byte[] mandaMensaje(byte[] mensaje) {
+            byte[] resp = null;
             try {
-                resp = in.readLine();
+                out.write(mensaje);
+                byte[] mensaje = new byte[3];
+                in.read(codigo);
+                mensaje = new byte[tamanio];
+                in.read(codigo);
             } catch (Exception e){
                 error("Error al mandar mensaje al servidor.", true);
                 // e.printStackTrace();

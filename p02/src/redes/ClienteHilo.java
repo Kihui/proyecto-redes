@@ -7,11 +7,12 @@ import java.net.Socket;
 
 public class ClienteHilo extends Thread {
 
-    private boolean continua;
+    private Estado actual;
     private Socket socket;
     private PrintWriter out;
+    private boolean continua;
     private BufferedReader in;
-    private static final int TIMEOUT = 10000;
+    private static final int TIMEOUT = 60000;
     
     public ClienteHilo(Socket s) {
         socket = s;
