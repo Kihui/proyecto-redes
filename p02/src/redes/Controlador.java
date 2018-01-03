@@ -28,13 +28,31 @@ public class Controlador{
 	conn.cierra();
     }
 
+    /**
+     * Método de consulta de usuarios. Para permitir el inicio de sesión. 
+     * @param nombre el nombre de usuario que intenta iniciar sesión.
+     * @return boolean true en caso de que haya coincidencia en la bd., false en caso contrario.
+     */
+    public synchronized boolean findUser(String nombre){
+	if(!abrirConexion())
+	    return false;
+        ResultSet rs = makeQuery("SELECT name from entrenador WHERE name = \""+nombre+"\"");
+	String name = null;
+	try{
+	    name = rs.getString("name");
+	} catch(SQLException sqle){System.err.println("Error en la obtención del nombre de usuario.");sqle.printStackTrace();}
+	cerrarConexion();
+	return name != null;
+        
+    }
+
     /** 
-     * Método de consulta en la pokédex. Se supone que ya está abierta la conexión.
+     * Método de consulta en la pokédex.
      * @param pokemon el nombre del pokémon a buscar.
      * @param entrenador el nombre del entrenador asociado.
      * @return String el url del pokémon
      */
-    public String getPokemon(String entrenador, String pokemon) {
+    public synchronized String getPokemon(String entrenador, String pokemon) {
 	if(!abrirConexion())
 	    return null;
 	String s = null;
@@ -42,10 +60,9 @@ public class Controlador{
 	//rs.next();
 	try{
 	    s = rs.getString("url");
-	    cerrarConexion();
 	}
 	catch(Exception e){System.err.println("Error en la consulta de la pokedex");}
-	
+	cerrarConexion();
 	return s;	
     }
 
@@ -54,7 +71,7 @@ public class Controlador{
      * para capturar. Se supone que ya está abierta la conexión.
      * @return String el nombre del pokémon disponible para captura.
      */
-    public String getRandomPokemon() {
+    public synchronized String getRandomPokemon() {
 	if(!abrirConexion())
 	    return null;
 	String s = null;
@@ -65,11 +82,9 @@ public class Controlador{
 	//rs.next();
 	try{
 	    s = rs.getString("name");
-	    cerrarConexion();
-	    if(conn == null)
-		System.out.println("S[i se hace null");
 	}
 	catch (Exception e){System.err.println("Error en la obtención de un pokemon aleatorio");}
+	cerrarConexion();
 	return s;
     }
 
@@ -77,26 +92,28 @@ public class Controlador{
      * Método para agregar un pokémon a la pokédex de un entrenador.
      * @param pokemon el nombre del pokémon a agregar a la pokédex.
      * @param entrenador el nombre del dueño de la pokédex.
-     * @return boolean si la inserción fue exitosa.
+     * @return la ruta url de la imagen del pokémon.
      */
-    public boolean addPokemon(String entrenador, String pokemon){
+    public synchronized String addPokemon(String entrenador, String pokemon){
 	String s = getPokemon(entrenador, pokemon);
 	//boolean exito = false;
 	if(!abrirConexion())
-	    return false;
+	    return null;
 	//supuestamente a prueba de fallos porque los argumentos no están en manos del cliente .
+	String out = null;
 	try {
 	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = \""+entrenador+"\"").getInt("id");
-	    int id_p = makeQuery("SELECT id FROM pokemon WHERE name = \""+pokemon+"\"").getInt("id");
+	    ResultSet pq = makeQuery("SELECT id,url FROM pokemon WHERE name = \""+pokemon+"\"");
+	    int id_p = pq.getInt("id");
+	    out = pq.getString("url");
 	    if(s != null)
 		makeQuery("UPDATE pokedex SET counter = counter+1 WHERE id_entrenador = "+id_e+" AND id_pokemon = "+id_p);
 	    else
 		makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
-	    cerrarConexion();
-	    return true;
 	}
 	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
-	return false;
+	cerrarConexion();
+	return out;
     }
 
     /**

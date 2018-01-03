@@ -33,12 +33,17 @@ public class ControladorTest {
     }
 
     @Test public void addPokemonTest(){
-	boolean b = controlador.addPokemon("Paulo", "Haunter");
-	Assert.assertTrue(b);
+        String b = controlador.addPokemon("Paulo", "Haunter");
+	Assert.assertTrue(b != null);
 	System.out.println("Haunter agregado al pokedex de Paulo.");
 	String find = controlador.getPokemon("Paulo", "Haunter");
 	Assert.assertTrue(find != null);
 	controlador.cerrarConexion();
+    }
+
+    @Test public void findUserTest(){
+        Assert.assertTrue(controlador.findUser("Paulo"));
+        System.out.println("I buried Paul.");
     }
     
 }
