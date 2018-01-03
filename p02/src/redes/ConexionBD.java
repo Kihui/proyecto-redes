@@ -54,11 +54,14 @@ public class ConexionBD {
 	ResultSet resultSet = null;
 	try{
 	    Statement statement = conn.createStatement();
-	    resultSet = statement.executeQuery(q);
+	    if(q.charAt(0) == 'S')
+		resultSet = statement.executeQuery(q);
+	    else
+		statement.executeUpdate(q);
 	    //print(" Éxito.\n")
 	} catch(SQLException e) {
 	    System.err.println(" Error en consulta.");
-	    System.err.println(e.getMessage());
+	    e.printStackTrace();
 	    
 	}
 	return resultSet;

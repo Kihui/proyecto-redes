@@ -16,6 +16,7 @@ public class ControladorTest {
      */
     public ControladorTest(){
         controlador = new Controlador("src/sql/hi.db");
+	//controlador.cerrarConexion();
 	Assert.assertTrue(controlador.abrirConexion());
     }
 
@@ -23,6 +24,21 @@ public class ControladorTest {
 	String s = controlador.getRandomPokemon();
 	Assert.assertTrue(s != null);
 	System.out.println("Pokemon obtenido aleatoriamente: "+s);
+    }
+
+    @Test public void getPokemonTest(){
+	String url = controlador.getPokemon("Paulo", "Pikachu");
+	Assert.assertTrue(url != null);
+	System.out.println("Ruta del pokemon: "+url);
+    }
+
+    @Test public void addPokemonTest(){
+	boolean b = controlador.addPokemon("Paulo", "Haunter");
+	Assert.assertTrue(b);
+	System.out.println("Haunter agregado al pokedex de Paulo.");
+	String find = controlador.getPokemon("Paulo", "Haunter");
+	Assert.assertTrue(find != null);
+	controlador.cerrarConexion();
     }
     
 }

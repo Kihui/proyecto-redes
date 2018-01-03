@@ -35,7 +35,7 @@ public class Controlador{
      * @return String el url del pokémon
      */
     public String getPokemon(String entrenador, String pokemon) {
-	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = "+entrenador+" AND pokemon.name = "+pokemon);
+	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = \""+entrenador+"\" AND pokemon.name = \""+pokemon+"\"");
 	//rs.next();
 	try{
 	    return rs.getString("url");
@@ -73,13 +73,13 @@ public class Controlador{
 	String s = getPokemon(entrenador, pokemon);
 	//supuestamente a prueba de fallos porque los argumentos no están en manos del cliente .
 	try {
-	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = "+entrenador).getInt("id");
-	    int id_p = makeQuery("SELECT id FROM pokemon WHERE name = "+pokemon).getInt("id");
+	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = \""+entrenador+"\"").getInt("id");
+	    int id_p = makeQuery("SELECT id FROM pokemon WHERE name = \""+pokemon+"\"").getInt("id");
 	    if(s != null) {
-		makeQuery("UPDATE pokedex SET counter = counter+1 WHERE id_entrenador = "+entrenador+" AND id_pokemon = "+pokemon);
+		makeQuery("UPDATE pokedex SET counter = counter+1 WHERE id_entrenador = "+id_e+" AND id_pokemon = "+id_p);
 		return true;
 	    }
-	    makeQuery("INSERT INTO pokedex VALUES("+id_p+","+id_e+")");
+	    makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
 	    return true;
 	}
 	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
