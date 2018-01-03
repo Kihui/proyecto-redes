@@ -4,6 +4,10 @@ import java.io.OutputStream;
 import java.io.InputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Random;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.Path;
 
 /**
  * <p>Clase que contiene la lógica para el manejo en un hilo
@@ -17,18 +21,26 @@ public class ClienteHilo extends Thread {
     private InputStream in;
     private boolean continua;
     private FabricaMensaje fabrica;
-
+    private Controlador con;
+    private String entrenador;
+    private Random random;
+    private int intentos_max;
+    private int id;
+    
     /**
      * Constructor que recibe el socket por el cual
      * se efectuará la comunicación con el cliente.
      * @param s el socket con la conexión al cliente
      * @param timeout el tiempo máximo de espera de un mensaje del cliente
-     */    
-    public ClienteHilo(Socket s, int timeout) {
+     */
+    public ClienteHilo(int id, Socket s, int timeout, int i, Controlador c) {
+        this.id = id;
         socket = s;
         continua = true;
         actual = Estado.Q0;
         fabrica = new FabricaMensaje();
+        con = c;
+        intentos_max = i;
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();
@@ -38,110 +50,140 @@ public class ClienteHilo extends Thread {
         }
     }
 
-    /* Imprime el error 'mensaje'. Si salir es true, se sale del programa */
-    private void error(String mensaje, boolean salir) {
-        System.err.println(mensaje);
-        if(salir)
-            System.exit(1);        
-    }
-
     /* Cierra la conexión con el cliente e indica que se termine el programa. */
     private void terminar() {
+        continua = false;
         try {
             in.close();
             out.close();
             socket.close();
-            continua = false;
         } catch(Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.err.println(String.format("Error al cerrar conexión %d", id));
         }
     }    
-    
+
+    /**
+     * Corre el hilo que interactuará con el cliente
+     */
     public void run() {
-        MensajeGenerico respuesta = null;
         while(continua) {
-            byte[] mensaje = siguienteEstado(respuesta);
-            respuesta = mandaMensaje(mensaje);
+            MensajeGenerico mensaje = leeMensaje();
+            byte[] respuesta = siguienteEstado(mensaje);
+            if(respuesta != null)
+                mandaMensaje(respuesta);
         }
-        terminar();
     }
 
+    /* Apartir del nombre de una imagen, regresa su representación en bytes */
+    private byte[] getImagenBytes(String path) {
+        byte[] imagen = null;
+        try {            
+            imagen = Files.readAllBytes(Paths.get(path));
+        } catch (Exception e) {
+            System.err.println(String.format("Error al leer imagen para cliente %d", id));
+          // e.printStackTrace();
+        }
+        return imagen;
+    }
     
-    // NO IMPLEMENTADO**** 
-    /* Estado Q1: "Inicio de sesión" */
-    private byte[] estadoQ1(MensajeGenerico mensaje) {
+    /* Estado Q0: "Conexión establecida, inicio de aplicación" */
+    private byte[] estadoQ0(MensajeGenerico mensaje) {
         byte[] respuesta = null;
+        if(mensaje.getCodigo() == 10) {
+            // Inicio de sesión
+            entrenador = ((Mensaje10)mensaje).getNombre();
+            if(con.findUser(entrenador)) {
+                actual = Estado.Q2;
+                respuesta = fabrica.creaMensaje(20);
+            } else respuesta = fabrica.creaMensaje(44);
+        } else if(mensaje.getCodigo() == 0)
+            terminar();
         return respuesta;
     }
 
-    
-    // NO IMPLEMENTADO**** 
-    /* Estado Q3: "Solicitud de captura de pokemon" */
-    private byte[] estadoQ3(MensajeGenerico mensaje) {
+    /* Estado Q2: "Menú de juego" */
+    private byte[] estadoQ2(MensajeGenerico mensaje) {
         byte[] respuesta = null;
+        if(mensaje.getCodigo() == 12) {
+            // Búsqueda de un pokemon en la pokedex
+            String pokemon = ((Mensaje12)mensaje).getNombre();
+            String path = con.getPokemon(entrenador, pokemon);
+            if(path != null)
+                respuesta = fabrica.creaMensaje(21, pokemon, getImagenBytes(path));
+            else respuesta = fabrica.creaMensaje(44);
+        }
+        else if(mensaje.getCodigo() == 11) {
+            // Cerrar sesión
+            entrenador = null;
+            actual = Estado.Q0;
+        } else if(mensaje.getCodigo() == 13) {
+            // Solicitud de captura de pokemón
+            String pokemon = con.getRandomPokemon();
+            respuesta = fabrica.creaMensaje(22, intentos_max, pokemon);
+            actual = Estado.Q5;
+        }
         return respuesta;
     }
 
-    
-    // NO IMPLEMENTADO**** 
-    /* Estado Q4: "Búsqueda de un pokemon en la pokedex" */
-    private byte[] estadoQ4(MensajeGenerico mensaje) {
+    /* Estado Q5: "Captura de pokemon" */
+    private byte[] estadoQ5(MensajeGenerico mensaje) {        
         byte[] respuesta = null;
+        actual = Estado.Q2;
+        if(mensaje.getCodigo() == 15) {
+            int intentos = ((Mensaje15)mensaje).getIntentos();
+            if(intentos > 1) {
+                String pokemon = ((Mensaje15)mensaje).getNombre();
+                if(random.nextDouble() < 0.3) {
+                    byte[] img = getImagenBytes(con.addPokemon(entrenador, pokemon));
+                    respuesta = fabrica.creaMensaje(24, pokemon, img);                    
+                } else {
+                    respuesta = fabrica.creaMensaje(23, intentos - 1, pokemon);
+                    actual = Estado.Q5;
+                }
+            } else respuesta = fabrica.creaMensaje(41);            
+        }
         return respuesta;
     }
-
     
-    // NO IMPLEMENTADO**** 
-    /* Estado Q6: "Intento de captura de un pokemon" */
-    private byte[] estadoQ6(MensajeGenerico mensaje) {
-        byte[] respuesta = null;
-        return respuesta;
-    }
-
-    
-    // NO IMPLEMENTADO**** 
-    /* Estado Q9: "Cierre de conexion" */
-    private byte[] estadoQ9(MensajeGenerico mensaje) {
-        byte[] respuesta = null;
-        return respuesta;
-    }
-
     /* Avanza a otro estado del automata y
      * regresa el mensaje que se le enviará al cliente */
     private byte[] siguienteEstado(MensajeGenerico mensaje) {
         switch(actual) {
-        case Q1:
-            break;
-        case Q3:
-            break;
-        case Q4:
-            break;
-        case Q6:
-            break;
-        case Q9:
-            break;
+        case Q0: return estadoQ0(mensaje);
+        case Q2: return estadoQ2(mensaje);
+        case Q5: return estadoQ5(mensaje);
         }
         return null;
     }
-
-    /* Se manda mensaje al cliente y se regresa
-     * una instancia de MensajeGenerico con la respuesta     
-     * del cliente. */    
-    private MensajeGenerico mandaMensaje(byte[] mensaje) {
+        
+    /* Se manda mensaje al cliente */
+    private void mandaMensaje(byte[] mensaje) {
+        try {
+            out.write(mensaje);
+        } catch (Exception e) {
+            terminar();
+            System.err.println(String.format("Hubo un error al mandar mensaje " +
+                                             "al cliente %d o la conexión ha expirado. Conexión terminada.", id));
+            // e.printStackTrace();
+        }
+    }
+    
+    /* Se lee un mensaje del cliente y se regresa
+     * una instancia de MensajeGenerico */
+    private MensajeGenerico leeMensaje() {
         MensajeGenerico m = null;
-        if(mensaje != null) {
-            try {
-                out.write(mensaje);
-                byte[] longitud = new byte[4];
-                in.read(longitud);
-                byte[] respuesta = new byte[ByteBuffer.wrap(longitud).asIntBuffer().get()];
-                in.read(respuesta);
-                m = fabrica.getMensaje(respuesta);
+        try {
+            byte[] longitud = new byte[4];
+            in.read(longitud);
+            byte[] respuesta = new byte[ByteBuffer.wrap(longitud).asIntBuffer().get()];
+            in.read(respuesta);
+            m = fabrica.getMensaje(respuesta);
             } catch (Exception e) {
-                terminar();
-                error("Hubo un error o la conexión ha expirado. Conexión terminada.", true);
-                // e.printStackTrace();
-            }
+            terminar();
+            System.err.println(String.format("Hubo un error al leer mensaje " +
+                                             "del cliente %d o la conexión ha expirado. Conexión terminada.", id));
+            // e.printStackTrace();
         }
         return m;
     } 

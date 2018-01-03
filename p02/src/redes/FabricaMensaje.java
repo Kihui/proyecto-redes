@@ -20,8 +20,10 @@ public class FabricaMensaje {
         switch((int)c[0]) {
         case 10: return new Mensaje10(c);
         case 12: return new Mensaje12(c);
+        case 15: return new Mensaje15(c);
         case 21: return new Mensaje21(c);
         case 22: return new Mensaje22(c);
+        case 23: return new Mensaje23(c);
         case 24: return new Mensaje24(c);
         default: return new MensajeGenerico(c);
         }
@@ -80,14 +82,16 @@ public class FabricaMensaje {
     public byte[] creaMensaje(int codigo, int intentos, String nombre) {
         return null;
     }
-
+    
     // NO IMPLEMENTADO ******
     /**
-     * Regresa un arreglo de bytes de la forma [longitud|codigo|imagen].
-     * @param imagen la imagen incluida en el mensaje
+     * Regresa un arreglo de bytes de la forma
+     * [longitud|codigo|intentos].
+     * @param intentos el numero de intentos restantes para
+     *                 la captura de un pokemon
      * @return un mensaje en forma de arreglo de bytes
      */    
-    public byte[] creaMensaje(int codigo, byte[] imagen) {
+    public byte[] creaMensaje(int codigo, int intentos) {
         return null;
     }
 }
