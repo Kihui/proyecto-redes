@@ -1,3 +1,5 @@
+package redes;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -30,7 +32,7 @@ public class ConexionBD {
 	try {
 	    Class.forName(driver);
 	    conn = DriverManager.getConnection(url);
-	} catch(Exception e) {System.err.println("Error en la creación de la conexión");}
+	} catch(Exception e) {System.err.println("Error en la creación de la conexión");e.printStackTrace();}
     }
 
     /** 
@@ -52,11 +54,14 @@ public class ConexionBD {
 	ResultSet resultSet = null;
 	try{
 	    Statement statement = conn.createStatement();
-	    resultSet = statement.executeQuery(q);
+	    if(q.charAt(0) == 'S')
+		resultSet = statement.executeQuery(q);
+	    else
+		statement.executeUpdate(q);
 	    //print(" Éxito.\n")
 	} catch(SQLException e) {
 	    System.err.println(" Error en consulta.");
-	    System.err.println(e.getMessage());
+	    e.printStackTrace();
 	    
 	}
 	return resultSet;

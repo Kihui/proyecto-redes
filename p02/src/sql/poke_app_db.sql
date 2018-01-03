@@ -4,22 +4,22 @@ DROP TABLE IF EXISTS entrenador;
 
 CREATE TABLE pokemon (
        id    INTEGER PRIMARY KEY AUTOINCREMENT,
-       name  VARCHAR(32),
-       url   VARCHAR(32)
+       name  VARCHAR(32) UNIQUE NOT NULL,
+       url   VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE entrenador (
        id    INTEGER PRIMARY KEY AUTOINCREMENT,
-       name  VARCHAR(32)
+       name  VARCHAR(32) UNIQUE NOT NULL
 );
 
 CREATE TABLE pokedex (
-       id_pokemon    INTEGER,
        id_entrenador INTEGER,
-       counter	     INTEGER,
-       PRIMARY KEY(id_pokemon, id_entrenador),
-       FOREIGN KEY(id_pokemon) references pokemon(id),
-       FOREIGN KEY(id_entrenador) references entrenador(id)
+       id_pokemon    INTEGER,
+       counter	     INTEGER DEFAULT 1,
+       PRIMARY KEY(id_entrenador, id_pokemon),
+       FOREIGN KEY(id_entrenador) references entrenador(id),
+       FOREIGN KEY(id_pokemon) references pokemon(id)			
 );
 
 BEGIN TRANSACTION;
@@ -180,5 +180,9 @@ INSERT INTO pokemon(name, url) VALUES("Wigglytuff","static/Wigglytuff.png");
 INSERT INTO pokemon(name, url) VALUES("Zapdos","static/Zapdos.png");
 INSERT INTO pokemon(name, url) VALUES("Zubat","static/Zubat.png");
 
+INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES(1,103);
+INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES(2,129);
+INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES(3,10);
+INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES(4,15);
 
 END TRANSACTION;
