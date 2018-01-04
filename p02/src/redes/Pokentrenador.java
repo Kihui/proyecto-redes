@@ -120,12 +120,22 @@ public class Pokentrenador {
                 System.out.println("Pokémon no encontrado");
             else if(mensaje.getCodigo() == 41)
                 System.out.println("!El pokémon se escapó!");
-            else if(mensaje.getCodigo() == 24) {            
-                System.out.println(String.format("%s fue capturado", ((Mensaje24)mensaje).getNombre()));
-                imagen.mostrarImagen(((Mensaje24)mensaje).getImagen());
+            else if(mensaje.getCodigo() == 24) {
+                String pokemon = ((Mensaje24)mensaje).getNombre();
+                byte[] img = ((Mensaje24)mensaje).getImagen();
+                System.out.println(String.format("%s fue capturado", pokemon));
+                imagen.mostrarImagen(img);
+                System.out.println("¿Guardar imagen? (s o n)");
+                if(scanner.nextLine().equals("s"))
+                    imagen.guardarImagen(pokemon, img);
             } else if(mensaje.getCodigo() == 21) {
-                System.out.println(String.format("%s encontrado", ((Mensaje21)mensaje).getNombre()));
-                imagen.mostrarImagen(((Mensaje21)mensaje).getImagen());
+                String pokemon = ((Mensaje21)mensaje).getNombre();
+                byte[] img = ((Mensaje21)mensaje).getImagen();
+                System.out.println(String.format("%s encontrado", pokemon));
+                imagen.mostrarImagen(img);
+                System.out.println("¿Guardar imagen? (s o n)");
+                if(scanner.nextLine().equals("s"))
+                    imagen.guardarImagen(pokemon, img);
             }
         }
         boolean b = true;

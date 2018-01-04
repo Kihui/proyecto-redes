@@ -10,6 +10,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.util.LinkedList;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 
 /**
  * Clase para mostrar imágenes.
@@ -56,6 +58,22 @@ public class Imagen {
             // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         } catch(Exception e) {
             System.err.println("Error al cargar imagen");
+        }
+    }
+    
+    /**
+     * Guarda una imagen de un pokemon en el directorio capturados/
+     * @param pokemon el pokemon representado en la imagen
+     * @param imagen la imagen en bytes a ser guardada
+     */
+    public void guardarImagen(String pokemon, byte[] imagen) {
+        try {
+        Files.createDirectories(Paths.get("capturados"));       
+        BufferedImage img = ImageIO.read(new ByteArrayInputStream(imagen));
+        ImageIO.write(img, "png", new File(String.format("capturados/%s.png", pokemon)));
+        } catch(Exception e) {
+            e.printStackTrace();
+            System.err.println("No se pudo guardar imagen.");
         }
     }
 }
