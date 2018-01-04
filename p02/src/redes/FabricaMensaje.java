@@ -14,7 +14,8 @@ public class FabricaMensaje {
     /**
      * Crea un objeto de la clase padre MensajeGenerico
      * a partir de un arreglo de bytes.
-     * @param c el arreglo de bytes
+     * @param c el arreglo de bytes.
+     * @return MensajeGenerico una nueva instancia de un mensaje.
      */
     public MensajeGenerico getMensaje(byte[] c) {
         switch((int)c[0]) {
@@ -43,8 +44,9 @@ public class FabricaMensaje {
     /**
      * Regresa un arreglo de bytes de la forma [longitud|10|nombre].
      * La longitud es el tamaño del nombre + 1 (por el código) en bytes.
-     * @param nombre el nombre a ser concatenado en el arreglo
-     * @return un mensaje en forma de arreglo de bytes
+     * @param nombre el nombre a ser concatenado en el arreglo.
+     * @param codigo el código identificador de un mensaje representado con un entero.
+     * @return un mensaje en forma de arreglo de bytes.
      */    
     public byte[] creaMensaje(int codigo, String nombre) {
         byte[] n = nombre.getBytes(StandardCharsets.UTF_8);
@@ -63,6 +65,7 @@ public class FabricaMensaje {
      * [longitud|codigo|longitud_nombre|nombre|imagen].
      * @param nombre el nombre a ser concatenado en el arreglo
      * @param imagen la imagen incluida en el mensaje
+     * @param codigo el código identificador de un mensaje representado con un entero.
      * @return un mensaje en forma de arreglo de bytes
      */    
     public byte[] creaMensaje(int codigo, String nombre, byte[] imagen) {
@@ -90,6 +93,7 @@ public class FabricaMensaje {
      * @param nombre el nombre a ser concatenado en el arreglo
      * @param intentos el numero de intentos restantes para
      *                 la captura de un pokemon
+     * @param codigo el código identificador de un mensaje representado con un entero.
      * @return un mensaje en forma de arreglo de bytes
      */    
     public byte[] creaMensaje(int codigo, int intentos, String nombre) {
@@ -110,6 +114,7 @@ public class FabricaMensaje {
     /**
      * Regresa un arreglo de bytes de la forma
      * [longitud|codigo|intentos].
+     * @param codigo el código identificador de un mensaje representado con un entero.
      * @param intentos el numero de intentos restantes para
      *                 la captura de un pokemon
      * @return un mensaje en forma de arreglo de bytes

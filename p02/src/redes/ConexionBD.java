@@ -53,9 +53,9 @@ public class ConexionBD {
     }
 
     /**
-     * Método para establecer el resultSet dada una consulta en cadena
-     * @param q la cadena que contiene la consulta
-     * 
+     * Método para establecer el resultSet dada una consulta en cadena.
+     * @param q la cadena que contiene la consulta.
+     * @return el conjunto de filas resultantes de la consulta.
      */
     public ResultSet results(String q) {
 	ResultSet resultSet = null;

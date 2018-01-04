@@ -16,7 +16,10 @@ public class Pokeservidor {
     /**
      * Constructor que recibe el puerto
      * por el que aceptarán conexiones.
-     * @param puerto el puerto por el que se aceptarán las conexiones
+     * @param puerto el puerto por el que se aceptarán las conexiones.
+     * @param bd el url relativo de la base de datos.
+     * @param t el valor de timeout.
+     * @param i el valor de intentos máximos.
      */
     public Pokeservidor(int puerto, String bd, int t, int i) {
         try {
