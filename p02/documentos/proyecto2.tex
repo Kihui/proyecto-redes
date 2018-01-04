@@ -166,7 +166,7 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
     21 & \texttt{|long|code|long\_n|name|long\_img|img} & Resultado exitoso de la Pokédex con imagen del pokémon. \\ \hline %wat
     22 & \texttt{|long|code|attempts|name|} & Selección aleatoria de un pokémon salvaje para el cliente. Incluye el máximo número de intentos. \\ \hline
     23 & \texttt{|long|code|attempts|name|} & Pokémon no capturado, disminución del número de intentos. \\ \hline
-    24 & \texttt{|long|code|long\_n|name|long\_img|img|} & Pokémon capturado con imagen incluída. \\ \hline \hline
+    24 & \texttt{|long|code|long\_n|name|img|} & Pokémon capturado con imagen incluída. \\ \hline \hline
     41 & \texttt{|long|code|} & Error: Máximo número de intentos de captura alcanzados. \\ \hline
     44 & \texttt{|long|code|} & Error: Consulta infructuosa. \\ \hline
   \end{tabular}
@@ -269,7 +269,7 @@ Para compilar el proyecto y generar un recopilado de ejecutables de la \textit{J
     [user@host p02]$ ant 
 \end{verbatim}
 \subsubsection{Linux man pages}\label{sec:man}
-Si las instrucciones generales de usod desean incluírse en el \textit{Linux man pages} para así
+Si es preferible que las instrucciones generales de uso sean agregadas al \textit{Linux man pages} para así
 mantener accesible la forma de uso del proyecto, preparamos el siguiente \textit{target} en \textit{ant} para este proposito:\\
 \begin{verbatim}
     [user@host p02]$ ant man
@@ -286,7 +286,10 @@ Para explorar la organización programática del proyecto sin necesidad de visit
 \end{verbatim}
 Esto generará un directorio \textit{doc/}, que contiene un conjunto de documentos en formato \textit{html} descriptivos de cada clase en el código, relacionados unos con otros a través de hipervínculos que permiten una navegación fluida que no necesariamente es posible en la lectura directa del código.
 \subsubsection{Precondiciones}
-Antes de comenzar la ejecución es importante que de las secciones anteriores se haya efectuado cuando menos la \ref{sec:compile}.\\
+Antes de comenzar la ejecución es importante que de las secciones anteriores se haya efectuado cuando menos la \ref{sec:compile}. En caso de querer ahorrar los pasos anteriores y simplemente convenimos que se ejecuten todos, basta con el siguiente \textit{target} de \textit{ant}:
+\begin{verbatim}
+    [user@host p02]$ ant all
+\end{verbatim}
 
 También es importante que el archivo de la base de datos de \textit{SQLite} se encuentre bajo la ruta:
 \textit{src/sql/\textbf{hi.db}}. De no hallarse ahí, pero sí el esquema de la base de datos en el archivo \textit{src/sql/\textbf{poke\_app\_db.sql}}, es posible generar la base de datos ejecutando:
