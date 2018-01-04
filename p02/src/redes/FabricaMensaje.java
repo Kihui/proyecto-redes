@@ -58,19 +58,32 @@ public class FabricaMensaje {
         return b;
     }
 
-    // NO IMPLEMENTADO ******
     /**
      * Regresa un arreglo de bytes de la forma
-     * [longitud|codigo|longitud_nombre|nombre|longitud_imagen|imagen].
+     * [longitud|codigo|longitud_nombre|nombre|imagen].
      * @param nombre el nombre a ser concatenado en el arreglo
      * @param imagen la imagen incluida en el mensaje
      * @return un mensaje en forma de arreglo de bytes
      */    
     public byte[] creaMensaje(int codigo, String nombre, byte[] imagen) {
-        return null;
+        byte[] n = nombre.getBytes(StandardCharsets.UTF_8);
+        int longitud = 5 + n.length + imagen.length;
+        byte[] l = ByteBuffer.allocate(4).putInt(longitud).array();
+        byte[] lnom = ByteBuffer.allocate(4).putInt(n.length).array();
+        byte[] b = new byte[longitud + 4];
+        int j = 0;
+        for(int i = 0; i < 4; i++, j++)            
+            b[j] = l[i];
+        b[j++] = (byte)codigo;
+        for(int i = 0; i < 4; i++, j++)
+            b[j] = lnom[i];
+        for(int i = 0; i < n.length; i++, j++)
+            b[j] = n[i];
+        for(int i = 0; i < imagen.length; i++, j++)
+            b[j] = imagen[i];
+        return b;
     }
 
-    // NO IMPLEMENTADO ******
     /**
      * Regresa un arreglo de bytes de la forma
      * [longitud|codigo|intentos|nombre].
@@ -80,10 +93,20 @@ public class FabricaMensaje {
      * @return un mensaje en forma de arreglo de bytes
      */    
     public byte[] creaMensaje(int codigo, int intentos, String nombre) {
-        return null;
+        byte[] n = nombre.getBytes(StandardCharsets.UTF_8);
+        int longitud = n.length + 2;
+        byte[] b = new byte[longitud + 4];
+        byte[] l = ByteBuffer.allocate(4).putInt(longitud).array();
+        int j = 0;
+        for(int i = 0; i < 4; i++, j++)            
+            b[j] = l[i];
+        b[j++] = (byte)codigo;
+        b[j++] = (byte)intentos;
+        for(int i = 0; i < n.length; i++, j++)
+            b[j] = n[i];
+        return b;
     }
     
-    // NO IMPLEMENTADO ******
     /**
      * Regresa un arreglo de bytes de la forma
      * [longitud|codigo|intentos].
@@ -92,6 +115,12 @@ public class FabricaMensaje {
      * @return un mensaje en forma de arreglo de bytes
      */    
     public byte[] creaMensaje(int codigo, int intentos) {
-        return null;
+        byte[] b = new byte[6];
+        byte[] longitud = ByteBuffer.allocate(4).putInt(2).array();
+        for(int i = 0; i < 4; i++)
+            b[i] = longitud[i];
+        b[4] = (byte)codigo;
+        b[5] = (byte)intentos;
+        return b;
     }
 }

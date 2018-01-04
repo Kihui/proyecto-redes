@@ -9,8 +9,8 @@ public class Pokeservidor {
     
     private ServerSocket serverSocket;
     /* Constate que indica el timeout de los sockets cliente */
-    private static final int TIMEOUT = 60000;
-    private static final int INTENTOS_MAX = 5;
+    private int timeout;
+    private int intentos_max;
     private Controlador controlador;
     
     /**
@@ -18,10 +18,12 @@ public class Pokeservidor {
      * por el que aceptarán conexiones.
      * @param puerto el puerto por el que se aceptarán las conexiones
      */
-    public Pokeservidor(int puerto, String bd) {
+    public Pokeservidor(int puerto, String bd, int t, int i) {
         try {
             serverSocket = new ServerSocket(puerto);
             controlador = new Controlador(bd);
+            timeout = t;
+            intentos_max = i;
         } catch(Exception e){
             // e.printStackTrace();
             terminar();
@@ -43,7 +45,7 @@ public class Pokeservidor {
         int id = 0;
         try {
             while(true)
-                new ClienteHilo(id++, serverSocket.accept(), TIMEOUT, INTENTOS_MAX, controlador).start();
+                new ClienteHilo(id++, serverSocket.accept(), timeout, intentos_max, controlador).start();
         } catch(Exception e){
             // e.printStackTrace();
             terminar();
