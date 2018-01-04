@@ -10,17 +10,21 @@ public class Pokeservidor {
     private ServerSocket serverSocket;
     /* Constate que indica el timeout de los sockets cliente */
     private static final int TIMEOUT = 60000;
+    private static final int INTENTOS_MAX = 5;
+    private Controlador controlador;
     
     /**
      * Constructor que recibe el puerto
      * por el que aceptarán conexiones.
      * @param puerto el puerto por el que se aceptarán las conexiones
      */
-    public Pokeservidor(int puerto) {
+    public Pokeservidor(int puerto, String bd) {
         try {
             serverSocket = new ServerSocket(puerto);
+            controlador = new Controlador(bd);
         } catch(Exception e){
             // e.printStackTrace();
+            terminar();
             error("Hubo un error al correr el servidor.", true);
         }
     }
@@ -36,11 +40,13 @@ public class Pokeservidor {
      * Escucha conexiones de los clientes y crea un hilo para cada uno.
      */
     public void empezar() {
+        int id = 0;
         try {
             while(true)
-                new ClienteHilo(serverSocket.accept(), TIMEOUT).start();
+                new ClienteHilo(id++, serverSocket.accept(), TIMEOUT, INTENTOS_MAX, controlador).start();
         } catch(Exception e){
             // e.printStackTrace();
+            terminar();
             error("Hubo un error al aceptar conexión de un cliente.", true);
         }
     }
@@ -51,8 +57,10 @@ public class Pokeservidor {
     public void terminar() {
         try {
             serverSocket.close();
+            controlador.cerrarConexion();
         } catch(Exception e){
-            e.printStackTrace();
+            // e.printStackTrace();
+            error("Hubo un error al deshabilitar el servidor.", true);
         }
     }
 }
