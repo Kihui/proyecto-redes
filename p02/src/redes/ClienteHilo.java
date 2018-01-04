@@ -41,6 +41,7 @@ public class ClienteHilo extends Thread {
         fabrica = new FabricaMensaje();
         con = c;
         intentos_max = i;
+        random = new Random();
         try {
             out = socket.getOutputStream();
             in = socket.getInputStream();

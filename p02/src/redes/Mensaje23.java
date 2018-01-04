@@ -1,5 +1,8 @@
 package redes;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
 public class Mensaje23 extends MensajeGenerico {
 
     int intentos;
@@ -7,8 +10,8 @@ public class Mensaje23 extends MensajeGenerico {
     
     public Mensaje23(byte[] c) {
         super(c);
-        intentos = 0;
-        nombre = null;
+        intentos = c[1];
+        nombre = new String(Arrays.copyOfRange(c, 2, c.length), StandardCharsets.UTF_8);
     }
 
     public int getIntentos() {

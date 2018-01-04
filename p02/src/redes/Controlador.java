@@ -40,7 +40,10 @@ public class Controlador{
 	String name = null;
 	try{
 	    name = rs.getString("name");
-	} catch(SQLException sqle){System.err.println("Error en la obtención del nombre de usuario.");sqle.printStackTrace();}
+	} catch(SQLException sqle){
+            System.err.println("Nombre de usuario no encontrado.");
+            // sqle.printStackTrace();
+        }
 	cerrarConexion();
 	return name != null;
         
@@ -61,7 +64,7 @@ public class Controlador{
 	try{
 	    s = rs.getString("url");
 	}
-	catch(Exception e){System.err.println("Error en la consulta de la pokedex");}
+	catch(Exception e){System.err.println("Pokemon no encontrado en la pokedex de usuario");}
 	cerrarConexion();
 	return s;	
     }
@@ -114,7 +117,10 @@ public class Controlador{
 	    else
 		makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
 	}
-	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
+	catch(SQLException sqle){
+            System.err.println("Error agregando el pokémon a la pokédex.");
+            // sqle.printStackTrace();
+        }
 	cerrarConexion();
 	return out;
     }
