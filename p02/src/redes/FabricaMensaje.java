@@ -41,7 +41,7 @@ public class FabricaMensaje {
     }
     
     /**
-     * Regresa un arreglo de bytes de la forma [longitud|10|nombre].
+     * Regresa un arreglo de bytes de la forma [longitud|codigo|nombre].
      * La longitud es el tamaño del nombre + 1 (por el código) en bytes.
      * @param nombre el nombre a ser concatenado en el arreglo
      * @return un mensaje en forma de arreglo de bytes
