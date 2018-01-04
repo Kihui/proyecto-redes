@@ -297,6 +297,199 @@ Para consultar su pokédex, el usuario deberá ingresar el nombre del pokémon q
 
 Si el usuario decide cerrar su sesión, regresará a la pantalla de inicio de la aplicación y se le preguntará si desea iniciar sesión de nuevo o cerrar la conexión entre los hosts. \\
 
-%\subsection{Demostración del funcionamiento}
+\subsection{Demostración del funcionamiento}
+
+A continuación se ilustra la experiencia de un cliente al ejecutar el programa, junto con los datos capturados por Wireshark de la comunicación entre cliente y servidor. \\
+
+El cliente se conectó desde la misma máquina que el servidor, hacia el puerto 9999.
+
+\subsubsection{Inicio de sesión}
+
+Se muestra el menú de inicio de sesión, junto con los datos ingresados por el cliente.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=0.5\textwidth]{01}
+  \caption{Menú de inicio de sesión}
+  \label{inicioSesion}
+\end{figure}
+
+En la interacción mostrada en la Figura \ref{inicioSesion}, se le pidió al usuario que escogiera entre iniciar sesión y cerrar la conexión. El cliente pidió iniciar sesión con el usuario \texttt{chepe} mandando el siguiente mensaje con código 10:
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{03}
+  \caption{Mensaje con código 10}
+\end{figure}
+
+El servidor contestó con el mensaje de error con código 44, indicando que tal usuario no se encuentra registrado en la base de datos.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{04}
+  \caption{Mensaje de error con código 44}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{05}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{06}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{07}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{08}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{09}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{10}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{11}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{13}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{14}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{15}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{16}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{17}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{18}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{19}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{20}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{21}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{22}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{23}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{24}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{25}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{26}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{27}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{28}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{29}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{30}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{31}
+  \caption{}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=\textwidth]{32}
+  \caption{}
+\end{figure}
+
+
 
 \end{document}
