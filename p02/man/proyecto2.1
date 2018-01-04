@@ -2,29 +2,50 @@
 .TH man 7 "Dec 2017 - Ene 2018" "1.0" "Proyecto 2 de Redes de Computadoras"
 .\" La sección 7 del manual es la de miscelánea
 .SH NOMBRE
-proyecto2   \-  protocolo de la capa de aplicación 
+proyecto2 - Protocolo de la capa de aplicación 
 
 .SH SINOPSIS
-java -jar proyecto2.jar [opción...] [parámetros]
+.B java -jar proyecto2.jar
+[opciones]...
 
 .SH DESCRIPCIÓN
 Esta aplicación fue creada con el objetivo de implementar un protocolo de la capa de aplicación en el que el usuario, conectado del lado del cliente, solicite un pokémon a capturar. El servidor elegirá aleatoriamente alguno de los pokémon que estén en su base de datos, se lo ofrecerá al usuario y, si éste acepta capturarlo, también aleatoriamente se indicará si logró capturarlo o no.
 
 El usuario también podrá ser capaz de consultar su Pokédex, con los nombres de los pokémon que ha capturado y la imagen de cada pokémon que seleccione.
-
+.PP
 .SH OPCIONES
--c	ejecutar la aplicación como cliente
-.br
--s	ejecutar la aplicación como servidor
-
-.SH PARÁMETROS
-Si el programa se ejecuta como cliente, se deben especificar tanto la dirección IP que tiene asignado el servidor como el puerto por el cual se conectará. En caso contrario, el servidor no requiere estos parametros pues el puerto en el que escucha por defecto es el 9999.
+.TP
+.B -c
+Se ejecuta la aplicación como cliente
+.TP
+.B -p PUERTO
+Puerto por el que aceptarán las conexiones de los clientes. En caso de correr el programa como cliente, es el puerto del servidor al que se hará la conexión. El puerto por defecto es 9999.
+.TP
+.B -s SERVIDOR
+Servidor al que el cliente se conectará. El servidor por defecto es 127.0.0.1.
+.TP
+.B -t TIMEOUT
+Tiempo de inactividad en segundos tras el cual se cerrará la conexión de los clientes. Sólo se utiliza si se corre el programa como servidor. Si no se especifica el valor por defecto es 60.
+.TP
+.B -b BASE
+Ruta de la base de datos de SQLITE3 que el servidor utilizará para realizar las búsquedas de usuarios y pokemones. Por defecto es src/sql/base.db
+.TP
+.B -i INTENTOS
+Número de intentos máximos de captura de un pokemón que el servidor le permitirá realizar a sus clientes. Por defecto tiene como valor 5.
 
 .SH EJEMPLOS
-java -jar proyecto2 -s
-.br
-java -jar proyecto2 -c 127.0.0.1 6666
-
+.TP
+.B java -jar proyecto2.jar
+Se ejecuta el programa como servidor, utilizando el puerto 9999 para escuchar las conexiones de los clientes.
+.TP
+.B java -jar proyecto2.jar -c
+Se ejecuta el programa como cliente, conectándose al servidor 127.0.0.1 por el puerto 9999.
+.TP
+.B java -jar proyecto2.jar -c -p 1234 -s miservidor.foo
+Se conecta el cliente por el puerto 1234 al servidor miservifor.foo.
+.TP
+.B java -jar proyecto2.jar -t 30 -i 3 -p 1234 -b src/sql/pokebase.sql
+Se habilita el servidor que esucha conexiones por el puerto 1234, utilizando la base de datos src/sql/pokebase.sql. Permite máximo 3 intentos para capturar in pokémon y deshabilita las conexiones de los clientes después de 30 segundos de inactividad.
 .SH AUTORES
 Carlos Gerardo Acosta Hernández	
 .br

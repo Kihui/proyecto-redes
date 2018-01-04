@@ -34,7 +34,7 @@ public class Pokentrenador {
             in = socket.getInputStream();
             scanner = new Scanner(System.in);
         } catch(Exception e){
-             e.printStackTrace();
+             // e.printStackTrace();
             error("Error al intentar conectarse al servidor.", true);
         }
         continua = true;
@@ -117,9 +117,9 @@ public class Pokentrenador {
             if(mensaje.getCodigo() == 20)
                 System.out.println("Inicio de sesión exitoso");
             else if(mensaje.getCodigo() == 44)
-                System.out.println("Pokemón no encontrado");
+                System.out.println("Pokémon no encontrado");
             else if(mensaje.getCodigo() == 41)
-                System.out.println("!El pokemón se escapó!");
+                System.out.println("!El pokémon se escapó!");
             else if(mensaje.getCodigo() == 24) {            
                 System.out.println(String.format("%s fue capturado", ((Mensaje24)mensaje).getNombre()));
                 imagen.mostrarImagen(((Mensaje24)mensaje).getImagen());
@@ -133,18 +133,18 @@ public class Pokentrenador {
             try {
                 System.out.println("Selecciona una opción");
                 System.out.println("1. Utilizar pokedex");
-                System.out.println("2. Capturar un pokemón");
+                System.out.println("2. Capturar un pokémon");
                 System.out.println("3. Cerrar sesión");
                 int op = scanner.nextInt();
                 scanner.nextLine();
                 if(op == 1) {
-                    System.out.println("¿Qué pokemón quieres buscar?");
+                    System.out.println("¿Qué pokémon quieres buscar?");
                     String pokemon = scanner.nextLine().replace("\n", "");
                     leer = true;
                     if(!pokemon.isEmpty()) {
                         respuesta = fabrica.creaMensaje(12, pokemon);
                         b = false;
-                    } else System.out.println("Nombre de pokemón inválido.");
+                    } else System.out.println("Nombre de pokémon inválido.");
                 } else if(op == 2) {
                     leer = true;
                     respuesta = fabrica.creaMensaje(13);
@@ -207,7 +207,7 @@ public class Pokentrenador {
         return respuesta;
     }
 
-    /* Estado Q6: "Intento de captura de pokemón" */
+    /* Estado Q6: "Intento de captura de pokémon" */
     private byte[] estadoQ6(MensajeGenerico mensaje) {
         if(mensaje.getCodigo() == 24 || mensaje.getCodigo() == 41)
             actual = Estado.Q2;
@@ -266,7 +266,7 @@ public class Pokentrenador {
             imagen.terminar();
         } catch(Exception e){
             error("Error al desconectar cliente", true);
-             e.printStackTrace();
+             // e.printStackTrace();
         }
     }
 }
