@@ -2,7 +2,7 @@ package redes;
 
 public class MultiThreadPrueba{
     public static void MultithreadTest(){
-	Controlador controlador = new Controlador("src/sql/hi.db");
+	Controlador controlador = new Controlador("src/sql/base.db");
 	Hilo[] threads = new Hilo[10];
         for (int x = 0; x < 10; x++) {
 	    threads[x] = new Hilo(x, controlador);

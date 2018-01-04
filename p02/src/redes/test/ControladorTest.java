@@ -15,7 +15,7 @@ public class ControladorTest {
      *
      */
     public ControladorTest(){
-        controlador = new Controlador("src/sql/hi.db");
+        controlador = new Controlador("src/sql/base.db");
 	//controlador.cerrarConexion();
 	//Assert.assertTrue(controlador.abrirConexion());
     }
