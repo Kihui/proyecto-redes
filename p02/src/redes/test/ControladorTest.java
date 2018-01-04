@@ -17,7 +17,7 @@ public class ControladorTest {
     public ControladorTest(){
         controlador = new Controlador("src/sql/hi.db");
 	//controlador.cerrarConexion();
-	Assert.assertTrue(controlador.abrirConexion());
+	//Assert.assertTrue(controlador.abrirConexion());
     }
 
     @Test public void getRandomPokemonTest(){
@@ -44,6 +44,6 @@ public class ControladorTest {
     @Test public void findUserTest(){
         Assert.assertTrue(controlador.findUser("Paulo"));
         System.out.println("I buried Paul.");
-    }
+    } 
     
 }

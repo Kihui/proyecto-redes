@@ -95,18 +95,21 @@ public class Controlador{
      * @return la ruta url de la imagen del pokémon.
      */
     public synchronized String addPokemon(String entrenador, String pokemon){
-	String s = getPokemon(entrenador, pokemon);
-	//boolean exito = false;
+	//String s = getPokemon(entrenador, pokemon);
+	
+	
 	if(!abrirConexion())
 	    return null;
 	//supuestamente a prueba de fallos porque los argumentos no están en manos del cliente .
 	String out = null;
 	try {
+	    ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = \""+entrenador+"\" AND pokemon.name = \""+pokemon+"\"");
+	    
 	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = \""+entrenador+"\"").getInt("id");
 	    ResultSet pq = makeQuery("SELECT id,url FROM pokemon WHERE name = \""+pokemon+"\"");
 	    int id_p = pq.getInt("id");
 	    out = pq.getString("url");
-	    if(s != null)
+	    if(rs.next())
 		makeQuery("UPDATE pokedex SET counter = counter+1 WHERE id_entrenador = "+id_e+" AND id_pokemon = "+id_p);
 	    else
 		makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
@@ -121,7 +124,7 @@ public class Controlador{
      * @param q la cadena con la consulta a la base.
      * @return ResultSet resultado de la consulta.
      */
-    public ResultSet makeQuery(String q) {
+    public synchronized ResultSet makeQuery(String q) {
 	return conn.results(q);
     }
 

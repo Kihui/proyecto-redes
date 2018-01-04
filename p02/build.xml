@@ -10,6 +10,7 @@
   <target name="proyecto2.jar" depends="compile.proyecto2">
     <jar jarfile="proyecto2.jar">
       <zipfileset dir="${build.dir}" prefix="" />
+      <zipgroupfileset dir="lib" includes="sqlite*.jar" excludes=""/>
       <manifest>
         <attribute name="Main-Class" value="redes.Proyecto2"/>
       </manifest>

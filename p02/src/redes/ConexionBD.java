@@ -61,8 +61,10 @@ public class ConexionBD {
 	ResultSet resultSet = null;
 	try{
 	    Statement statement = conn.createStatement();
-	    if(q.charAt(0) == 'S')
+	    if(q.charAt(0) == 'S'){
 		resultSet = statement.executeQuery(q);
+		//System.err.println(resultSet.next());
+	    }
 	    else
 		statement.executeUpdate(q);
 	    //print(" Éxito.\n")
