@@ -22,7 +22,7 @@ Se ejecuta la aplicación como cliente
 Puerto por el que aceptarán las conexiones de los clientes. En caso de correr el programa como cliente, es el puerto del servidor al que se hará la conexión. El puerto por defecto es 9999.
 .TP
 .B -s SERVIDOR
-Servidor al que el cliente se conectará. El servidor por defecto es 127.0.0.1.
+Servidor al que el cliente se conectará. El servidor por defecto está en la dirección 127.0.0.1.
 .TP
 .B -t TIMEOUT
 Tiempo de inactividad en segundos tras el cual se cerrará la conexión de los clientes. Sólo se utiliza si se corre el programa como servidor. Si no se especifica el valor por defecto es 60.
@@ -45,7 +45,7 @@ Se ejecuta el programa como cliente, conectándose al servidor 127.0.0.1 por el 
 Se conecta el cliente por el puerto 1234 al servidor miservifor.foo.
 .TP
 .B java -jar proyecto2.jar -t 30 -i 3 -p 1234 -b src/sql/pokebase.sql
-Se habilita el servidor que esucha conexiones por el puerto 1234, utilizando la base de datos src/sql/pokebase.sql. Permite máximo 3 intentos para capturar in pokémon y deshabilita las conexiones de los clientes después de 30 segundos de inactividad.
+Se habilita el servidor que escucha conexiones por el puerto 1234, utilizando la base de datos src/sql/pokebase.sql. Permite máximo 3 intentos para capturar in pokémon y deshabilita las conexiones de los clientes después de 30 segundos de inactividad.
 .SH AUTORES
 Carlos Gerardo Acosta Hernández	
 .br

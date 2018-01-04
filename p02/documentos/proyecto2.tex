@@ -48,13 +48,14 @@ Esta aplicación fue creada con el objetivo de implementar un protocolo de la ca
      Actor & Caso de uso & Descripción \\
      \hline
      Pokentrenador & Iniciar sesión & El usuario se conecta con el servidor y se le muestra el menú principal de la aplicación \\ \hline
-     Pokentrenador & Solicitar captura de pokémon & El usuario solicita al servidor que le muestre un pokémon para capturar \\ \hline
+     Pokentrenador & Capturar pokémon & El usuario solicita al servidor que le muestre un pokémon y decide si intenta capturarlo (con un número finito de intentos) o no\\ \hline
      Pokentrenador & Consultar pokedex & El usuario hace una consulta para buscar un pokémon en su pokédex \\ \hline
-     Pokentrenador & Lanzar pokebola & El usuario intenta capturar el pokémon que le mostró el servidor, con un número de intentos límitado \\ \hline
      Pokentrenador & Cerrar sesión & Cierra la conexión con el servidor \\
      \hline
    \end{tabular}
  \end{center}
+
+
  \begin{figure}[H]
    \centering
    \includegraphics[width=0.4\textwidth]{casosdeuso}
@@ -125,7 +126,6 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
 \end{tikzpicture}
 \end{center}
 
-
 \subsection{Descripción de los estados}
 \begin{center}
 \begin{tabular}{|l|p{9cm}|}
@@ -173,20 +173,130 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
  \begin{figure}[H]
    \centering
    \includegraphics[width=1\textwidth]{PokeDB2}
-   \caption{Diagrama de casos de uso de la aplicación}
+   \caption{Diagrama de la base de datos relacional.}
  \end{figure}
+
 \section{Implementación del protocolo}
 \subsection{Especificación del ambiente de desarrollo}
 %revisar versiones
 \begin{tabular}{l r l r}
-\textbf{Lenguaje de programación:} & Java & \textbf{versión:} & 1.8 \\
-\textbf{Herramienta de construcción de software:} & Apache Ant & \textbf{versión:} & 1.9.9 \\
-\textbf{Sistema manejador de base de  datos:} & sqlite & \textbf{versión:} & 2.8.17 \\
+  \textbf{Lenguaje de programación:} & Java & \textbf{versión:} & 1.8 \\
+  \textbf{Herramienta de construcción de software:} & Apache Ant & \textbf{versión:} & 1.9.9 \\
+  \textbf{Sistema Manejador de Base de Datos:} & sqlite & \textbf{versión:} & 2.8.17 \\
+  \textbf{Driver de conectividad JDBC:} & sqlite-jdbc & \textbf{versión:}& 3.16.1\\
+  \textbf{Pruebas Unitarias:} & JUnit & Hamcrest \\
 \end{tabular}
-  \subsection{Diagrama de clases (Maybe no, pero al menos mención de la estructura programática del proyecto, lo que sea más fácil jijijijijijij)}
+
+\subsection{Estructura del proyecto}  
+\begin{verbatim}
+.
+|- proyecto2.jar
+|- build
+|- - ConexionBD.class
+|- - redes
+|- - - MultiThreadPrueba.class
+|- - - Mensaje12.class
+|- - - Mensaje21.class
+|- - - ConexionBD.class
+|- - - Mensaje24.class
+|- - - Estado.class
+|- - - ClienteHilo.class
+|- - - FabricaMensaje.class
+|- - - MensajeGenerico.class
+|- - - Pokentrenador$1.class
+|- - - Mensaje15.class
+|- - - Pokentrenador.class
+|- - - Controlador.class
+|- - - test
+|- - - - ControladorTest.class
+|- - - Mensaje10.class
+|- - - Pokeservidor.class
+|- - - Mensaje22.class
+|- - - Proyecto2.class
+|- - - MultiThreadPrueba$Hilo.class
+|- - - Imagen.class
+|- - - Mensaje23.class
+|- - - ClienteHilo$1.class
+|- static
+|- - requirements
+|- - poke_script.py
+|- man
+|- - proyecto2.1
+|- - proyecto2.1.gz
+|- documentos
+|- - proyecto2.out
+|- - proyecto2.log
+|- - graphic
+|- - - 
+|- - proyecto2.toc
+|- - proyecto2.tex
+|- - proyecto2.pdf
+|- - proyecto2.aux
+|- doc
+|- - proyecto2.out
+|- - proyecto2.log
+|- - proyecto2.toc
+|- - proyecto2.pdf
+|- - proyecto2.aux
+|- src
+|- - sql
+|- - - poke_app_db.sql
+|- - redes
+|- - - Mensaje10.java
+|- - - Estado.java
+|- - - MultiThreadPrueba.java
+|- - - Pokeservidor.java
+|- - - MensajeGenerico.java
+|- - - Mensaje15.java
+|- - - Imagen.java
+|- - - Controlador.java
+|- - - Pokentrenador.java
+|- - - ClienteHilo.java
+|- - - ConexionBD.java
+|- - - Mensaje24.java
+|- - - test
+|- - - - ControladorTest.java
+|- - - Mensaje22.java
+|- - - Mensaje21.java
+|- - - Mensaje23.java
+|- - - FabricaMensaje.java
+|- - - Mensaje12.java
+|- - - Proyecto2.java
+|- build.xml
+|- arbol.txt
+|- lib
+|- - junit.jar
+|- - hamcrest-core.jar
+|- - sqlite-jdbc-3.16.1.jar
+\end{verbatim}
 
 \section{Uso y pruebas del protocolo}
 \subsection{Manual de uso}
-\subsection{Demostración del funcionamiento (por caso de uso ijijisjiajij)}
+\subsubsection{Instalación y conexión de cliente/servidor}
+La aplicación cuenta con una página de manual para sistemas operativos *NIX, en donde se detalla más en el uso de la aplicación con algunos ejemplos sencillos. \\
+Para poder compilar y ejecutar el programa por primera vez, se requiere contar con la versión 1.8 o superior de \texttt{Java} así como la versión 1.9.9 o superior de \texttt{Apache Ant}, entonces puede emplear el comando: \\
+\begin{verbatim}
+[user@host p02] ant 
+\end{verbatim}
+Y el sistema automatizado de \texttt{Apache Ant} generará todos los archivos necesarios para que el programa funcione. En caso de haber errores, el mismo \texttt{Ant} le indicará cuáles son. \\
+
+Una vez compilado, se puede iniciar la aplicación con la instrucción en linea de comando:
+\begin{verbatim}
+[user@host p02] java -jar proyecto2 
+\end{verbatim}
+
+\subsubsection{Inicio de sesión}
+Una vez establecida la conexión entre cliente y servidor, el servidor le pedirá al usuario que ingrese su nombre para poder iniciar sesión o cerrar la conexión entre ambos hosts. Si el nombre de usuario ingresado se encuentra registrado en la base de datos de la aplicación, el servidor le mostrará al usuario con sesión iniciada su menú principal de juego.
+
+\subsubsection{Uso dentro de la aplicación}
+Una vez iniciada la sesión del usuario, éste tendrá acceso a un menú principal en el que se muestre las opciones que le otorga la aplicación, como capturar un pokémon, consultar su pokédex o cerrar sesión. \\
+
+Si el usuario quiere capturar un pokémon, el servidor le mostrará aleatoriamente alguno de los nombres de pokémon registrados y el usuario decidirá si desea o no capturarlo. Si acepta el desafío, tendrá que lograr capturarlo antes de llegar al límite de intentos permitido. \\
+
+Para consultar su pokédex, el usuario deberá ingresar el nombre del pokémon que quiera buscar. Si el pokémon ya fue capturado, se le mostrará la imagen de tal pokémon y recibirá un mensaje de error si el nombre del pokémon no es el correcto o el usuario no lo ha capturado. \\
+
+Si el usuario decide cerrar su sesión, regresará a la pantalla de inicio de la aplicación y se le preguntará si desea iniciar sesión de nuevo o cerrar la conexión entre los hosts. \\
+
+%\subsection{Demostración del funcionamiento}
 
 \end{document}
