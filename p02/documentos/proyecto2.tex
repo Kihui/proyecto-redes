@@ -151,27 +151,30 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
     \hline
     Código & Segmento & Descripción \\ \hline
     \hline
-    00 & \texttt{|code|num\_con|} & Termina la conexión identificada con num\_con. \\ \hline
-    10 & \texttt{|code|num\_con|name|} & Solicitud de inicio de sesión del cliente. El parámetro \texttt{name} se refiere al nombre de usuario de la persona conectándose a través del cliente y su tamaño está en el rango de 1 a 32 bytes. \\ \hline
-    11 & \texttt{|code|num\_con|} & Solicitud de cierre de sesión del cliente. \\ \hline
-    12 & \texttt{|code|num\_con|name|} & Consulta del usuario a su \textit{Pokédex}. \\ \hline
-    13 & \texttt{|code|num\_con|} & Menú de captura. \\ \hline
-    14 & \texttt{|code|num\_con|} & El usuario rechaza el pokémon ofrecido aleatoriamente. \\ \hline
-    15 & \texttt{|code|num\_con|} & Intento de captura del pokémon ofrecido aleatoriamente. \\ \hline
-    20 & \texttt{|code|} & inicio de sesión exitoso. \\ \hline
-    21 & \texttt{|code|long|nombre|longitud|imagen} & Pokédex query. \\ \hline %wat
-    22 & \texttt{|code|name|num\_intentos\_restantes} & funcionamiento aleatorio. \\ \hline
-    23 & \texttt{|code|} & Pokémon no capturado. \\ \hline
-    24 & \texttt{|code| "2i"|} & Pokémon capturado. \\ \hline
-    41 & \texttt{|code|} & Maximum Number of Attempts Reached. \\ \hline
-    44 & \texttt{|code|} & Not Found Error. \\ \hline
-    46 & \texttt{|code|} & No existe conexión. \\ \hline
-    47 & \texttt{|code|} & Sin sesión. \\
+    00 & \texttt{|long|code|} & Termina la conexión para un cliente. \\ \hline
+    10 & \texttt{|long|code|name|} & Solicitud de inicio de sesión del cliente. El parámetro \texttt{name} se refiere al nombre de usuario del cliente. \\ \hline
+    11 & \texttt{|long|code|} & Solicitud de cierre de sesión del cliente. \\ \hline
+    12 & \texttt{|long|code|name|} & Acceso y consulta a la \textit{Pokédex} mediante el nombre de un pokémon. \\ \hline
+    13 & \texttt{|long|code|} & Acceso a la opción de captura. \\ \hline
+    14 & \texttt{|long|code|} & El usuario rechaza el pokémon salvaje ofrecido por el servidor. \\ \hline
+    15 & \texttt{|long|code|attempts|name|} & Intento de captura del pokémon salvaje ofrecido. \\ \hline %%dfdishffjsjfsfvkfdjhJNDSJFNSDGLDKN
     \hline
+    20 & \texttt{|long|code|} & Inicio de sesión del cliente exitoso. \\ \hline
+    21 & \texttt{|long|code|long\_n|name|long\_img|img} & Resultado exitoso de la Pokédex con imagen del pokémon. \\ \hline %wat
+    22 & \texttt{|long|code|attempts|name|} & Selección aleatoria de un pokémon salvaje para el cliente. Incluye el máximo número de intentos. \\ \hline
+    23 & \texttt{|long|code|attempts|name|} & Pokémon no capturado, disminución del número de intentos. \\ \hline
+    24 & \texttt{|long|code|long\_n|name|long\_img|img|} & Pokémon capturado con imagen incluída. \\ \hline \hline
+    41 & \texttt{|long|code|} & Error: Máximo número de intentos de captura alcanzados. \\ \hline
+    44 & \texttt{|long|code|} & Error: Consulta infructuosa. \\ \hline
   \end{tabular}
 \end{center}
 
 \subsection{Diseño de la base de datos}
+ \begin{figure}[H]
+   \centering
+   \includegraphics[width=1\textwidth]{PokeDB2}
+   \caption{Diagrama de casos de uso de la aplicación}
+ \end{figure}
 \section{Implementación del protocolo}
 \subsection{Especificación del ambiente de desarrollo}
 %revisar versiones
