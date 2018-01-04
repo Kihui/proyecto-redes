@@ -23,7 +23,7 @@ public class Proyecto2 {
     }
     
     public static void main(String args[]) {
-        int puerto = 6666;
+        int puerto = 9999;
         String servidor = "127.0.0.1";
         boolean cliente = false;
         String bd = "src/sql/base.db";
