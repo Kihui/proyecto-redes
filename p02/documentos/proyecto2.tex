@@ -13,6 +13,8 @@
 \setcounter{tocdepth}{2}
 % automata
 \usepackage{tikz}
+\usepackage{pmboxdraw} 
+
 \title{Proyecto 2}
 \author{Carlos Gerardo Acosta Hernández \\ Andrea Itzel González Vargas \\ Luis Pablo Mayo Vega}
 \date{Redes de Computadoras\\Facultad de Ciencias, UNAM}
@@ -61,7 +63,8 @@ Esta aplicación fue creada con el objetivo de implementar un protocolo de la ca
    \includegraphics[width=0.4\textwidth]{casosdeuso}
    \caption{Diagrama de casos de uso de la aplicación}
  \end{figure}
- 
+
+ \newpage
 \section{Diseño del protocolo}
 \subsection{Máquina de Estados Finita}
 Máquina de Estados Finita para el protocolo de la capa de aplicación.
@@ -177,114 +180,152 @@ Máquina de Estados Finita para el protocolo de la capa de aplicación.
  \end{figure}
 
 \section{Implementación del protocolo}
-\subsection{Especificación del ambiente de desarrollo}
+\subsection{Especificación del ambiente de desarrollo}\label{sec:env}
 %revisar versiones
 \begin{tabular}{l r l r}
   \textbf{Lenguaje de programación:} & Java & \textbf{versión:} & 1.8 \\
   \textbf{Herramienta de construcción de software:} & Apache Ant & \textbf{versión:} & 1.9.9 \\
   \textbf{Sistema Manejador de Base de Datos:} & sqlite & \textbf{versión:} & 2.8.17 \\
   \textbf{Driver de conectividad JDBC:} & sqlite-jdbc & \textbf{versión:}& 3.16.1\\
-  \textbf{Pruebas Unitarias:} & JUnit & Hamcrest \\
+  \textbf{Sistema manejador de versiones:} & GIT & \textbf{versión:}& 2.14.1 \\
+  \textbf{Pruebas Unitarias:} & JUnit y Hamcrest & \textbf{versión:}& 4 \\
+  
 \end{tabular}
 
-\subsection{Estructura del proyecto}  
+\subsection{Estructura del proyecto}
+\subsubsection{Árbol del directorio (preinstalación)}
 \begin{verbatim}
-.
-|- proyecto2.jar
-|- build
-|- - ConexionBD.class
-|- - redes
-|- - - MultiThreadPrueba.class
-|- - - Mensaje12.class
-|- - - Mensaje21.class
-|- - - ConexionBD.class
-|- - - Mensaje24.class
-|- - - Estado.class
-|- - - ClienteHilo.class
-|- - - FabricaMensaje.class
-|- - - MensajeGenerico.class
-|- - - Pokentrenador$1.class
-|- - - Mensaje15.class
-|- - - Pokentrenador.class
-|- - - Controlador.class
-|- - - test
-|- - - - ControladorTest.class
-|- - - Mensaje10.class
-|- - - Pokeservidor.class
-|- - - Mensaje22.class
-|- - - Proyecto2.class
-|- - - MultiThreadPrueba$Hilo.class
-|- - - Imagen.class
-|- - - Mensaje23.class
-|- - - ClienteHilo$1.class
-|- static
-|- - requirements
-|- - poke_script.py
-|- man
-|- - proyecto2.1
-|- - proyecto2.1.gz
-|- documentos
-|- - proyecto2.out
-|- - proyecto2.log
-|- - graphic
-|- - - 
-|- - proyecto2.toc
-|- - proyecto2.tex
-|- - proyecto2.pdf
-|- - proyecto2.aux
-|- doc
-|- - proyecto2.out
-|- - proyecto2.log
-|- - proyecto2.toc
-|- - proyecto2.pdf
-|- - proyecto2.aux
-|- src
-|- - sql
-|- - - poke_app_db.sql
-|- - redes
-|- - - Mensaje10.java
-|- - - Estado.java
-|- - - MultiThreadPrueba.java
-|- - - Pokeservidor.java
-|- - - MensajeGenerico.java
-|- - - Mensaje15.java
-|- - - Imagen.java
-|- - - Controlador.java
-|- - - Pokentrenador.java
-|- - - ClienteHilo.java
-|- - - ConexionBD.java
-|- - - Mensaje24.java
-|- - - test
-|- - - - ControladorTest.java
-|- - - Mensaje22.java
-|- - - Mensaje21.java
-|- - - Mensaje23.java
-|- - - FabricaMensaje.java
-|- - - Mensaje12.java
-|- - - Proyecto2.java
-|- build.xml
-|- arbol.txt
-|- lib
-|- - junit.jar
-|- - hamcrest-core.jar
-|- - sqlite-jdbc-3.16.1.jar
+p02
+├── build.xml
+├── documentos
+│   ├── graphic
+│   │   ├── casosdeuso.png
+│   │   └── ...
+│   ├── proyecto2.pdf
+│   └── proyecto2.tex
+├── lib
+│   ├── hamcrest-core.jar
+│   ├── junit.jar
+│   └── sqlite-jdbc-3.16.1.jar
+├── man
+│   └── proyecto2.1
+├── src
+│   ├── redes
+│   │   ├── ClienteHilo.java
+│   │   ├── ConexionBD.java
+│   │   ├── Controlador.java
+│   │   ├── Estado.java
+│   │   ├── FabricaMensaje.java
+│   │   ├── Imagen.java
+│   │   ├── Mensaje10.java
+│   │   ├── Mensaje12.java
+│   │   ├── Mensaje15.java
+│   │   ├── Mensaje21.java
+│   │   ├── Mensaje22.java
+│   │   ├── Mensaje23.java
+│   │   ├── Mensaje24.java
+│   │   ├── MensajeGenerico.java
+│   │   ├── MultiThreadPrueba.jav
+│   │   ├── Pokentrenador.java
+│   │   ├── Pokeservidor.java
+│   │   ├── Proyecto2.java
+│   │   └── test
+│   │       └── ControladorTest.java
+│   └── sql
+│       ├── hi.db
+│       └── poke_app_db.sql
+└── static
+    ├── poke_script.py
+    ├── requirements
+    ├── Squirtle.png
+    └── ...
+
 \end{verbatim}
+\subsubsection{build.xml}
+Este archivo contiene las directivas de operación para el sistema de construcción ant. Es mediante
+su lectura que la estructura del proyecto da lugar a la compilación del código y el enlace entre sus
+dependencias.
+\subsubsection{src}
+En este directorio encontraremos dos subdirectorios o, más propiamente paquetes. En \textit{redes/} se encuentra el código fuente principal del protocolo de aplicación, mientras que en \textit{test/} se encontrarán los archivos de las pruebas unitarias contempladas para algunas de los métodos del proyecto. 
+\subsubsection{static}
+Aquí deben encontrarse forzosamente las imágenes de los pokémon que estarán disponibles en la dinámica de la aplicación, con un nombre de archivo dado por el formato: \texttt{<pokémon>.png}. Además vienen incluídos, un \textit{script} en python que permite volver a descargar en ese directorio las imágenes de los pokémons de la primera generación y su archivo de requerimientos para funcionar (que puede utilizarse mediante la introducción del comando: \texttt{\$ pip install -r requirements}, previa a la ejecución del \textit{script}, ya sea en un ambiente virtual o directamente sobre el sistema). 
+\subsubsection{documentos}
+El documento que ahora mismo está leyendo debe encontrarse en este directorio, junto con el código
+fuente en $\LaTeX$ que lo genera. Además, el subdirectorio \textit{graphic/} contiene las imágenes
+utilizadas en el código mencionado para la generación del documento \textit{PDF}.
+\subsubsection{lib}
+Como ya se mencionó en la sección \ref{sec:env}, se utilizaron bibliotecas externas tanto para las pruebas unitarias como para el controlador del \textit{SMBD}. Tales recursos deben encontrarse en este directorio.
+\subsubsection{man}
+En este directorio se encuentra el archivo que contiene la información que será agregada al \textit{man pages} (manual) de la distribución de \textit{Linux} durante la instalación.  \\
+
+En la siguiente sección será más evidente la importancia del listado anterior, pues se describirá brevemente su interacción en el proceso de instalación y ejecución del proyecto.
+Adicionalemente, si se desea explorar la conformación del código a mayor detalle, recomendamos ver la sección \ref{sec:doc}.
 
 \section{Uso y pruebas del protocolo}
 \subsection{Manual de uso}
-\subsubsection{Instalación y conexión de cliente/servidor}
-La aplicación cuenta con una página de manual para sistemas operativos *NIX, en donde se detalla más en el uso de la aplicación con algunos ejemplos sencillos. \\
-Para poder compilar y ejecutar el programa por primera vez, se requiere contar con la versión 1.8 o superior de \texttt{Java} así como la versión 1.9.9 o superior de \texttt{Apache Ant}, entonces puede emplear el comando: \\
+\subsubsection{Compilación}\label{sec:compile}
+Para compilar el proyecto y generar un recopilado de ejecutables de la \textit{JVM}, un archivo \textit{JAR}. Basta con ejecutar \textit{Apache-Ant} sin argumentos, pues se ha especificado el \textit{target} descrito por defecto:
 \begin{verbatim}
-[user@host p02] ant 
+    [user@host p02]$ ant 
 \end{verbatim}
-Y el sistema automatizado de \texttt{Apache Ant} generará todos los archivos necesarios para que el programa funcione. En caso de haber errores, el mismo \texttt{Ant} le indicará cuáles son. \\
-
-Una vez compilado, se puede iniciar la aplicación con la instrucción en linea de comando:
+\subsubsection{Linux man pages}\label{sec:man}
+Si las instrucciones generales de usod desean incluírse en el \textit{Linux man pages} para así
+mantener accesible la forma de uso del proyecto, preparamos el siguiente \textit{target} en \textit{ant} para este proposito:\\
 \begin{verbatim}
-[user@host p02] java -jar proyecto2 
+    [user@host p02]$ ant man
+\end{verbatim}
+Cuya ejecución solicitará permisos de superusuario para agregar la página de manual de este proyecto. Una vez ingresada la contraseña de \textit{sudo} será posible visitar el manual desde cualquier ruta mediante el siguiente comando:
+\begin{verbatim}
+    [user@host ~]$ man proyecto2
 \end{verbatim}
 
+\subsubsection{Generación de documentación}\label{sec:doc}
+Para explorar la organización programática del proyecto sin necesidad de visitar todos los códigos fuente involucrados en la construcción del proyecto, recomendamos generar la documentación de código \textit{html}, para así hallar la explicación de cada método implementado, sus entradas y salidas y el papel que desempeñan en el protocolo. Para ello, basta efectuar:
+\begin{verbatim}
+    [user@host p02]$ ant doc
+\end{verbatim}
+Esto generará un directorio \textit{doc/}, que contiene un conjunto de documentos en formato \textit{html} descriptivos de cada clase en el código, relacionados unos con otros a través de hipervínculos que permiten una navegación fluida que no necesariamente es posible en la lectura directa del código.
+\subsubsection{Precondiciones}
+Antes de comenzar la ejecución es importante que de las secciones anteriores se haya efectuado cuando menos la \ref{sec:compile}.\\
+
+También es importante que el archivo de la base de datos de \textit{SQLite} se encuentre bajo la ruta:
+\textit{src/sql/\textbf{hi.db}}. De no hallarse ahí, pero sí el esquema de la base de datos en el archivo \textit{src/sql/\textbf{poke\_app\_db.sql}}, es posible generar la base de datos ejecutando:
+\begin{verbatim}
+    [user@host p02/src/sql]$ sqlite3 hi.db < poke_app_db.sql
+\end{verbatim}
+
+Finalmente, sólo resta verificar que las imágenes a utilizar por la aplicación se encuentren en la ruta adecuada. Por ejemplo, para el pokémon \texttt{charmander}, debe existir la imagen \textit{static/\textbf{charmander.png}}. En caso de no hayarse ninguno, a continuación damos una serie de instrucciones\footnote{Éstas sugieren el uso de un entorno virtual, pero que no es fundamentalmente necesario.} para que el \textit{script} incluído en ese directorio descargue de internet nuevamente las imágenes que la aplicación mostrará.
+\begin{verbatim}
+    [user@host p02/static]$ virtualenv py_env
+    [user@host p02/static]$ source py_env/bin/activate    
+    (py_env)[user@host p02/static]$ pip install -r requirements
+    (py_env)[user@host p02/static]$ python3 poke_script.py
+\end{verbatim}
+
+Una vez asegurandonos de esto, podemos proceder a la ejecución de la aplicación.
+
+\subsubsection{Ejecución de pruebas unitarias}
+Si se desea incluir nuevas pruebas en el directorio \textit{src/test/} para la verificación de alguna función del protocolo o simplemente correr las ya existentes, ejecutamos lo siguiente:
+\begin{verbatim}
+    [user@host p02]$ ant test
+\end{verbatim}
+Que compilará y ejecutará tanto el código de las pruebas como el de la aplicación y listará los tiempos, errores y salidas sin errores de cada una.
+\subsubsection{Ejecución}\label{sec:exec}
+La ejecución del programa como viene especificado en el manual incluído (ver \ref{sec:man}) se realiza mediante el archivo \textit{JAR} resultado de la compilación y posee una cantidad de argumentos tanto para un cliente como para unservidor. Es importante señalar que decidimos manejar este archivo como uno solo, es decir se utiliza tanto para la ejecución de un cliente como la de un servidor, diferenciando el comportamiento del programa mediante los argumentos. \\
+Para ejecutar la aplicación con sus valores por defecto para cada parte de la comunicación, efectuamos al menos uno\footnote{La aplicación soporta la conexión de múltiples clientes.} de cada uno\footnote{De preferencia con un servidor ejecutándose previo a la ejecución de cualquier cliente.} de los siguientes comandos:\\
+
+\noindent
+\textbf{Servidor}\\
+\begin{verbatim}
+    [user@host p02]$ java -jar proyecto2.jar
+\end{verbatim}
+\textbf{Cliente}
+\begin{verbatim}
+    [user@host p02]$ java -jar proyecto2.jar -c
+\end{verbatim}
+
+\subsection{Demostración del funcionamiento}
+Ya se ha visto cómo realizar la ejecución más sencilla del proyecto (\ref{sec:exec}). En la presente sección mostramos una posible navegación por el programa y sus resultados, apreciables en capturas de pantalla de la aplicación.
 \subsubsection{Inicio de sesión}
 Una vez establecida la conexión entre cliente y servidor, el servidor le pedirá al usuario que ingrese su nombre para poder iniciar sesión o cerrar la conexión entre ambos hosts. Si el nombre de usuario ingresado se encuentra registrado en la base de datos de la aplicación, el servidor le mostrará al usuario con sesión iniciada su menú principal de juego.
 
@@ -328,168 +369,194 @@ El servidor contestó con el mensaje de error con código 44, indicando que tal 
   \caption{Mensaje de error con código 44}
 \end{figure}
 
+El cliente hace un segundo intento de inicio de sesión con un usuario distinto.
+
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{05}
-  \caption{}
+  \caption{Mensaje con código 10}
 \end{figure}
+
+El servidor responde con el código 20, indicando que se inicio sesión exitosamente.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{06}
-  \caption{}
+  \caption{Mensaje con código 20}
 \end{figure}
+
+\subsubsection{Búsqueda de pokémon en Pokédex}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{07}
-  \caption{}
+  \includegraphics[width=0.5\textwidth]{07}
+  \caption{Búsquedas en Pokédex}
 \end{figure}
 
-\begin{figure}[H]
-  \centering
-  \includegraphics[width=\textwidth]{08}
-  \caption{}
-\end{figure}
-
+El cliente indica que quiere hacer una búsqueda del pokémon \texttt{pokechu} en su Pokédex.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{09}
-  \caption{}
+  \caption{Mensaje con código 12}
 \end{figure}
 
+El servidor contesta con el código de error 44, indicando que no se encontró tal pokémon.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{10}
-  \caption{}
+  \caption{Mensaje con código de error 44}
 \end{figure}
+
+El cliente pide que se realice la búsqueda de otro pokémon, en este caso \texttt{pikachu}.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{11}
-  \caption{}
+  \caption{Mensaje con código 12}
 \end{figure}
 
+El servidor contesta con el código de éxito 21 junto con la imagen del pokémon, la cual se despliega en pantalla y se indica si se quiere guardar o no en el equipo del cliente.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{13}
-  \caption{}
+  \caption{Mensaje con código 21}
 \end{figure}
+
+\subsubsection{Captura de un pokémon}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{14}
-  \caption{}
+  \includegraphics[width=0.5\textwidth]{14}
+  \caption{Intentos de captura de un pokémon}
 \end{figure}
+
+El cliente pide capturar un pokémon.
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{15}
-  \caption{}
+  \caption{Mensaje con código 13}
 \end{figure}
 
+El servidor responde con un pokémon aleatorio, en este caso \texttt{Flareon}, y le da 5 intentos al cliente para capturar el pokémon.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{16}
-  \caption{}
+  \caption{Mensaje con código 22}
 \end{figure}
 
+El cliente lanza su primer pokebola.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{17}
-  \caption{}
+  \caption{Mensaje con código 15; intento $\#$5}
 \end{figure}
 
+El servidor indica que falló el intento y decrementa el contador.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{18}
-  \caption{}
+  \caption{Mensaje con código 23; 4 intentos restantes}
 \end{figure}
 
+El cliente lanza otra pokebola.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{19}
-  \caption{}
+  \caption{Mensaje con código 15; intento $\#$4}
 \end{figure}
 
+Se indica que de nuevo falló el lanzamiento, decrementa el contador.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{20}
-  \caption{}
+  \caption{Mensaje con código 23; 3 intentos restantes}
 \end{figure}
 
+El cliente hace otro intento.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{21}
-  \caption{}
+  \caption{Mensaje con código 15; intento $\#$3}
 \end{figure}
 
+El servidor indica que esta vez sí se logró capturar el pokémon, y manda la imagen asociada a éste.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{22}
-  \caption{}
+  \caption{Mensaje con código 24}
 \end{figure}
 
+A continuación se muestra un caso en el que el cliente escoge ignorar al pokémon en vez de lanzar una pokebola.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{23}
-  \caption{}
+  \includegraphics[width=0.3\textwidth]{23}
+  \caption{Se ignora al pokémon Grimer}
 \end{figure}
 
+El cliente indica que quiere capturar un pokémon
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{24}
-  \caption{}
+  \caption{Mensaje con código 13}
 \end{figure}
 
+El servidor regresa al pokémon aleatorio \texttt{Grimer}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{25}
-  \caption{}
+  \caption{Mensaje con código 22}
 \end{figure}
 
+El cliente indica que no quiere capturar a tal pokémon.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{26}
-  \caption{}
+  \caption{Mensaje con código 14}
 \end{figure}
 
+En el siguiente caso el cliente falla en el último intento de captura del pokémon \texttt{Magnemite}.
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{27}
+  \includegraphics[width=0.5\textwidth]{27}
   \caption{}
 \end{figure}
 
+El cliente realiza el último intento para capturar a \texttt{Magnemite}.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{28}
-  \caption{}
+  \caption{Mensaje con código 15; intento $\#$1}
 \end{figure}
 
+El servidor contesta con el código de error 41, indicando que el último intento de captura del cliente falló y ya no le quedan más intentos.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{29}
-  \caption{}
+  \caption{Mensaje con código de error 41}
 \end{figure}
+
+\subsubsection{Cierre de sesión y conexión}
 
 \begin{figure}[H]
   \centering
-  \includegraphics[width=\textwidth]{30}
-  \caption{}
+  \includegraphics[width=0.3\textwidth]{30}
+  \caption{El cliente cierra la sesión y se desconecta del servidor}
 \end{figure}
 
+El cliente manda un mensaje indicando que quiere cerrar sesión.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{31}
-  \caption{}
+  \caption{Mensaje con código 11}
 \end{figure}
 
+Posteriormente indica que también quiere cerrar la conexión con el servidor.
 \begin{figure}[H]
   \centering
   \includegraphics[width=\textwidth]{32}
-  \caption{}
+  \caption{Mensaje con código 0}
 \end{figure}
-
 
 
 \end{document}
