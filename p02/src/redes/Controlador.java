@@ -36,11 +36,14 @@ public class Controlador{
     public synchronized boolean findUser(String nombre){
 	if(!abrirConexion())
 	    return false;
-        ResultSet rs = makeQuery("SELECT name from entrenador WHERE name = \""+nombre+"\"");
+        ResultSet rs = makeQuery("SELECT name from entrenador WHERE upper(name) = \""+ nombre.toUpperCase() +"\"");
 	String name = null;
 	try{
 	    name = rs.getString("name");
-	} catch(SQLException sqle){System.err.println("Error en la obtención del nombre de usuario.");sqle.printStackTrace();}
+	} catch(SQLException sqle){
+            System.err.println("Nombre de usuario no encontrado.");
+            // sqle.printStackTrace();
+        }
 	cerrarConexion();
 	return name != null;
         
@@ -56,12 +59,12 @@ public class Controlador{
 	if(!abrirConexion())
 	    return null;
 	String s = null;
-	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = \""+entrenador+"\" AND pokemon.name = \""+pokemon+"\"");
+	ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE upper(entrenador.name) = \""+entrenador.toUpperCase()+"\" AND upper(pokemon.name) = \""+pokemon.toUpperCase()+"\"");
 	//rs.next();
 	try{
 	    s = rs.getString("url");
 	}
-	catch(Exception e){System.err.println("Error en la consulta de la pokedex");}
+	catch(Exception e){System.err.println("Pokemon no encontrado en la pokedex de usuario");}
 	cerrarConexion();
 	return s;	
     }
@@ -103,10 +106,10 @@ public class Controlador{
 	//supuestamente a prueba de fallos porque los argumentos no están en manos del cliente .
 	String out = null;
 	try {
-	    ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE entrenador.name = \""+entrenador+"\" AND pokemon.name = \""+pokemon+"\"");
+	    ResultSet rs = makeQuery("SELECT url FROM pokedex inner join pokemon on pokedex.id_pokemon = pokemon.id inner join entrenador on pokedex.id_entrenador = entrenador.id WHERE upper(entrenador.name) = \""+entrenador.toUpperCase()+"\" AND upper(pokemon.name) = \""+pokemon.toUpperCase()+"\"");
 	    
-	    int id_e = makeQuery("SELECT id FROM entrenador WHERE name = \""+entrenador+"\"").getInt("id");
-	    ResultSet pq = makeQuery("SELECT id,url FROM pokemon WHERE name = \""+pokemon+"\"");
+	    int id_e = makeQuery("SELECT id FROM entrenador WHERE upper(name) = \""+entrenador.toUpperCase()+"\"").getInt("id");
+	    ResultSet pq = makeQuery("SELECT id,url FROM pokemon WHERE upper(name) = \""+pokemon.toUpperCase()+"\"");
 	    int id_p = pq.getInt("id");
 	    out = pq.getString("url");
 	    if(rs.next())
@@ -114,7 +117,10 @@ public class Controlador{
 	    else
 		makeQuery("INSERT INTO pokedex(id_entrenador, id_pokemon) VALUES("+id_e+","+id_p+")");
 	}
-	catch(SQLException sqle){System.err.println("Error agregando el pokémon a la pokédex."); sqle.printStackTrace();}
+	catch(SQLException sqle){
+            System.err.println("Error agregando el pokémon a la pokédex.");
+            // sqle.printStackTrace();
+        }
 	cerrarConexion();
 	return out;
     }
