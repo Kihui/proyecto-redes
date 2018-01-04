@@ -34,7 +34,7 @@ public class Pokentrenador {
             in = socket.getInputStream();
             scanner = new Scanner(System.in);
         } catch(Exception e){
-             e.printStackTrace();
+             // e.printStackTrace();
             error("Error al intentar conectarse al servidor.", true);
         }
         continua = true;
@@ -266,7 +266,7 @@ public class Pokentrenador {
             imagen.terminar();
         } catch(Exception e){
             error("Error al desconectar cliente", true);
-             e.printStackTrace();
+             // e.printStackTrace();
         }
     }
 }
