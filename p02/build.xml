@@ -100,5 +100,9 @@
       Para ver el manual, ejecute:
       man proyecto2
     </echo>
-  </target>    
+  </target>
+
+  <target name="all" depends="test,proyecto2.jar,doc,man ">
+  </target>
+
 </project>

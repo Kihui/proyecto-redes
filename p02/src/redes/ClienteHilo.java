@@ -30,8 +30,11 @@ public class ClienteHilo extends Thread {
     /**
      * Constructor que recibe el socket por el cual
      * se efectuará la comunicación con el cliente.
-     * @param s el socket con la conexión al cliente
-     * @param timeout el tiempo máximo de espera de un mensaje del cliente
+     * @param id el identificador entero del hilo de cliente.
+     * @param s el socket con la conexión al cliente.
+     * @param timeout el tiempo máximo de espera de un mensaje del cliente.
+     * @param i intentos máximos.
+     * @param c el controlador de la base de datos.
      */
     public ClienteHilo(int id, Socket s, int timeout, int i, Controlador c) {
         this.id = id;
