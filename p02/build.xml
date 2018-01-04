@@ -47,7 +47,7 @@
              windowtitle="Proyecto 2">
       <doctitle><![CDATA[<h1>Redes de Computadoras - Proyecto 2</h1>]]></doctitle>
       <link href="http://docs.oracle.com/javase/8/docs/api/" />
-      <classpath> >
+      <classpath>
 	<pathelement location="${lib.dir}/junit.jar" />
 	<pathelement location="${lib.dir}/hamcrest-core.jar" />
 	<pathelement location="${lib.dir}/sqlite-jdbc-3.16.1.jar" />
