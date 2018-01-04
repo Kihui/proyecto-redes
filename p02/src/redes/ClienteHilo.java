@@ -47,7 +47,8 @@ public class ClienteHilo extends Thread {
             in = socket.getInputStream();
             socket.setSoTimeout(timeout);
         } catch(Exception e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            System.err.println(String.format("No se pudo crear conexión con cliente %d", id));
         }
     }
 
@@ -69,10 +70,14 @@ public class ClienteHilo extends Thread {
      */
     public void run() {
         while(continua) {
-            MensajeGenerico mensaje = leeMensaje();
-            byte[] respuesta = siguienteEstado(mensaje);
-            if(respuesta != null)
-                mandaMensaje(respuesta);
+            try {
+                MensajeGenerico mensaje = leeMensaje();
+                byte[] respuesta = siguienteEstado(mensaje);
+                if(respuesta != null)
+                    mandaMensaje(respuesta);
+            } catch(NullPointerException npe) {
+                System.err.println(String.format("Error inesperado en conexión %d.", id));
+            }
         }
     }
 
@@ -180,7 +185,7 @@ public class ClienteHilo extends Thread {
             byte[] respuesta = new byte[ByteBuffer.wrap(longitud).asIntBuffer().get()];
             in.read(respuesta);
             m = fabrica.getMensaje(respuesta);
-            } catch (Exception e) {
+        } catch (Exception e) {
             terminar();
             System.err.println(String.format("Hubo un error al leer mensaje " +
                                              "del cliente %d o la conexión ha expirado. Conexión terminada.", id));
